@@ -1,17 +1,21 @@
 import React from 'react';
-import Section from '../../shared/ui/section/section';
-import Input from '../../shared/ui/input/input';
-import Button from '../../shared/ui/button/button';
+import SearchForm from '../../features/search/ui/search-form';
+import type { RequestResults } from '../../shared/models/interfaces/request-results';
 
 export default class SearchPage extends React.Component {
+  state = {
+    results: undefined,
+  };
+
+  handleResults = (data: RequestResults) => {
+    this.setState({ results: data });
+  };
+
   render = () => {
     return (
       <>
         <main>
-          <Section>
-            <Input></Input>
-            <Button></Button>
-          </Section>
+          <SearchForm onResults={this.handleResults}></SearchForm>
         </main>
       </>
     );
