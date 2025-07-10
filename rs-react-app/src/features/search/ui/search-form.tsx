@@ -9,7 +9,7 @@ export default class SearchForm extends React.Component<{
   onResults: (data: Record<string, unknown>[]) => void;
 }> {
   state = {
-    select: localStorage.getItem('prevSearchSelect') || '',
+    select: localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key,
     query: localStorage.getItem('prevSearchInput') || '',
   };
 
@@ -22,6 +22,7 @@ export default class SearchForm extends React.Component<{
   };
 
   handleSearch = async (): Promise<void> => {
+    console.log(RESOURCE_OPTIONS[0].key);
     const results = await startSearch(this.state.select, this.state.query);
 
     if (results) {
@@ -32,7 +33,8 @@ export default class SearchForm extends React.Component<{
       if (!resultsArray) return;
       this.props.onResults(resultsArray);
       console.log('resultArray', resultsArray);
-      localStorage.setItem('prevSearch', this.state.query);
+      localStorage.setItem('prevSearchSelect', this.state.select);
+      localStorage.setItem('prevSearchInput', this.state.query);
     }
   };
 
@@ -50,7 +52,7 @@ export default class SearchForm extends React.Component<{
           onChange={this.handleSelectChange}
         ></Select>
         <Input
-          value={this.state.query}
+          value={this.state.query.trim()}
           onChange={this.handleInputChange}
         ></Input>
         <Button callback={this.handleSearch} type="button"></Button>

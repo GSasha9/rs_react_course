@@ -1,5 +1,5 @@
 import type { RequestResults } from '../models/interfaces/request-results';
-import { generateQueryStringPage } from '../utils';
+import { RESOURCE_OPTIONS } from '../models/constants';
 
 class API {
   private static instance: API;
@@ -14,21 +14,30 @@ class API {
   };
 
   fetchData = async (
-    select: string = 'company',
+    select: string = RESOURCE_OPTIONS[0].key,
     query: string = ''
   ): Promise<RequestResults | undefined> => {
-    let request = '';
-    if (query) {
-      request = `${this.baseURL}${select}/search${generateQueryStringPage({ name: query })}`;
+    console.log(RESOURCE_OPTIONS[0].key);
+    if (!query) {
+      const response = await fetch(`${this.baseURL}${select}/search`);
+      if (response.ok) {
+        const data: RequestResults = await response.json();
+        console.log(data);
+        return data;
+      }
     } else {
-      request = `${this.baseURL}${select}/search`;
-    }
-    const response = await fetch(`${request}`);
-
-    if (response.ok) {
+      const response = await fetch(`${this.baseURL}${select}/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          title: `${query}`,
+          name: `${query}`,
+        }).toString(),
+      });
       const data: RequestResults = await response.json();
       console.log(data);
-
       return data;
     }
   };
