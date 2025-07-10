@@ -1,14 +1,15 @@
 import React from 'react';
 import SearchForm from '../../features/search/ui/search-form';
-import type { RequestResults } from '../../shared/models/interfaces/request-results';
+import SearchResults from '../../widgets/search-results/search-results';
 
 export default class SearchPage extends React.Component {
   state = {
     results: undefined,
   };
 
-  handleResults = (data: RequestResults) => {
+  handleResults = (data: Record<string, unknown>[]) => {
     this.setState({ results: data });
+    console.log('data in SearchPage', data);
   };
 
   render = () => {
@@ -16,6 +17,7 @@ export default class SearchPage extends React.Component {
       <>
         <main>
           <SearchForm onResults={this.handleResults}></SearchForm>
+          {this.state.results && <SearchResults results={this.state.results} />}
         </main>
       </>
     );

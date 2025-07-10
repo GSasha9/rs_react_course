@@ -1,4 +1,7 @@
+//import type { CardDescription } from '../types';
+
 export interface CardProps {
-  title: string;
-  description: string;
+  title?: string;
+  name?: string;
+  //description: CardDescription;
 }

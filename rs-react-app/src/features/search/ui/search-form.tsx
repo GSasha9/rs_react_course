@@ -1,26 +1,58 @@
 import React from 'react';
 import Input from '../../../shared/ui/input/input';
 import Button from '../../../shared/ui/button/button';
-import type { RequestResults } from '../../../shared/models/interfaces/request-results';
 import { startSearch } from '../utils';
+import Select from '../../../shared/ui/select/select';
+import { RESOURCE_OPTIONS } from '../../../shared/models/constants';
 
 export default class SearchForm extends React.Component<{
-  onResults: (data: RequestResults) => void;
+  onResults: (data: Record<string, unknown>[]) => void;
 }> {
   state = {
-    query: '',
+    select: localStorage.getItem('prevSearchSelect') || '',
+    query: localStorage.getItem('prevSearchInput') || '',
+  };
+
+  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ select: e.target.value });
+  };
+
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ query: e.target.value });
   };
 
   handleSearch = async (): Promise<void> => {
-    const results = await startSearch();
+    const results = await startSearch(this.state.select, this.state.query);
 
-    if (results) this.props.onResults(results);
+    if (results) {
+      const resultsArray = Object.entries(results).find(
+        ([key, value]) =>
+          key !== 'sort' && key !== 'page' && Array.isArray(value)
+      )?.[1] as Record<string, unknown>[];
+      if (!resultsArray) return;
+      this.props.onResults(resultsArray);
+      console.log('resultArray', resultsArray);
+      localStorage.setItem('prevSearch', this.state.query);
+    }
   };
 
   render = () => {
     return (
-      <form>
-        <Input></Input>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          this.handleSearch();
+        }}
+      >
+        <Select
+          options={RESOURCE_OPTIONS}
+          value={this.state.select}
+          onChange={this.handleSelectChange}
+        ></Select>
+        <Input
+          value={this.state.query}
+          onChange={this.handleInputChange}
+        ></Input>
         <Button callback={this.handleSearch} type="button"></Button>
       </form>
     );

@@ -1,4 +1,5 @@
 import type { RequestResults } from '../models/interfaces/request-results';
+import { generateQueryStringPage } from '../utils';
 
 class API {
   private static instance: API;
@@ -13,9 +14,16 @@ class API {
   };
 
   fetchData = async (
-    query: string = 'animal'
+    select: string = 'company',
+    query: string = ''
   ): Promise<RequestResults | undefined> => {
-    const response = await fetch(`${this.baseURL}${query}/search`);
+    let request = '';
+    if (query) {
+      request = `${this.baseURL}${select}/search${generateQueryStringPage({ name: query })}`;
+    } else {
+      request = `${this.baseURL}${select}/search`;
+    }
+    const response = await fetch(`${request}`);
 
     if (response.ok) {
       const data: RequestResults = await response.json();
