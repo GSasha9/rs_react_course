@@ -3,7 +3,7 @@ import { RESOURCE_OPTIONS } from '../models/constants';
 
 class API {
   private static instance: API;
-  private baseURL = 'http://stapi.co/api/v1/rest/';
+  private baseURL = 'https://stapi.co/api/v1/rest/';
 
   public static getInstance = (): API => {
     if (!API.instance) {

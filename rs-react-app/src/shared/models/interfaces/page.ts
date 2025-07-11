@@ -1,4 +1,4 @@
-export type Page = {
+export interface Page {
   firstPage: boolean;
   lastPage: boolean;
   numberOfElements: number;
@@ -6,4 +6,4 @@ export type Page = {
   pageSize: number;
   totalElements: number;
   totalPages: number;
-};
+}

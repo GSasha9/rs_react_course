@@ -1,8 +1,4 @@
-import React from 'react';
-
-type Props = {
-  children: React.ReactNode;
-};
+import type { Props } from '../../models/interfaces';
 
 const Section = ({ children }: Props) => {
   return <section className="section">{children}</section>;
