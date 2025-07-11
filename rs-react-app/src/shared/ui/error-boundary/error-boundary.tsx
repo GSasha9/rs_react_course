@@ -12,21 +12,19 @@ export default class ErrorBoundary extends React.Component<
   state: ErrorBoundaryState = {
     hasErrors: false,
     message: '',
-    fallback: this.props.fallback,
   };
 
   static getDerivedStateFromError = (): Partial<ErrorBoundaryState> => {
     return { hasErrors: true };
   };
 
-  componentDidCatch = (error: Error) => {
+  componentDidCatch(error: Error) {
     this.setState({ message: error.message });
-  };
+  }
 
   errorReset = () => {
     this.setState({
       message: '',
-      fallback: null,
       hasErrors: false,
     });
     window.location.reload();
@@ -34,8 +32,8 @@ export default class ErrorBoundary extends React.Component<
 
   render = () => {
     if (this.state.hasErrors) {
-      return this.state.fallback ? (
-        this.state.fallback
+      return this.props.fallback ? (
+        this.props.fallback
       ) : (
         <Fallback
           message={this.state.message}

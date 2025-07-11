@@ -5,7 +5,7 @@ import ErrorBoundary from './shared/ui/error-boundary/error-boundary';
 function App() {
   return (
     <>
-      <ErrorBoundary fallback={<div>Oioioioioioi</div>}>
+      <ErrorBoundary>
         <SearchPage></SearchPage>
       </ErrorBoundary>
     </>

@@ -17,25 +17,37 @@ class API {
     select: string = RESOURCE_OPTIONS[0].key,
     query: string = ''
   ): Promise<RequestResults | undefined> => {
-    if (!query) {
-      const response = await fetch(`${this.baseURL}${select}/search`);
-      if (response.ok) {
-        const data: RequestResults = await response.json();
-        return data;
+    const url = `${this.baseURL}${select}/search`;
+
+    try {
+      let response: Response;
+      if (!query) {
+        response = await fetch(url);
+      } else {
+        response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            title: `${query}`,
+            name: `${query}`,
+          }).toString(),
+        });
       }
-    } else {
-      const response = await fetch(`${this.baseURL}${select}/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          title: `${query}`,
-          name: `${query}`,
-        }).toString(),
-      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Error ${response.status}: ${errorBody}`);
+      }
       const data: RequestResults = await response.json();
       return data;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw err;
+      }
+
+      throw new Error('Unknown error');
     }
   };
 }

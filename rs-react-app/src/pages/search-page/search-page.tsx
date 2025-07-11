@@ -7,6 +7,7 @@ export default class SearchPage extends React.Component {
   state = {
     results: [],
     loading: false,
+    error: null,
   };
 
   handleResults = (data: Record<string, unknown>[]) => {
@@ -17,13 +18,21 @@ export default class SearchPage extends React.Component {
     this.setState({ loading: isLoading });
   };
 
+  handleError = (error: Error) => {
+    this.setState({ error });
+  };
+
   render = () => {
+    if (this.state.error) {
+      throw this.state.error;
+    }
     return (
       <>
         <main>
           <SearchForm
             onResults={this.handleResults}
             onLoadingChange={this.handleLoadingChange}
+            onError={this.handleError}
           ></SearchForm>
           {this.state.loading ? (
             <Spinner></Spinner>

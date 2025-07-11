@@ -8,6 +8,7 @@ import { RESOURCE_OPTIONS } from '../../../shared/models/constants';
 export default class SearchForm extends React.Component<{
   onResults: (data: Record<string, unknown>[]) => void;
   onLoadingChange: (isLoading: boolean) => void;
+  onError?: (error: Error) => void;
 }> {
   state = {
     select: localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key,
@@ -39,10 +40,15 @@ export default class SearchForm extends React.Component<{
         this.props.onResults(resultsArray);
         localStorage.setItem('prevSearchSelect', this.state.select);
         localStorage.setItem('prevSearchInput', this.state.query);
-        this.props.onLoadingChange(false);
       }
-    } catch {
-      throw new Error();
+    } catch (err) {
+      if (this.props.onError) {
+        this.props.onError(err as Error);
+      } else {
+        console.error(err);
+      }
+    } finally {
+      this.props.onLoadingChange(false);
     }
   };
 
