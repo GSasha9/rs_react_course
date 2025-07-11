@@ -2,6 +2,7 @@ import React from 'react';
 import SearchForm from '../../features/search/ui/search-form';
 import SearchResults from '../../widgets/search-results/search-results';
 import Spinner from '../../shared/ui/spinner/spinner';
+import Section from '../../shared/ui/section/section';
 
 export default class SearchPage extends React.Component {
   state = {
@@ -29,18 +30,24 @@ export default class SearchPage extends React.Component {
     return (
       <>
         <main>
-          <SearchForm
-            onResults={this.handleResults}
-            onLoadingChange={this.handleLoadingChange}
-            onError={this.handleError}
-          ></SearchForm>
-          {this.state.loading ? (
-            <Spinner></Spinner>
-          ) : this.state.results.length === 0 ? (
-            <p>No results</p>
-          ) : (
-            this.state.results && <SearchResults results={this.state.results} />
-          )}
+          <Section>
+            <SearchForm
+              onResults={this.handleResults}
+              onLoadingChange={this.handleLoadingChange}
+              onError={this.handleError}
+            ></SearchForm>
+          </Section>
+          <Section>
+            {this.state.loading ? (
+              <Spinner></Spinner>
+            ) : this.state.results.length === 0 ? (
+              <p>No results</p>
+            ) : (
+              this.state.results && (
+                <SearchResults results={this.state.results} />
+              )
+            )}
+          </Section>
         </main>
       </>
     );

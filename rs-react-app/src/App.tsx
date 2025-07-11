@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/style.scss';
 import SearchPage from './pages/search-page/search-page';
 import ErrorBoundary from './shared/ui/error-boundary/error-boundary';
 
