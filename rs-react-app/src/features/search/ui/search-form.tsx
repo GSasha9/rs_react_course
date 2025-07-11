@@ -22,7 +22,6 @@ export default class SearchForm extends React.Component<{
   };
 
   handleSearch = async (): Promise<void> => {
-    console.log(RESOURCE_OPTIONS[0].key);
     const results = await startSearch(this.state.select, this.state.query);
 
     if (results) {
@@ -32,7 +31,6 @@ export default class SearchForm extends React.Component<{
       )?.[1] as Record<string, unknown>[];
       if (!resultsArray) return;
       this.props.onResults(resultsArray);
-      console.log('resultArray', resultsArray);
       localStorage.setItem('prevSearchSelect', this.state.select);
       localStorage.setItem('prevSearchInput', this.state.query);
     }

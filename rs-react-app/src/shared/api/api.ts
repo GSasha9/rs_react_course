@@ -17,12 +17,10 @@ class API {
     select: string = RESOURCE_OPTIONS[0].key,
     query: string = ''
   ): Promise<RequestResults | undefined> => {
-    console.log(RESOURCE_OPTIONS[0].key);
     if (!query) {
       const response = await fetch(`${this.baseURL}${select}/search`);
       if (response.ok) {
         const data: RequestResults = await response.json();
-        console.log(data);
         return data;
       }
     } else {
@@ -37,7 +35,6 @@ class API {
         }).toString(),
       });
       const data: RequestResults = await response.json();
-      console.log(data);
       return data;
     }
   };

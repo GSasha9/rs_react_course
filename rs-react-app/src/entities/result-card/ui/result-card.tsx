@@ -9,12 +9,13 @@ export default class ResultCard extends React.Component<CardProps> {
           {this.props.title || this.props.name || 'No title'}
         </h4>
         <ul>
-          {/* {Object.entries(this.props.description).map(([key, value]) => (
-            <li className="card__list-item" key={key}>
-              {key} : {value}
-            </li>
-          ))} */}
-          ;
+          {this.props.description.map((desc, index) =>
+            Object.entries(desc).map(([key, value]) => (
+              <li className="card__list-item" key={`${index}-${key}`}>
+                {key}: {value}
+              </li>
+            ))
+          )}
         </ul>
       </div>
     );

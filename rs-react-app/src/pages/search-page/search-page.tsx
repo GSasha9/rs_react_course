@@ -9,7 +9,6 @@ export default class SearchPage extends React.Component {
 
   handleResults = (data: Record<string, unknown>[]) => {
     this.setState({ results: data });
-    console.log('data in SearchPage', data);
   };
 
   render = () => {
