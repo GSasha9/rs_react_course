@@ -27,6 +27,8 @@ export default class SearchPage extends React.Component {
           ></SearchForm>
           {this.state.loading ? (
             <Spinner></Spinner>
+          ) : this.state.results.length === 0 ? (
+            <p>No results</p>
           ) : (
             this.state.results && <SearchResults results={this.state.results} />
           )}

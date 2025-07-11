@@ -1,0 +1,49 @@
+import React from 'react';
+import type {
+  ErrorBoundaryProps,
+  ErrorBoundaryState,
+} from './models/interfaces';
+import Fallback from './fallback';
+
+export default class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  state: ErrorBoundaryState = {
+    hasErrors: false,
+    message: '',
+    fallback: this.props.fallback,
+  };
+
+  static getDerivedStateFromError = (): Partial<ErrorBoundaryState> => {
+    return { hasErrors: true };
+  };
+
+  componentDidCatch = (error: Error) => {
+    this.setState({ message: error.message });
+  };
+
+  errorReset = () => {
+    this.setState({
+      message: '',
+      fallback: null,
+      hasErrors: false,
+    });
+    window.location.reload();
+  };
+
+  render = () => {
+    if (this.state.hasErrors) {
+      return this.state.fallback ? (
+        this.state.fallback
+      ) : (
+        <Fallback
+          message={this.state.message}
+          onClick={this.errorReset}
+        ></Fallback>
+      );
+    }
+
+    return this.props.children;
+  };
+}
