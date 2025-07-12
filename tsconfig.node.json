@@ -7,7 +7,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["rs-react-app/src/*"]
+      "@/*": ["src/*"]
     },
 
     "moduleResolution": "bundler",

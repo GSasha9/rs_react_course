@@ -1,7 +1,8 @@
 import React from 'react';
 
-import ResultCard from '../../entities/result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
+
+import ResultCard from '@/entities/result-card/ui/result-card';
 
 export default class SearchResults extends React.Component<SearchResultsProps> {
   render = () => {

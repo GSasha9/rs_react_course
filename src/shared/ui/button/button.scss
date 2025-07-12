@@ -1,12 +1,13 @@
 @use '../../../styles/scss/variables' as *;
 
 .button {
-  height: 10%;
   width: 5%;
   min-width: fit-content;
+  height: 10%;
   padding: 10px;
-  border-radius: $border-radius-md;
   border: 1px solid $primary-button;
+  border-radius: $border-radius-md;
+
   background-color: $primary-button;
 
   &:hover {

@@ -1,46 +1,48 @@
 @use '../../styles/scss/variables.scss' as *;
 
 .main {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
   align-content: space-between;
+
+  width: 100%;
+  height: 100%;
 }
 
 .section-form {
-  min-height: 200px;
-  min-height: 200px;
   position: relative;
+  min-height: 200px;
 
   .error-button-form {
     position: absolute;
-    right: 0px;
     top: 75%;
+    right: 0;
     height: fit-content;
   }
 
   .error-button-page {
     position: absolute;
-    right: 0px;
     top: 45%;
+    right: 0;
     height: fit-content;
   }
 }
 
 .section-results {
-  min-height: 200px;
+  position: relative;
+
   flex-grow: 1;
-  position: relative;
   justify-content: flex-start !important;
+
   height: 600px;
-  position: relative;
+  min-height: 200px;
 
   .card-container {
     display: flex;
-    width: 100%;
     flex-wrap: wrap;
     gap: $spacing-xl;
     justify-content: center;
+
+    width: 100%;
   }
 }

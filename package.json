@@ -17,11 +17,11 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix .",
+      "prettier --write ."
     ],
     "*.{scss,css}": [
-      "stylelint --fix"
+      "stylelint --fix --allow-empty-input"
     ]
   },
   "dependencies": {

@@ -23,8 +23,8 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["rs-react-app/src/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["rs-react-app/src"]
+  "include": ["src"]
 }

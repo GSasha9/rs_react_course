@@ -2,9 +2,9 @@
 
 .card {
   width: 450px;
+  padding: $spacing-sm;
   border: 1px solid $primary-button;
   border-radius: $border-radius-md;
-  padding: $spacing-sm;
 
   .card-title {
     text-align: center;
