@@ -31,6 +31,7 @@ export default class SearchForm extends React.Component<{
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ query: e.target.value });
   };
+
   handleSearch = async (): Promise<void> => {
     try {
       this.props.onLoadingChange(true);
