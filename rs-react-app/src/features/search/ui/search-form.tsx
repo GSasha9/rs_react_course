@@ -10,6 +10,7 @@ import Input from '@/shared/ui/input/input';
 import Select from '@/shared/ui/select/select';
 
 export default class SearchForm extends React.Component<{
+  crash?: boolean;
   onResults: (data: Record<string, unknown>[]) => void;
   onLoadingChange: (isLoading: boolean) => void;
   onError?: (error: Error) => void;
@@ -30,7 +31,6 @@ export default class SearchForm extends React.Component<{
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ query: e.target.value });
   };
-
   handleSearch = async (): Promise<void> => {
     try {
       this.props.onLoadingChange(true);
@@ -60,6 +60,10 @@ export default class SearchForm extends React.Component<{
   };
 
   render = () => {
+    if (this.props.crash) {
+      throw new Error('Form crashed');
+    }
+
     return (
       <form
         onSubmit={(e) => {
