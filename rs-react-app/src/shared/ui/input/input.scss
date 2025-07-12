@@ -1,0 +1,8 @@
+@use '@/styles/scss/variables.scss' as *;
+
+.input {
+    width: 20%;
+    height: 10%;
+    padding: $spacing-sm;
+    border-radius: $border-radius-input;
+}

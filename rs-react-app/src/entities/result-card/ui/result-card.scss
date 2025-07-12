@@ -1,0 +1,20 @@
+@use '@/styles/scss/variables.scss' as *;
+
+.card {
+    width: 450px;
+    border: 1px solid $primary-button;
+    border-radius: $border-radius-md;
+    padding: $spacing-sm;
+
+    .card-title{
+        text-align: center;
+    }
+
+    .list-item__prop-name{
+        color: $primary-text-green
+    }
+
+    .list-item__prop {
+        color: $text-secondary;
+    }
+}

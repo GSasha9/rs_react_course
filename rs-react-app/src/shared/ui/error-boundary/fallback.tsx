@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type { FallbackProps } from './models/interfaces';
 
 export default class Fallback extends React.Component<FallbackProps> {

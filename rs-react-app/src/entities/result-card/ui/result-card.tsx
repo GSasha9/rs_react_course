@@ -1,5 +1,8 @@
 import React from 'react';
+
 import type { CardProps } from '../model/interfaces';
+
+import './result-card.scss';
 
 export default class ResultCard extends React.Component<CardProps> {
   render = () => {
@@ -12,7 +15,8 @@ export default class ResultCard extends React.Component<CardProps> {
           {this.props.description.map((desc, index) =>
             Object.entries(desc).map(([key, value]) => (
               <li className="card__list-item" key={`${index}-${key}`}>
-                {key}: {value}
+                <span className="list-item__prop-name">{key}:</span>{' '}
+                <span>{value}</span>
               </li>
             ))
           )}

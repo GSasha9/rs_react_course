@@ -1,0 +1,8 @@
+@use '@/styles/scss/_variables.scss' as *;
+
+.form {
+    display: flex;
+    gap: $spacing-xxl;
+    justify-content: center;
+    width: 100%;
+}

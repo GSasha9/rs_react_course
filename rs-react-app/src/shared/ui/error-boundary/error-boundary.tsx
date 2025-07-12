@@ -1,9 +1,10 @@
 import React from 'react';
+
+import Fallback from './fallback';
 import type {
   ErrorBoundaryProps,
   ErrorBoundaryState,
 } from './models/interfaces';
-import Fallback from './fallback';
 
 export default class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,

@@ -1,5 +1,5 @@
-import type { RequestResults } from '../models/interfaces/request-results';
 import { RESOURCE_OPTIONS } from '../models/constants';
+import type { RequestResults } from '../models/interfaces/request-results';
 
 class API {
   private static instance: API;
@@ -21,6 +21,7 @@ class API {
 
     try {
       let response: Response;
+
       if (!query) {
         response = await fetch(url);
       } else {
@@ -38,9 +39,12 @@ class API {
 
       if (!response.ok) {
         const errorBody = await response.text();
+
         throw new Error(`Error ${response.status}: ${errorBody}`);
       }
+
       const data: RequestResults = await response.json();
+
       return data;
     } catch (err) {
       if (err instanceof Error) {

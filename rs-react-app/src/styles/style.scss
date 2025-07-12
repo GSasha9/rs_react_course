@@ -1,1 +1,17 @@
 @use './normalize.css';
+@use './scss/fonts.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+#root {
+    width: 100%;
+    font-family: 'Cera Pro', sans-serif;
+}

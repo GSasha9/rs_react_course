@@ -1,0 +1,14 @@
+@use '../../../styles/scss/variables' as *;
+
+.button {
+  height: 10%;
+  width: 5%;
+  padding: 10px;
+  border-radius: $border-radius-md;
+  border: 1px solid $primary-button;
+  background-color: $primary-button;
+
+  &:hover {
+    background-color: $primary-button-hover;
+  }
+}

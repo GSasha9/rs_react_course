@@ -13,7 +13,7 @@
     "format": "prettier .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "stylelint": "stylelint '**/*.{css,scss}' --fix"
+    "stylelint": "stylelint \"src/**/*.{scss}\" --fix --allow-empty-input"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
@@ -31,6 +32,7 @@
     "eslint-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^16.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",

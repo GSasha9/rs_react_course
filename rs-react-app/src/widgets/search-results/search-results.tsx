@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ResultCard from '../../entities/result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
 
@@ -15,8 +16,10 @@ export default class SearchResults extends React.Component<SearchResultsProps> {
                 : 'No title';
 
           const description = [];
+
           for (const prop in item) {
             const value = item[prop];
+
             if (
               value !== null &&
               value !== undefined &&

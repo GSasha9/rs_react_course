@@ -1,4 +1,6 @@
-import type { Props } from '../../models/interfaces';
+import './spinner.scss';
+
+import type { Props } from '@/shared/models/interfaces';
 
 const Spinner = ({ children }: Props) => {
   return (

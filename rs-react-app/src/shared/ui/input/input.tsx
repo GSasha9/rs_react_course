@@ -1,5 +1,8 @@
 import React from 'react';
-import type { State, InputProps } from './models/interfaces';
+
+import type { InputProps, State } from './models/interfaces';
+
+import './input.scss';
 
 export default class Input extends React.Component<InputProps, State> {
   render = () => {
@@ -10,6 +13,7 @@ export default class Input extends React.Component<InputProps, State> {
         className={this.props.className || 'input'}
         value={this.props.value}
         onChange={this.props.onChange}
+        name="inpit-search"
       ></input>
     );
   };
