@@ -8,6 +8,7 @@ import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 import Section from '@/shared/ui/section/section';
 import Spinner from '@/shared/ui/spinner/spinner';
 import SearchResults from '@/widgets/search-results/search-results';
+import { LoadingContext } from '@/shared/models/contexts';
 
 export default class SearchPage extends React.Component {
   state = {
@@ -26,18 +27,21 @@ export default class SearchPage extends React.Component {
   };
 
   handleError = (error: Error) => {
-    this.setState({ error });
+    this.setState({ error }, () => {
+      throw error;
+    });
   };
 
   render = () => {
     return (
       <>
+      <LoadingContext.Provider value={this.state.loading}>
         <ErrorBoundary>
           <main className="main">
             <Section className="section-form">
               <ErrorBoundary>
                 {this.state.error && (
-                  <p className="error">Error: {this.state.error}</p>
+                  <p className="error">Oops! Something went wrong. Please try again.</p>
                 )}
                 <SearchForm
                   crash={this.state.crashForm}
@@ -76,6 +80,7 @@ export default class SearchPage extends React.Component {
             </Section>
           </main>
         </ErrorBoundary>
+        </LoadingContext.Provider>
       </>
     );
   };

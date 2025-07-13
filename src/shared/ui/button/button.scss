@@ -13,4 +13,9 @@
   &:hover {
     background-color: $primary-button-hover;
   }
+
+  &:disabled {
+    background-color: $secondary-button-hover;
+    pointer-events: none;
+  }
 }
