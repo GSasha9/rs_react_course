@@ -1,0 +1,11 @@
+@use '@/styles/scss/_variables.scss' as *;
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: calc(100% - $spacing-sm);
+  padding: $spacing-sm;
+}
