@@ -15,8 +15,6 @@ export default class SearchForm extends React.Component<{
   onLoadingChange: (isLoading: boolean) => void;
   onError?: (error: Error) => void;
 }> {
-
-
   state = {
     select: localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key,
     query: localStorage.getItem('prevSearchInput') || '',
@@ -68,14 +66,12 @@ export default class SearchForm extends React.Component<{
     }
 
     return (
-
-      <form 
+      <form
         onSubmit={(e) => {
           e.preventDefault();
           this.handleSearch();
         }}
         className="form"
-        
       >
         <Select
           options={RESOURCE_OPTIONS}
