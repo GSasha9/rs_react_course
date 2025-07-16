@@ -16,7 +16,7 @@ describe('Button render correctly', () => {
 
     rerender(<Button text={''} />);
 
-    expect(screen.getByText('search')).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'search' })).not.toBeNull();
   });
 
   test('Button click handler called', async () => {
@@ -24,7 +24,7 @@ describe('Button render correctly', () => {
 
     render(<Button callback={mockHandlerClick} text={'Click me'} />);
 
-    const button = screen.getByText('Click me');
+    const button = screen.getByRole('button', { name: 'Click me' });
 
     await userEvent.click(button);
     expect(mockHandlerClick).toHaveBeenCalled();
