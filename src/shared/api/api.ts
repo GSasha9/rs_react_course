@@ -1,7 +1,7 @@
 import { RESOURCE_OPTIONS } from '../models/constants';
 import type { RequestResults } from '../models/interfaces/request-results';
 
-class API {
+export class API {
   private static instance: API;
   private baseURL = 'https://stapi.co/api/v1/rest/';
 

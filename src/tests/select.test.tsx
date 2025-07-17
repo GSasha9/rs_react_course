@@ -16,7 +16,7 @@ const mockDataArray = Object.entries(mockData).map(([value]) => ({
   value,
 }));
 
-test('Select renders whith given options', () => {
+test('Select renders whith given list of options', () => {
   const { container, rerender } = render(
     <Select options={mockDataArray} value={mockDataArray[0].value}></Select>
   );
