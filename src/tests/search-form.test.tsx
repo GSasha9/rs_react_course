@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import '@testing-library/user-event';
 import SearchForm from '@/features/search/ui/search-form';
@@ -17,6 +17,10 @@ const mockOnResults = vi.fn();
 const mockOnLoadingChange = vi.fn();
 
 describe('Search form', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.clearAllMocks();
+  });
   test('Form renders correctly', () => {
     render(
       <SearchForm
@@ -108,5 +112,45 @@ describe('Search form', () => {
 
     expect(select.value).toBe('animal');
     expect(input.value).toBe('test');
+  });
+
+  test('Should get previous search query from LocalStorage', () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('animal');
+
+    render(
+      <SearchForm
+        onResults={mockOnResults}
+        onLoadingChange={mockOnLoadingChange}
+      />
+    );
+
+    expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchInput');
+    expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchSelect');
+
+    const select = screen.getByRole('combobox') as HTMLSelectElement;
+    const input = screen.getByRole('textbox') as HTMLSelectElement;
+
+    expect(select.value).toBe('animal');
+    expect(input.value).toBe('animal');
+  });
+
+  test('Should render default values if localStorage is empty', () => {
+    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
+
+    render(
+      <SearchForm
+        onResults={mockOnResults}
+        onLoadingChange={mockOnLoadingChange}
+      />
+    );
+
+    expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchInput');
+    expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchSelect');
+
+    const select = screen.getByRole('combobox') as HTMLSelectElement;
+    const input = screen.getByRole('textbox') as HTMLSelectElement;
+
+    expect(select.value).toBe('company');
+    expect(input.value).toBe('');
   });
 });

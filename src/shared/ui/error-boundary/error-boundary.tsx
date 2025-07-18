@@ -15,12 +15,14 @@ export default class ErrorBoundary extends React.Component<
     message: '',
   };
 
-  static getDerivedStateFromError = (): Partial<ErrorBoundaryState> => {
-    return { hasErrors: true };
+  static getDerivedStateFromError = (
+    error: Error
+  ): Partial<ErrorBoundaryState> => {
+    return { hasErrors: true, message: error.message };
   };
 
-  componentDidCatch(error: Error) {
-    this.setState({ message: error.message });
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error(error, errorInfo);
   }
 
   errorReset = () => {
