@@ -14,8 +14,7 @@ export default class SearchPage extends React.Component {
   state = {
     results: [],
     loading: false,
-    error: null,
-    crashForm: false,
+    error: false,
   };
 
   handleResults = (data: Record<string, unknown>[]) => {
@@ -27,45 +26,30 @@ export default class SearchPage extends React.Component {
   };
 
   handleError = (error: Error) => {
-    this.setState({ error }, () => {
-      throw error;
-    });
+    this.setState({ error });
   };
 
   render = () => {
+    if (this.state.error) {
+      throw new Error('Page error');
+    }
+
     return (
       <>
         <LoadingContext.Provider value={this.state.loading}>
           <ErrorBoundary>
             <main className="main">
               <Section className="section-form">
-                <ErrorBoundary>
-                  {this.state.error && (
-                    <p className="error">
-                      Oops! Something went wrong. Please try again.
-                    </p>
-                  )}
-                  <SearchForm
-                    crash={this.state.crashForm}
-                    onResults={this.handleResults}
-                    onLoadingChange={this.handleLoadingChange}
-                    onError={this.handleError}
-                  ></SearchForm>
-                </ErrorBoundary>
-                <Button
-                  className="error-button-form"
-                  callback={() => {
-                    this.setState({ crashForm: true });
-                  }}
-                  text="crash form"
-                />
+                <SearchForm
+                  onResults={this.handleResults}
+                  onLoadingChange={this.handleLoadingChange}
+                  onError={this.handleError}
+                ></SearchForm>
                 <Button
                   className="error-button-page"
-                  callback={() => {
-                    this.setState(() => {
-                      throw new Error('Page error');
-                    });
-                  }}
+                  callback={() =>
+                    this.setState({ error: new Error('Page error') })
+                  }
                   text="throw Page Error"
                 />
               </Section>

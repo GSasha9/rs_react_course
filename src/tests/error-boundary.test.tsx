@@ -1,21 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
+import { mockThrowingSection } from './test-utils/mocks';
+
+import SearchPage from '@/pages/search-page/search-page';
 import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 
-vi.mock('@/shared/ui/section/section', () => {
-  return {
-    default: () => {
-      throw new Error('mock error');
-    },
-  };
-});
+describe('ErrorBoundary', () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+  test('renders correctly whith default fallback', async () => {
+    const Section = await mockThrowingSection();
 
-import Section from '@/shared/ui/section/section';
-
-describe('ErrorBoundray', () => {
-  test('renders correctly', () => {
     render(
       <ErrorBoundary>
         <Section />
@@ -26,7 +24,9 @@ describe('ErrorBoundray', () => {
     expect(screen.getByRole('button', { name: /cancel/i })).toBeDefined();
   });
 
-  test('fallbck closes correctly', async () => {
+  test('fallback closes correctly', async () => {
+    const Section = await mockThrowingSection();
+
     Object.defineProperty(window, 'location', {
       writable: true,
       value: {
@@ -45,5 +45,17 @@ describe('ErrorBoundray', () => {
 
     await userEvent.click(button);
     expect(window.location.reload).toBeCalled();
+  });
+
+  test('shows fallback UI after triggering error', async () => {
+    render(<SearchPage />);
+
+    const errorButton = screen.getByRole('button', {
+      name: 'throw Page Error',
+    });
+
+    await userEvent.click(errorButton);
+
+    expect(await screen.findByText(/Page error/i)).toBeDefined();
   });
 });

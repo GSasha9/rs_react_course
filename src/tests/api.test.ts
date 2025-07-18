@@ -1,30 +1,19 @@
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
+import { mockResponse } from './test-utils/mocks';
 
 import '@testing-library/user-event';
 import { API } from '@/shared/api/api';
 
-const mockResponse = {
-  page: {
-    firstPage: true,
-    lastPage: true,
-    numberOfElements: 100,
-    pageNumber: 0,
-    pageSize: 1,
-    totalElements: 1000,
-    totalPages: 10,
-  },
-  sort: {
-    direction: 'desc',
-  },
-  array: [1, 2, 3, 4],
-};
+let api: API;
 
-global.fetch = vi.fn().mockResolvedValue({
-  ok: true,
-  json: async () => mockResponse,
+beforeEach(() => {
+  api = API.getInstance();
+  global.fetch = vi.fn().mockResolvedValue({
+    ok: true,
+    json: async () => mockResponse,
+  });
 });
-
-const api = API.getInstance();
 
 describe('API', () => {
   test('Can create only one instance', () => {

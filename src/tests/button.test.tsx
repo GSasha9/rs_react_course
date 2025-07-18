@@ -4,12 +4,11 @@ import { describe, expect, test, vi } from 'vitest';
 
 import Button from '@/shared/ui/button/button';
 
-const mockData = {
-  text: 'Test text',
-};
-
 describe('Button render correctly', () => {
   test('Button renders with correct text', () => {
+    const mockData = {
+      text: 'Test text',
+    };
     const { rerender } = render(<Button {...mockData} />);
 
     expect(screen.getByText(mockData.text)).not.toBeNull();

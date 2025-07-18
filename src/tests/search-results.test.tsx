@@ -1,39 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
-import SearchResults from '@/widgets/search-results/search-results';
+import { moсkResult } from './test-utils/mocks';
 
-const moсkResults = [
-  {
-    mirror: true,
-    uid: 'CHMA0000215043',
-  },
-  {
-    mirror: true,
-    title: '777 Teta',
-    uid: 'CHMA0000215044',
-  },
-  {
-    mirror: true,
-    title: undefined,
-    uid: 'CHMA0000215045',
-  },
-  {
-    mirror: true,
-    name: '',
-    uid: 'CHMA0000215046',
-  },
-  {
-    mirror: true,
-    uid: 'CHMA0000215047',
-    title: null,
-    name: null,
-  },
-];
+import SearchResults from '@/widgets/search-results/search-results';
 
 test('All results added to container', () => {
   const { container, rerender } = render(
-    <SearchResults results={moсkResults} />
+    <SearchResults results={moсkResult} />
   );
 
   expect(container.firstChild?.childNodes.length).toBe(5);
@@ -78,7 +52,7 @@ test('All results added to container', () => {
 });
 
 test('Result card with no title or name renders correctly', () => {
-  const { container } = render(<SearchResults results={moсkResults} />);
+  const { container } = render(<SearchResults results={moсkResult} />);
 
   expect(screen.getAllByText('No title').length).toBe(4);
   expect(container.firstChild?.childNodes.length).toBe(5);
