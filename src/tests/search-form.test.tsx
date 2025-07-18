@@ -30,7 +30,7 @@ describe('Search form', () => {
     localStorage.clear();
     vi.clearAllMocks();
   });
-  test('Form renders correctly', () => {
+  test('renders correctly', () => {
     renderForm();
 
     expect(screen.getByRole('combobox')).not.toBeNull();
@@ -38,7 +38,7 @@ describe('Search form', () => {
     expect(screen.getByRole('button')).not.toBeNull();
   });
 
-  test('Should be submitted by search button with correct data', async () => {
+  test('should be submitted by search button with correct data', async () => {
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResponse);
     renderForm();
 
@@ -51,7 +51,7 @@ describe('Search form', () => {
     expect(mockOnLoadingChange).toHaveBeenCalledWith(false);
   });
 
-  test('Should get previous search query from LocalStorage', () => {
+  test('should get previous search query from LocalStorage', () => {
     const getItemSpy = vi
       .spyOn(Storage.prototype, 'getItem')
       .mockReturnValue('animal');
@@ -63,7 +63,7 @@ describe('Search form', () => {
     expect(getItemSpy).toHaveBeenCalledTimes(2);
   });
 
-  test('Select and input are changed correctly', async () => {
+  test('select and input are changed correctly', async () => {
     const { rerender } = renderForm();
 
     const select = screen.getByRole('combobox') as HTMLSelectElement;
@@ -83,7 +83,7 @@ describe('Search form', () => {
     expect(input.value).toBe('test');
   });
 
-  test('Should render default values if localStorage is empty', () => {
+  test('should render default values if localStorage is empty', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
 
     renderForm();

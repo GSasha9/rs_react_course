@@ -10,6 +10,7 @@ vi.mock('@/features/search/utils', () => ({
 }));
 
 import { startSearch } from '@/features/search/utils';
+import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 
 describe('Search Page', () => {
   test('renders correctly', () => {
@@ -21,6 +22,22 @@ describe('Search Page', () => {
     expect(
       screen.getByRole('button', { name: 'throw Page Error' })
     ).toBeDefined();
+  });
+
+  test('shows fallback UI after triggering error', async () => {
+    render(
+      <ErrorBoundary>
+        <SearchPage />
+      </ErrorBoundary>
+    );
+
+    const errorButton = screen.getByRole('button', {
+      name: 'throw Page Error',
+    });
+
+    await userEvent.click(errorButton);
+
+    expect(await screen.findByText(/Page error/i)).toBeDefined();
   });
 
   test('search button onClick changes loading state and show spinner', async () => {
@@ -84,5 +101,27 @@ describe('Search Page', () => {
     });
 
     consoleErrorSpy.mockRestore();
+  });
+
+  test('handleResults updates results state and renders results', async () => {
+    const mockResult = [{ id: 1, title: 'Test result' }];
+
+    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      array: mockResult,
+      page: {},
+      sort: {},
+    });
+
+    render(<SearchPage />);
+
+    const input = screen.getByRole('textbox');
+    const button = screen.getByRole('button', { name: 'search' });
+
+    await userEvent.type(input, 'test');
+    await userEvent.click(button);
+
+    await waitFor(() => {
+      expect(screen.getByText('Test result')).toBeDefined();
+    });
   });
 });

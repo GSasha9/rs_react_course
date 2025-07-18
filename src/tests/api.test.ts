@@ -22,7 +22,7 @@ describe('API', () => {
     expect(api).toBe(oneMoreApi);
   });
 
-  test('makes correct GET request', async () => {
+  test('makes correct GET request and returns successful response', async () => {
     const results = await api.fetchData('items');
 
     expect(fetch).toHaveBeenCalledWith(
@@ -32,7 +32,7 @@ describe('API', () => {
     expect(results).toEqual(mockResponse);
   });
 
-  test('makes correct POST request', async () => {
+  test('makes correct POST request and returns successful response', async () => {
     const mockQuery = 'test';
 
     const results = await api.fetchData('items', mockQuery);

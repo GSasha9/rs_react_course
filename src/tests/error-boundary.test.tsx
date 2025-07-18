@@ -1,17 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { mockThrowingSection } from './test-utils/mocks';
 
-import SearchPage from '@/pages/search-page/search-page';
 import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 
 describe('ErrorBoundary', () => {
-  beforeEach(() => {
-    vi.resetModules();
-  });
-  test('renders correctly whith default fallback', async () => {
+  test('catch error and renders correctly whith default fallback', async () => {
     const Section = await mockThrowingSection();
 
     render(
@@ -47,15 +43,21 @@ describe('ErrorBoundary', () => {
     expect(window.location.reload).toBeCalled();
   });
 
-  test('shows fallback UI after triggering error', async () => {
-    render(<SearchPage />);
+  test('renders custom fallback if provided', () => {
+    const ProblemChild = () => {
+      throw new Error('Test error');
+    };
 
-    const errorButton = screen.getByRole('button', {
-      name: 'throw Page Error',
-    });
+    const CustomFallback = (
+      <div data-testid="custom-fallback">Custom fallback</div>
+    );
 
-    await userEvent.click(errorButton);
+    render(
+      <ErrorBoundary fallback={CustomFallback}>
+        <ProblemChild />
+      </ErrorBoundary>
+    );
 
-    expect(await screen.findByText(/Page error/i)).toBeDefined();
+    expect(screen.getByTestId('custom-fallback')).toBeDefined();
   });
 });
