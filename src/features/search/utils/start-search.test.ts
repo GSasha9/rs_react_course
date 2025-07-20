@@ -1,6 +1,6 @@
 import { expect, test, vi } from 'vitest';
 
-import { mockResponse } from './test-utils/mocks';
+import { mockResponse } from '../../../tests/test-utils/mocks';
 
 import { startSearch } from '@/features/search/utils';
 import api from '@/shared/api/api.ts';

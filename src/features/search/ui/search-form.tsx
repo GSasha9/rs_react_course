@@ -59,6 +59,7 @@ export default class SearchForm extends React.Component<SearchFormProps> {
   render = () => {
     return (
       <form
+        data-testid="search-form"
         onSubmit={(e) => {
           e.preventDefault();
           this.handleSearch();

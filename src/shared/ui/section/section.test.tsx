@@ -15,9 +15,9 @@ describe('Section', () => {
   });
 
   test('renders as a <section> element', () => {
-    const { container } = render(<Section>Text content</Section>);
+    render(<Section>Text content</Section>);
 
-    const section = container.querySelector('section');
+    const section = screen.getByTestId('section');
 
     expect(section).not.toBeNull();
   });

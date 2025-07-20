@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
-import { mockThrowingSection } from './test-utils/mocks';
+import { mockThrowingSection } from '../../../tests/test-utils/mocks';
 
 import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 

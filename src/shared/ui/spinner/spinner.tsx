@@ -5,7 +5,9 @@ import type { Props } from '@/shared/models/interfaces';
 const Spinner = ({ children }: Props) => {
   return (
     <>
-      <div className="spinner">{children}</div>
+      <div className="spinner" data-testid="spinner">
+        {children}
+      </div>
     </>
   );
 };

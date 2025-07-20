@@ -38,7 +38,7 @@ export default class SearchPage extends React.Component {
       <>
         <LoadingContext.Provider value={this.state.loading}>
           <ErrorBoundary>
-            <main className="main">
+            <main className="main" data-testid="main">
               <Section className="section-form">
                 <SearchForm
                   onResults={this.handleResults}

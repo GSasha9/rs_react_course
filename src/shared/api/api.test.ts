@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { mockResponse } from './test-utils/mocks';
+import { mockResponse } from '../../tests/test-utils/mocks';
 
 import '@testing-library/user-event';
 import { API } from '@/shared/api/api';

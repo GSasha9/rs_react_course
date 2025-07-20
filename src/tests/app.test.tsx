@@ -1,13 +1,13 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
 import App from '@/App';
 
 test('App renders correctly', () => {
-  const { container } = render(<App />);
+  render(<App />);
 
-  const sections = container.querySelectorAll('section');
-  const main = container.querySelector('main');
+  const sections = screen.getAllByTestId('section');
+  const main = screen.getAllByTestId('main');
 
   expect(sections.length).toBe(2);
   expect(main).toBeDefined();

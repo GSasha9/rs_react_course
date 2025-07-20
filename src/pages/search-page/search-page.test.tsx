@@ -41,13 +41,13 @@ describe('Search Page', () => {
   });
 
   test('search button onClick changes loading state and show spinner', async () => {
-    const { container } = render(<SearchPage />);
+    render(<SearchPage />);
 
     const buttonSearch = screen.getByRole('button', { name: 'search' });
 
     await userEvent.click(buttonSearch);
 
-    const spinner = container.querySelector('.spinner');
+    const spinner = screen.findByTestId('spinner');
 
     await waitFor(() => {
       expect(spinner).toBeDefined();

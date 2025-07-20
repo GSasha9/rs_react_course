@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import { moсkResult } from './test-utils/mocks';
+import { moсkResult } from '../../tests/test-utils/mocks';
 
 import SearchResults from '@/widgets/search-results/search-results';
 

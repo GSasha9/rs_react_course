@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
 import Select from '@/shared/ui/select/select';
@@ -33,7 +33,7 @@ test('Select renders whith given list of options', () => {
     <Select options={mockDataArray} value={mockDataArray[0].value}></Select>
   );
 
-  const selectAfter = container.querySelector('select');
+  const selectAfter = screen.getByRole('combobox') as HTMLSelectElement;
 
   expect(selectAfter?.options.length).toBe(6);
 });

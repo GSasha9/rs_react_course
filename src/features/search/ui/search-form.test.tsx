@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { mockResponse } from './test-utils/mocks';
+import { mockResponse } from '../../../tests/test-utils/mocks';
 
 import '@testing-library/user-event';
 import SearchForm from '@/features/search/ui/search-form';
@@ -99,9 +99,9 @@ describe('Search form', () => {
   });
 
   test('form submits by key', async () => {
-    const { container } = renderForm();
+    renderForm();
 
-    const form = container.querySelector('form') as HTMLFormElement;
+    const form = screen.getByTestId('search-form') as HTMLFormElement;
 
     fireEvent.submit(form);
 
