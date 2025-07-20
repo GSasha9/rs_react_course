@@ -1,5 +1,6 @@
 import React from 'react';
 
+import type { SearchFormProps } from '../models/interfaces';
 import { startSearch } from '../utils';
 
 import './search-form.scss';
@@ -9,14 +10,7 @@ import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
 import Select from '@/shared/ui/select/select';
 
-export default class SearchForm extends React.Component<{
-  crash?: boolean;
-  onResults: (data: Record<string, unknown>[]) => void;
-  onLoadingChange: (isLoading: boolean) => void;
-  onError?: (error: Error) => void;
-}> {
-
-
+export default class SearchForm extends React.Component<SearchFormProps> {
   state = {
     select: localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key,
     query: localStorage.getItem('prevSearchInput') || '',
@@ -63,19 +57,14 @@ export default class SearchForm extends React.Component<{
   };
 
   render = () => {
-    if (this.props.crash) {
-      throw new Error('Form crashed');
-    }
-
     return (
-
-      <form 
+      <form
+        data-testid="search-form"
         onSubmit={(e) => {
           e.preventDefault();
           this.handleSearch();
         }}
         className="form"
-        
       >
         <Select
           options={RESOURCE_OPTIONS}

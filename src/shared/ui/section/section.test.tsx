@@ -1,0 +1,24 @@
+import { render, screen } from '@testing-library/react';
+import { describe, expect, test } from 'vitest';
+
+import Section from '@/shared/ui/section/section';
+
+describe('Section', () => {
+  test('renders without crashing', () => {
+    render(<Section>Text content</Section>);
+  });
+
+  test('renders children correctly', () => {
+    render(<Section>Text content</Section>);
+
+    expect(screen.getByText('Text content')).not.toBeNull();
+  });
+
+  test('renders as a <section> element', () => {
+    render(<Section>Text content</Section>);
+
+    const section = screen.getByTestId('section');
+
+    expect(section).not.toBeNull();
+  });
+});
