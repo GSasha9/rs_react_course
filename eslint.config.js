@@ -9,7 +9,7 @@ import reactCompiler from 'eslint-plugin-react-compiler';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default tseslint.config(
-  { ignores: ['eslint.config.js', 'vite.config.js', 'dist'] },
+  { ignores: ['eslint.config.js', 'vite.config.js', 'dist', 'coverage'] },
   {
     extends: [
       js.configs.recommended,
