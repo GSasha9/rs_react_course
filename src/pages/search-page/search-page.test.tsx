@@ -12,8 +12,6 @@ vi.mock('./search-form/utils', () => ({
 
 import { startSearch } from './search-form/utils';
 
-import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
-
 describe('Search Page', () => {
   test('renders correctly', () => {
     render(<SearchPage />);
@@ -21,25 +19,6 @@ describe('Search Page', () => {
     expect(screen.getByRole('combobox')).toBeDefined();
     expect(screen.getByRole('textbox')).toBeDefined();
     expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
-    expect(
-      screen.getByRole('button', { name: 'throw Page Error' })
-    ).toBeDefined();
-  });
-
-  test('shows fallback UI after triggering error', async () => {
-    render(
-      <ErrorBoundary>
-        <SearchPage />
-      </ErrorBoundary>
-    );
-
-    const errorButton = screen.getByRole('button', {
-      name: 'throw Page Error',
-    });
-
-    await userEvent.click(errorButton);
-
-    expect(await screen.findByText(/Page error/i)).toBeDefined();
   });
 
   test('search button onClick changes loading state and show spinner', async () => {

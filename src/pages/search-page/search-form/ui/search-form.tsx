@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { SearchFormProps } from '../models/interfaces';
 import { startSearch } from '../utils';
@@ -10,28 +10,30 @@ import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
 import Select from '@/shared/ui/select/select';
 
-export default class SearchForm extends React.Component<SearchFormProps> {
-  state = {
-    select: localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key,
-    query: localStorage.getItem('prevSearchInput') || '',
+const SearchForm = (props: SearchFormProps) => {
+  const [select, setSelect] = useState(
+    localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key
+  );
+  const [query, setQuery] = useState(
+    localStorage.getItem('prevSearchInput') || ''
+  );
+
+  const hasMounted = useRef(false);
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelect(e.target.value);
   };
 
-  componentDidMount = (): void => {
-    this.handleSearch();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
   };
 
-  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ select: e.target.value });
-  };
+  const { onResults, onLoadingChange, onError } = props;
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: e.target.value });
-  };
-
-  handleSearch = async (): Promise<void> => {
+  const handleSearch = useCallback(async () => {
     try {
-      this.props.onLoadingChange(true);
-      const results = await startSearch(this.state.select, this.state.query);
+      onLoadingChange(true);
+      const results = await startSearch(select, query);
 
       if (results) {
         const resultsArray = Object.entries(results).find(
@@ -41,42 +43,46 @@ export default class SearchForm extends React.Component<SearchFormProps> {
 
         if (!resultsArray) return;
 
-        this.props.onResults(resultsArray);
-        localStorage.setItem('prevSearchSelect', this.state.select);
-        localStorage.setItem('prevSearchInput', this.state.query);
+        onResults(resultsArray);
+        localStorage.setItem('prevSearchSelect', select);
+        localStorage.setItem('prevSearchInput', query);
       }
     } catch (err) {
-      if (this.props.onError) {
-        this.props.onError(err as Error);
+      if (onError) {
+        onError(err as Error);
       } else {
         console.error(err);
       }
     } finally {
-      this.props.onLoadingChange(false);
+      onLoadingChange(false);
     }
-  };
+  }, [onResults, onLoadingChange, onError, select, query]);
 
-  render = () => {
-    return (
-      <form
-        data-testid="search-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          this.handleSearch();
-        }}
-        className="form"
-      >
-        <Select
-          options={RESOURCE_OPTIONS}
-          value={this.state.select}
-          onChange={this.handleSelectChange}
-        ></Select>
-        <Input
-          value={this.state.query.trim()}
-          onChange={this.handleInputChange}
-        ></Input>
-        <Button callback={this.handleSearch} type="button"></Button>
-      </form>
-    );
-  };
-}
+  useEffect(() => {
+    if (!hasMounted.current) {
+      handleSearch();
+      hasMounted.current = true;
+    }
+  }, [handleSearch]);
+
+  return (
+    <form
+      data-testid="search-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSearch();
+      }}
+      className="form"
+    >
+      <Select
+        options={RESOURCE_OPTIONS}
+        value={select}
+        onChange={handleSelectChange}
+      ></Select>
+      <Input value={query.trim()} onChange={handleInputChange}></Input>
+      <Button callback={handleSearch} type="button"></Button>
+    </form>
+  );
+};
+
+export default SearchForm;
