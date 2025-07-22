@@ -1,9 +1,9 @@
 import { expect, test, vi } from 'vitest';
 
-import { mockResponse } from '../../../tests/test-utils/mocks';
+import { startSearch } from './start-search';
 
-import { startSearch } from '@/features/search/utils';
 import api from '@/shared/api/api.ts';
+import { mockResponse } from '@/tests/test-utils/mocks';
 
 test('Search triggers API whit right data', () => {
   const mockFetchData = vi

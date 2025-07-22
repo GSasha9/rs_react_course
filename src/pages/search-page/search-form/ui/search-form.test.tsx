@@ -2,16 +2,16 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { mockResponse } from '../../../tests/test-utils/mocks';
+import SearchForm from './search-form';
 
 import '@testing-library/user-event';
-import SearchForm from '@/features/search/ui/search-form';
+import { mockResponse } from '@/tests/test-utils/mocks';
 
-vi.mock('@/features/search/utils', () => ({
+vi.mock('../utils', () => ({
   startSearch: vi.fn(),
 }));
 
-import { startSearch } from '@/features/search/utils';
+import { startSearch } from '../utils';
 
 const mockOnResults = vi.fn();
 const mockOnLoadingChange = vi.fn();

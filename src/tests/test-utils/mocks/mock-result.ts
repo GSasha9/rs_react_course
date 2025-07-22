@@ -1,4 +1,4 @@
-export const moсkResult = [
+export const mockResult = [
   {
     mirror: true,
     uid: 'CHMA0000215043',

@@ -1,14 +1,15 @@
 import React from 'react';
 
+import SearchForm from './search-form/ui/search-form';
+import SearchResults from './search-results/search-results';
+
 import './search-page.scss';
 
-import SearchForm from '@/features/search/ui/search-form';
 import { LoadingContext } from '@/shared/models/contexts';
 import Button from '@/shared/ui/button/button';
 import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 import Section from '@/shared/ui/section/section';
 import Spinner from '@/shared/ui/spinner/spinner';
-import SearchResults from '@/widgets/search-results/search-results';
 
 export default class SearchPage extends React.Component {
   state = {

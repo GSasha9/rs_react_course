@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 
-import { moсkResult } from '../../tests/test-utils/mocks';
+import SearchResults from './search-results';
 
-import SearchResults from '@/widgets/search-results/search-results';
+import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
   test('all results added to container', () => {
     const { container, rerender } = render(
-      <SearchResults results={moсkResult} />
+      <SearchResults results={mockResult} />
     );
 
     expect(container.firstChild?.childNodes.length).toBe(5);
@@ -53,7 +53,7 @@ describe('Search Results', () => {
   });
 
   test('result card with no title or name renders correctly', () => {
-    const { container } = render(<SearchResults results={moсkResult} />);
+    const { container } = render(<SearchResults results={mockResult} />);
 
     expect(screen.getAllByText('No title').length).toBe(4);
     expect(container.firstChild?.childNodes.length).toBe(5);

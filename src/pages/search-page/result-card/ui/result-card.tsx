@@ -2,7 +2,7 @@ import type { CardProps } from '../model/interfaces';
 
 import './result-card.scss';
 
-const resultCard = (props: CardProps) => {
+const ResultCard = (props: CardProps) => {
   return (
     <div className="card">
       <h4 className="card-title">{props.title || props.name || 'No title'}</h4>
@@ -20,4 +20,4 @@ const resultCard = (props: CardProps) => {
   );
 };
 
-export default resultCard;
+export default ResultCard;

@@ -2,14 +2,16 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
-import SearchForm from '@/features/search/ui/search-form';
+import SearchForm from './search-form/ui/search-form';
+
 import SearchPage from '@/pages/search-page/search-page';
 
-vi.mock('@/features/search/utils', () => ({
+vi.mock('./search-form/utils', () => ({
   startSearch: vi.fn(),
 }));
 
-import { startSearch } from '@/features/search/utils';
+import { startSearch } from './search-form/utils';
+
 import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
 
 describe('Search Page', () => {
@@ -65,9 +67,9 @@ describe('Search Page', () => {
   });
 
   test('calls startSearch with correct args', async () => {
-    const mockResult = { array: ['test'], page: {}, sort: {} };
+    const mockData = { array: ['test'], page: {}, sort: {} };
 
-    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResult);
+    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockData);
 
     render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
 
@@ -104,10 +106,10 @@ describe('Search Page', () => {
   });
 
   test('handleResults updates results state and renders results', async () => {
-    const mockResult = [{ id: 1, title: 'Test result' }];
+    const mockData = [{ id: 1, title: 'Test result' }];
 
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
-      array: mockResult,
+      array: mockData,
       page: {},
       sort: {},
     });

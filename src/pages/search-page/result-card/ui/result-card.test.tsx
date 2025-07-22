@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
 
-import ResultCard from '@/entities/result-card/ui/result-card';
+import ResultCard from './result-card';
 
 const mockData = {
   key: 'uid1',
