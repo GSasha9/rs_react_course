@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext } from 'react';
 
 import type { ButtonProps } from './models/interfaces/button-props';
 
@@ -6,24 +6,19 @@ import './button.scss';
 
 import { LoadingContext } from '@/shared/models/contexts';
 
-class Button extends React.Component<ButtonProps> {
-  static contextType = LoadingContext;
-  declare context: React.ContextType<typeof LoadingContext>;
+const Button = (props: ButtonProps) => {
+  const loading = useContext(LoadingContext);
 
-  render = () => {
-    const loading: boolean = this.context;
-
-    return (
-      <button
-        className={`button ${this.props.className ?? ''}`}
-        onClick={this.props.callback}
-        type={this.props.type}
-        disabled={loading}
-      >
-        {this.props.text || 'search'}
-      </button>
-    );
-  };
-}
+  return (
+    <button
+      className={`button ${props.className ?? ''}`}
+      onClick={props.callback}
+      type={props.type}
+      disabled={loading}
+    >
+      {props.text || 'search'}
+    </button>
+  );
+};
 
 export default Button;
