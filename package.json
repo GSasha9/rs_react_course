@@ -13,6 +13,7 @@
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
     "stylelint": "stylelint \"src/**/*.{scss}\" --fix --allow-empty-input",
+    "stylelint:fix": "stylelint \"src/**/*.scss\" --fix",
     "prepare": "husky install",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
