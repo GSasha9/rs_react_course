@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 
 import SearchForm from './search-form/ui/search-form';
@@ -14,7 +15,11 @@ import { startSearch } from './search-form/utils';
 
 describe('Search Page', () => {
   test('renders correctly', () => {
-    render(<SearchPage />);
+    render(
+      <MemoryRouter>
+        <SearchPage />
+      </MemoryRouter>
+    );
 
     expect(screen.getByRole('combobox')).toBeDefined();
     expect(screen.getByRole('textbox')).toBeDefined();
@@ -22,7 +27,11 @@ describe('Search Page', () => {
   });
 
   test('search button onClick changes loading state and show spinner', async () => {
-    render(<SearchPage />);
+    render(
+      <MemoryRouter>
+        <SearchPage />
+      </MemoryRouter>
+    );
 
     const buttonSearch = screen.getByRole('button', { name: 'search' });
 
@@ -36,7 +45,13 @@ describe('Search Page', () => {
   });
 
   test('updates query state on input change', async () => {
-    render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
+    render(
+      <SearchForm
+        onResults={vi.fn()}
+        onLoadingChange={vi.fn()}
+        pageNumber={1}
+      />
+    );
 
     const input = screen.getByRole('textbox');
 
@@ -50,7 +65,13 @@ describe('Search Page', () => {
 
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockData);
 
-    render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
+    render(
+      <SearchForm
+        onResults={vi.fn()}
+        onLoadingChange={vi.fn()}
+        pageNumber={1}
+      />
+    );
 
     const input = screen.getByRole('textbox');
     const select = screen.getByRole('combobox');
@@ -60,7 +81,7 @@ describe('Search Page', () => {
     await userEvent.type(input, 'lion');
     await userEvent.click(button);
 
-    expect(startSearch).toHaveBeenCalledWith('animal', 'lion');
+    expect(startSearch).toHaveBeenCalledWith('animal', 'lion', 1);
   });
 
   test('logs error when startSearch fails', async () => {
@@ -71,7 +92,13 @@ describe('Search Page', () => {
 
     (startSearch as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
-    render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
+    render(
+      <SearchForm
+        onResults={vi.fn()}
+        onLoadingChange={vi.fn()}
+        pageNumber={1}
+      />
+    );
 
     const button = screen.getByRole('button', { name: 'search' });
 
@@ -93,7 +120,11 @@ describe('Search Page', () => {
       sort: {},
     });
 
-    render(<SearchPage />);
+    render(
+      <MemoryRouter>
+        <SearchPage />
+      </MemoryRouter>
+    );
 
     const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: 'search' });

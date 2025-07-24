@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import SearchForm from './search-form/ui/search-form';
 import SearchResults from './search-results/search-results';
@@ -16,6 +17,10 @@ const SearchPage = () => {
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const [searchParams] = useSearchParams();
+
+  const pageNumber = Number(searchParams.get('pageNumber')) || 0;
 
   const handleResults = (response: RequestResults) => {
     const resultsArray = Object.entries(response).find(
@@ -48,6 +53,7 @@ const SearchPage = () => {
             onResults={handleResults}
             onLoadingChange={handleLoadingChange}
             onError={handleError}
+            pageNumber={pageNumber}
           ></SearchForm>
         </Section>
         <Section className="section-results">

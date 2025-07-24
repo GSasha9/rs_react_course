@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import type { SearchFormProps } from '../models/interfaces';
 import { startSearch } from '../utils';
@@ -19,10 +18,6 @@ const SearchForm = (props: SearchFormProps) => {
     localStorage.getItem('prevSearchInput') || ''
   );
 
-  const [searchParams] = useSearchParams();
-
-  const pageNumber = Number(searchParams.get('pageNumber')) || 0;
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelect(e.target.value);
   };
@@ -36,7 +31,7 @@ const SearchForm = (props: SearchFormProps) => {
   const handleSearch = useCallback(async () => {
     try {
       onLoadingChange(true);
-      const results = await startSearch(select, query, pageNumber);
+      const results = await startSearch(select, query, props.pageNumber);
 
       if (results) {
         onResults(results);
@@ -54,11 +49,11 @@ const SearchForm = (props: SearchFormProps) => {
     } finally {
       onLoadingChange(false);
     }
-  }, [onResults, onLoadingChange, onError, select, query, pageNumber]);
+  }, [onResults, onLoadingChange, onError, select, query, props.pageNumber]);
 
   useEffect(() => {
     handleSearch();
-  }, [pageNumber]);
+  }, [props.pageNumber]);
 
   return (
     <form

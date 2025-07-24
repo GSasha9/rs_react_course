@@ -15,12 +15,14 @@ import { startSearch } from '../utils';
 
 const mockOnResults = vi.fn();
 const mockOnLoadingChange = vi.fn();
+const pageNumber = 20;
 
 const renderForm = (props = {}) =>
   render(
     <SearchForm
       onResults={mockOnResults}
       onLoadingChange={mockOnLoadingChange}
+      pageNumber={pageNumber}
       {...props}
     />
   );
@@ -47,8 +49,11 @@ describe('Search form', () => {
     await userEvent.click(button);
 
     expect(mockOnLoadingChange).toHaveBeenCalledWith(true);
-    expect(mockOnResults).toHaveBeenCalledWith([1, 2, 3, 4]);
-    expect(mockOnLoadingChange).toHaveBeenCalledWith(false);
+
+    await waitFor(() => {
+      expect(mockOnResults).toHaveBeenCalledWith(mockResponse);
+      expect(mockOnLoadingChange).toHaveBeenCalledWith(false);
+    });
   });
 
   test('should get previous search query from LocalStorage', () => {
@@ -76,6 +81,7 @@ describe('Search form', () => {
       <SearchForm
         onResults={mockOnResults}
         onLoadingChange={mockOnLoadingChange}
+        pageNumber={pageNumber}
       />
     );
 
