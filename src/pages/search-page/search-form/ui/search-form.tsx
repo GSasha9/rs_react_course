@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import type { SearchFormProps } from '../models/interfaces';
 import { startSearch } from '../utils';
@@ -18,7 +19,9 @@ const SearchForm = (props: SearchFormProps) => {
     localStorage.getItem('prevSearchInput') || ''
   );
 
-  const hasMounted = useRef(false);
+  const [searchParams] = useSearchParams();
+
+  const pageNumber = Number(searchParams.get('pageNumber')) || 0;
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelect(e.target.value);
@@ -33,19 +36,14 @@ const SearchForm = (props: SearchFormProps) => {
   const handleSearch = useCallback(async () => {
     try {
       onLoadingChange(true);
-      const results = await startSearch(select, query);
+      const results = await startSearch(select, query, pageNumber);
 
       if (results) {
-        const resultsArray = Object.entries(results).find(
-          ([key, value]) =>
-            key !== 'sort' && key !== 'page' && Array.isArray(value)
-        )?.[1] as Record<string, unknown>[];
-
-        if (!resultsArray) return;
-
-        onResults(resultsArray);
+        onResults(results);
         localStorage.setItem('prevSearchSelect', select);
         localStorage.setItem('prevSearchInput', query);
+      } else {
+        return;
       }
     } catch (err) {
       if (onError) {
@@ -56,14 +54,11 @@ const SearchForm = (props: SearchFormProps) => {
     } finally {
       onLoadingChange(false);
     }
-  }, [onResults, onLoadingChange, onError, select, query]);
+  }, [onResults, onLoadingChange, onError, select, query, pageNumber]);
 
   useEffect(() => {
-    if (!hasMounted.current) {
-      handleSearch();
-      hasMounted.current = true;
-    }
-  }, [handleSearch]);
+    handleSearch();
+  }, [pageNumber]);
 
   return (
     <form

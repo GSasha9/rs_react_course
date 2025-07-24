@@ -3,7 +3,10 @@ import type { RequestResults } from '@/shared/models/interfaces';
 
 export const startSearch = async (
   select: string,
-  query: string
+  query: string,
+  pageNumber: number
 ): Promise<RequestResults | undefined> => {
-  return api.fetchData(select, query);
+  const page = pageNumber !== 0 ? pageNumber - 1 : 0;
+
+  return api.fetchData(select, query, page);
 };

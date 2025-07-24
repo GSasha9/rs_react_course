@@ -15,9 +15,10 @@ export class API {
 
   fetchData = async (
     select: string = RESOURCE_OPTIONS[0].key,
-    query: string = ''
+    query: string = '',
+    pageNumber: number
   ): Promise<RequestResults | undefined> => {
-    const url = `${this.baseURL}${select}/search`;
+    const url = `${this.baseURL}${select}/search?pageNumber=${pageNumber}`;
 
     try {
       let response: Response;

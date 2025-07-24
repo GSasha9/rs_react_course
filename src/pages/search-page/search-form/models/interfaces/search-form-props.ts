@@ -1,5 +1,7 @@
+import type { RequestResults } from '@/shared/models/interfaces';
+
 export interface SearchFormProps {
-  onResults: (data: Record<string, unknown>[]) => void;
+  onResults: (response: RequestResults) => void;
   onLoadingChange: (isLoading: boolean) => void;
   onError?: (error: Error) => void;
 }

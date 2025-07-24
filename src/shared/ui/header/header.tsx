@@ -7,10 +7,12 @@ const Header = () => {
     <header className="container header">
       <ul className="menu">
         <li className="menu-item">
-          <Link to={'/'}> Search page</Link>
+          <Link to={'/search'}> Search page</Link>
         </li>
         <li className="menu-item">
-          <Link to={'/about'}>About</Link>
+          <Link to={'/about'} onClick={() => localStorage.clear()}>
+            About
+          </Link>
         </li>
       </ul>
     </header>
