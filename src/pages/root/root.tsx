@@ -1,4 +1,4 @@
-import SearchPage from '../search-page/search-page';
+import { Outlet } from 'react-router';
 
 import Header from '@/shared/ui/header/header';
 
@@ -7,7 +7,7 @@ const Root = () => {
     <>
       <Header></Header>
       <main className="main" data-testid="main">
-        <SearchPage />
+        <Outlet />
       </main>
     </>
   );
