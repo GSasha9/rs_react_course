@@ -1,16 +1,17 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import * as React from 'react';
+import * as ReactDom from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
 
-import App from './App.tsx';
+import router from './routes/router';
 
-import './index.css';
+import './styles/style.scss';
 
 const container = document.getElementById('root');
 
 if (!container) throw new Error('Root container not found');
 
-createRoot(container).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+ReactDom.createRoot(container).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
