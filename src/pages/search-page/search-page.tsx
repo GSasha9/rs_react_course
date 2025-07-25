@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 
 import SearchForm from './search-form/ui/search-form';
 import SearchResults from './search-results/search-results';
@@ -64,7 +64,12 @@ const SearchPage = () => {
           {!loading && !error && results.length === 0 && <p>No results</p>}
           {!loading && !error && results.length > 0 && (
             <>
-              <SearchResults results={results} />
+              <div className="results">
+                <SearchResults results={results} />
+                <div className="details">
+                  <Outlet />
+                </div>
+              </div>
               <Pagination pages={pages} />
             </>
           )}

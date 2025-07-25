@@ -2,6 +2,9 @@
 
 .pagination {
   display: flex;
+  flex-wrap: wrap;
   gap: $spacing-lg;
+
+  max-width: 100%;
   padding: $spacing-lg;
 }

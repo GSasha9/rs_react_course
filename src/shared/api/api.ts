@@ -55,6 +55,29 @@ export class API {
       throw new Error('Unknown error');
     }
   };
+
+  fetchDataById = async (
+    select: string = RESOURCE_OPTIONS[0].key,
+    id: string
+  ) => {
+    const url = `${this.baseURL}${select}?uid=${id}`;
+
+    try {
+      const response: Response = await fetch(url);
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+
+        throw new Error(`Error ${response.status}: ${errorBody}`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        throw err;
+      }
+
+      throw new Error('Unknown error');
+    }
+  };
 }
 
 const api = new API();

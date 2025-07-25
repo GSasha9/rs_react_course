@@ -1,7 +1,19 @@
+import type { MouseEvent } from 'react';
+import { Link } from 'react-router';
+
 import ResultCard from '../result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
 
+import api from '@/shared/api/api';
+
 const SearchResults = (props: SearchResultsProps) => {
+  const category = localStorage.getItem('prevSearchSelect') || 'company';
+  const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
+    const uid = e.currentTarget.getAttribute('data-uid') || '';
+
+    await api.fetchDataById(category, uid);
+  };
+
   return (
     <div className="card-container">
       {props.results.map((item, index) => {
@@ -29,11 +41,18 @@ const SearchResults = (props: SearchResultsProps) => {
         }
 
         return (
-          <ResultCard
+          <Link
             key={typeof item.uid === 'string' ? item.uid : index}
-            title={title}
-            description={description}
-          />
+            to={`${category}/${item.uid}`}
+          >
+            <ResultCard
+              key={typeof item.uid === 'string' ? item.uid : index}
+              title={title}
+              description={description}
+              onClick={openDetails}
+              uid={`${item.uid}`}
+            />
+          </Link>
         );
       })}
     </div>

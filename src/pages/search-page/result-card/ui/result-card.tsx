@@ -4,7 +4,7 @@ import './result-card.scss';
 
 const ResultCard = (props: CardProps) => {
   return (
-    <div className="card">
+    <div className="card" data-uid={props.uid} onClick={props.onClick}>
       <h4 className="card-title">{props.title || props.name || 'No title'}</h4>
       <ul>
         {props.description.map((desc, index) =>
