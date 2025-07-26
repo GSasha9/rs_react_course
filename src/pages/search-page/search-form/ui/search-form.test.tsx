@@ -35,7 +35,6 @@ describe('Search form', () => {
   test('renders correctly', () => {
     renderForm();
 
-    expect(screen.getByRole('combobox')).not.toBeNull();
     expect(screen.getByRole('textbox')).not.toBeNull();
     expect(screen.getByRole('button')).not.toBeNull();
   });
@@ -59,22 +58,19 @@ describe('Search form', () => {
   test('should get previous search query from LocalStorage', () => {
     const getItemSpy = vi
       .spyOn(Storage.prototype, 'getItem')
-      .mockReturnValue('animal');
+      .mockReturnValue('comics');
 
     renderForm();
 
     expect(getItemSpy).toHaveBeenCalledWith('prevSearchInput');
-    expect(getItemSpy).toHaveBeenCalledWith('prevSearchSelect');
-    expect(getItemSpy).toHaveBeenCalledTimes(2);
+    expect(getItemSpy).toHaveBeenCalledTimes(1);
   });
 
   test('select and input are changed correctly', async () => {
     const { rerender } = renderForm();
 
-    const select = screen.getByRole('combobox') as HTMLSelectElement;
     const input = screen.getByRole('textbox') as HTMLInputElement;
 
-    await userEvent.selectOptions(select, 'animal');
     await userEvent.type(input, 'test');
 
     rerender(
@@ -85,7 +81,6 @@ describe('Search form', () => {
       />
     );
 
-    expect(select.value).toBe('animal');
     expect(input.value).toBe('test');
   });
 
@@ -95,12 +90,9 @@ describe('Search form', () => {
     renderForm();
 
     expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchInput');
-    expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchSelect');
 
-    const select = screen.getByRole('combobox') as HTMLSelectElement;
     const input = screen.getByRole('textbox') as HTMLInputElement;
 
-    expect(select.value).toBe('company');
     expect(input.value).toBe('');
   });
 

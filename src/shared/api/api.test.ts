@@ -23,11 +23,9 @@ describe('API', () => {
   });
 
   test('makes correct GET request and returns successful response', async () => {
-    const results = await api.fetchData('items', '', 0);
+    const results = await api.fetchData('', 0);
 
-    expect(fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/items/search')
-    );
+    expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/search'));
 
     expect(results).toEqual(mockResponse);
   });
@@ -35,10 +33,10 @@ describe('API', () => {
   test('makes correct POST request and returns successful response', async () => {
     const mockQuery = 'test';
 
-    const results = await api.fetchData('items', mockQuery, 0);
+    const results = await api.fetchData(mockQuery, 0);
 
     expect(fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/items'),
+      expect.stringContaining('/search'),
       expect.objectContaining({
         method: 'POST',
         headers: expect.objectContaining({
@@ -58,7 +56,7 @@ describe('API', () => {
       text: async () => 'Internal Server Error',
     });
 
-    await expect(api.fetchData('items', '', 0)).rejects.toThrow(
+    await expect(api.fetchData('', 0)).rejects.toThrow(
       'Error 500: Internal Server Error'
     );
   });
@@ -66,8 +64,6 @@ describe('API', () => {
   test('fetchData throws unknown error', async () => {
     global.fetch = vi.fn().mockRejectedValue('some non-error value');
 
-    await expect(api.fetchData('items', '', 0)).rejects.toThrow(
-      'Unknown error'
-    );
+    await expect(api.fetchData('', 0)).rejects.toThrow('Unknown error');
   });
 });

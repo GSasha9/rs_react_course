@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         element: <SearchPage />,
         children: [
           {
-            path: ':select/:page/:uid',
+            path: ':page/:uid',
             element: <DetailedPage />,
           },
         ],

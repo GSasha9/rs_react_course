@@ -1,9 +1,8 @@
-import { RESOURCE_OPTIONS } from '../models/constants';
 import type { RequestResults } from '../models/interfaces/request-results';
 
 export class API {
   private static instance: API;
-  private baseURL = 'https://stapi.co/api/v1/rest/';
+  private baseURL = 'https://stapi.co/api/v1/rest/comics';
 
   public static getInstance = (): API => {
     if (!API.instance) {
@@ -14,11 +13,10 @@ export class API {
   };
 
   fetchData = async (
-    select: string = RESOURCE_OPTIONS[0].key,
     query: string = '',
     pageNumber: number
   ): Promise<RequestResults | undefined> => {
-    const url = `${this.baseURL}${select}/search?pageNumber=${pageNumber}`;
+    const url = `${this.baseURL}/search?pageNumber=${pageNumber}`;
 
     try {
       let response: Response;
@@ -56,11 +54,8 @@ export class API {
     }
   };
 
-  fetchDataById = async (
-    select: string = RESOURCE_OPTIONS[0].key,
-    id: string
-  ) => {
-    const url = `${this.baseURL}${select}?uid=${id}`;
+  fetchDataById = async (id: string) => {
+    const url = `${this.baseURL}?uid=${id}`;
 
     try {
       const response: Response = await fetch(url);

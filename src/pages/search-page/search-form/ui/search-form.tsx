@@ -5,22 +5,13 @@ import { startSearch } from '../utils';
 
 import './search-form.scss';
 
-import { RESOURCE_OPTIONS } from '@/shared/models/constants';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
-import Select from '@/shared/ui/select/select';
 
 const SearchForm = (props: SearchFormProps) => {
-  const [select, setSelect] = useState(
-    localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key
-  );
   const [query, setQuery] = useState(
     localStorage.getItem('prevSearchInput') || ''
   );
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelect(e.target.value);
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -31,11 +22,10 @@ const SearchForm = (props: SearchFormProps) => {
   const handleSearch = useCallback(async () => {
     try {
       onLoadingChange(true);
-      const results = await startSearch(select, query, props.pageNumber);
+      const results = await startSearch(query, props.pageNumber);
 
       if (results) {
         onResults(results);
-        localStorage.setItem('prevSearchSelect', select);
         localStorage.setItem('prevSearchInput', query);
       } else {
         return;
@@ -49,7 +39,7 @@ const SearchForm = (props: SearchFormProps) => {
     } finally {
       onLoadingChange(false);
     }
-  }, [onResults, onLoadingChange, onError, select, query, props.pageNumber]);
+  }, [onResults, onLoadingChange, onError, query, props.pageNumber]);
 
   useEffect(() => {
     handleSearch();
@@ -64,11 +54,6 @@ const SearchForm = (props: SearchFormProps) => {
       }}
       className="form"
     >
-      <Select
-        options={RESOURCE_OPTIONS}
-        value={select}
-        onChange={handleSelectChange}
-      ></Select>
       <Input value={query.trim()} onChange={handleInputChange}></Input>
       <Button callback={handleSearch} type="button"></Button>
     </form>

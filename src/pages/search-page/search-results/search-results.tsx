@@ -5,18 +5,15 @@ import ResultCard from '../result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
 
 import api from '@/shared/api/api';
-import { RESOURCE_OPTIONS } from '@/shared/models/constants';
 
 const SearchResults = (props: SearchResultsProps) => {
-  const category =
-    localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key;
   const navigate = useNavigate();
   const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
     const uid = e.currentTarget.getAttribute('data-uid') || '';
 
-    const card = await api.fetchDataById(category, uid);
+    const card = await api.fetchDataById(uid);
 
-    navigate(`${category}/${props.page | 1}/${uid}`, { state: { item: card } });
+    navigate(`${props.page | 1}/${uid}`, { state: { item: card } });
   };
 
   return (

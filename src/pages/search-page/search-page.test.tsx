@@ -21,7 +21,6 @@ describe('Search Page', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('combobox')).toBeDefined();
     expect(screen.getByRole('textbox')).toBeDefined();
     expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
   });
@@ -74,14 +73,12 @@ describe('Search Page', () => {
     );
 
     const input = screen.getByRole('textbox');
-    const select = screen.getByRole('combobox');
     const button = screen.getByRole('button', { name: 'search' });
 
-    await userEvent.selectOptions(select, 'animal');
     await userEvent.type(input, 'lion');
     await userEvent.click(button);
 
-    expect(startSearch).toHaveBeenCalledWith('animal', 'lion', 1);
+    expect(startSearch).toHaveBeenCalledWith('lion', 1);
   });
 
   test('logs error when startSearch fails', async () => {
