@@ -1,17 +1,22 @@
 import type { MouseEvent } from 'react';
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import ResultCard from '../result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
 
 import api from '@/shared/api/api';
+import { RESOURCE_OPTIONS } from '@/shared/models/constants';
 
 const SearchResults = (props: SearchResultsProps) => {
-  const category = localStorage.getItem('prevSearchSelect') || 'company';
+  const category =
+    localStorage.getItem('prevSearchSelect') || RESOURCE_OPTIONS[0].key;
+  const navigate = useNavigate();
   const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
     const uid = e.currentTarget.getAttribute('data-uid') || '';
 
-    await api.fetchDataById(category, uid);
+    const card = await api.fetchDataById(category, uid);
+
+    navigate(`${category}/${props.page | 1}/${uid}`, { state: { item: card } });
   };
 
   return (
@@ -41,18 +46,13 @@ const SearchResults = (props: SearchResultsProps) => {
         }
 
         return (
-          <Link
+          <ResultCard
             key={typeof item.uid === 'string' ? item.uid : index}
-            to={`${category}/${item.uid}`}
-          >
-            <ResultCard
-              key={typeof item.uid === 'string' ? item.uid : index}
-              title={title}
-              description={description}
-              onClick={openDetails}
-              uid={`${item.uid}`}
-            />
-          </Link>
+            title={title}
+            description={description}
+            onClick={openDetails}
+            uid={`${item.uid}`}
+          />
         );
       })}
     </div>

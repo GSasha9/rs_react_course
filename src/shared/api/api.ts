@@ -70,6 +70,10 @@ export class API {
 
         throw new Error(`Error ${response.status}: ${errorBody}`);
       }
+
+      const item = await response.json();
+
+      return item;
     } catch (err) {
       if (err instanceof Error) {
         throw err;

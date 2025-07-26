@@ -65,7 +65,7 @@ const SearchPage = () => {
           {!loading && !error && results.length > 0 && (
             <>
               <div className="results">
-                <SearchResults results={results} />
+                <SearchResults results={results} page={pageNumber} />
                 <div className="details">
                   <Outlet />
                 </div>

@@ -10,7 +10,7 @@ describe('Search Results', () => {
   test('all results added to container', () => {
     const { container, rerender } = render(
       <MemoryRouter>
-        <SearchResults results={mockResult} />
+        <SearchResults results={mockResult} page={1} />
       </MemoryRouter>
     );
 
@@ -52,7 +52,7 @@ describe('Search Results', () => {
 
     rerender(
       <MemoryRouter>
-        <SearchResults results={newMockResults} />
+        <SearchResults results={newMockResults} page={1} />
       </MemoryRouter>
     );
 
@@ -62,7 +62,7 @@ describe('Search Results', () => {
   test('result card with no title or name renders correctly', () => {
     const { container } = render(
       <MemoryRouter>
-        <SearchResults results={mockResult} />
+        <SearchResults results={mockResult} page={1} />
       </MemoryRouter>
     );
 
