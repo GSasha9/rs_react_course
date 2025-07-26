@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import SearchResults from './search-results';
@@ -8,7 +9,9 @@ import { mockResult } from '@/tests/test-utils/mocks';
 describe('Search Results', () => {
   test('all results added to container', () => {
     const { container, rerender } = render(
-      <SearchResults results={mockResult} />
+      <MemoryRouter>
+        <SearchResults results={mockResult} />
+      </MemoryRouter>
     );
 
     expect(container.firstChild?.childNodes.length).toBe(5);
@@ -47,13 +50,21 @@ describe('Search Results', () => {
       },
     ];
 
-    rerender(<SearchResults results={newMockResults} />);
+    rerender(
+      <MemoryRouter>
+        <SearchResults results={newMockResults} />
+      </MemoryRouter>
+    );
 
     expect(container.firstChild?.childNodes.length).toBe(6);
   });
 
   test('result card with no title or name renders correctly', () => {
-    const { container } = render(<SearchResults results={mockResult} />);
+    const { container } = render(
+      <MemoryRouter>
+        <SearchResults results={mockResult} />
+      </MemoryRouter>
+    );
 
     expect(screen.getAllByText('No title').length).toBe(4);
     expect(container.firstChild?.childNodes.length).toBe(5);
