@@ -28,7 +28,7 @@ const DetailedPage = () => {
   if (!itemData) return;
 
   return (
-    <div className="detailed-page">
+    <div className="detailed-page" data-testId="detailedPage">
       <Button
         className="button-close"
         type="button"

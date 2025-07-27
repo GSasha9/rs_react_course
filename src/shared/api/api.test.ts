@@ -30,6 +30,15 @@ describe('API', () => {
     expect(results).toEqual(mockResponse);
   });
 
+  test('makes correct GET request by uid', async () => {
+    const mockUid = 'asd789';
+    const results = await api.fetchDataById(mockUid);
+
+    expect(fetch).toHaveBeenCalledWith(expect.stringContaining(`?uid=asd789`));
+
+    expect(results).toEqual(mockResponse);
+  });
+
   test('makes correct POST request and returns successful response', async () => {
     const mockQuery = 'test';
 
@@ -57,6 +66,18 @@ describe('API', () => {
     });
 
     await expect(api.fetchData('', 0)).rejects.toThrow(
+      'Error 500: Internal Server Error'
+    );
+  });
+
+  test('fetchData throws error on bad response by uid', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    });
+
+    await expect(api.fetchDataById('asd123')).rejects.toThrow(
       'Error 500: Internal Server Error'
     );
   });

@@ -10,7 +10,7 @@ test('Search triggers API whit right data', () => {
     .spyOn(api, 'fetchData')
     .mockResolvedValue(mockResponse);
 
-  startSearch('api', 'text', 0);
+  startSearch('text', 0);
 
   expect(mockFetchData).toBeCalled();
 });
