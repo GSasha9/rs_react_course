@@ -6,6 +6,6 @@ export interface CardProps {
   title?: string;
   name?: string;
   description: CardDescription[];
-  onClick: (e: MouseEvent<HTMLDivElement>) => void;
-  uid: string;
+  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
+  uid?: string;
 }
