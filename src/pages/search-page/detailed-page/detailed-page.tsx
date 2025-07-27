@@ -12,7 +12,6 @@ const DetailedPage = () => {
   const location = useLocation();
   const item = location.state?.item;
 
-  console.log(item);
   const navigate = useNavigate();
 
   if (!item)

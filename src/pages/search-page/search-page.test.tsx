@@ -26,6 +26,13 @@ describe('Search Page', () => {
   });
 
   test('search button onClick changes loading state and show spinner', async () => {
+    (startSearch as ReturnType<typeof vi.fn>).mockImplementation(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ array: [], page: {}, sort: {} }), 100)
+        )
+    );
+
     render(
       <MemoryRouter>
         <SearchPage />
@@ -36,11 +43,9 @@ describe('Search Page', () => {
 
     await userEvent.click(buttonSearch);
 
-    const spinner = screen.findByTestId('spinner');
+    const spinner = await screen.findByTestId('spinner');
 
-    await waitFor(() => {
-      expect(spinner).toBeDefined();
-    });
+    expect(spinner).toBeDefined();
   });
 
   test('updates query state on input change', async () => {
@@ -75,10 +80,12 @@ describe('Search Page', () => {
     const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: 'search' });
 
-    await userEvent.type(input, 'lion');
+    await userEvent.type(input, 'startrek');
     await userEvent.click(button);
 
-    expect(startSearch).toHaveBeenCalledWith('lion', 1);
+    await waitFor(() => {
+      expect(startSearch).toHaveBeenCalledWith('startrek', 1);
+    });
   });
 
   test('logs error when startSearch fails', async () => {

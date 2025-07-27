@@ -18,7 +18,7 @@ const SearchPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const pageNumber = Number(searchParams.get('pageNumber')) || 0;
 
@@ -30,6 +30,10 @@ const SearchPage = () => {
     if (!resultsArray) return;
 
     setPages(response.page.totalPages);
+
+    if (location.pathname === '/search' && pageNumber === 0) {
+      setSearchParams({ pageNumber: '1' });
+    }
 
     if (JSON.stringify(resultsArray) !== JSON.stringify(results)) {
       setResults(resultsArray);

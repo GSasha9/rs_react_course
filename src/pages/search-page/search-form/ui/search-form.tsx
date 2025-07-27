@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import type { SearchFormProps } from '../models/interfaces';
 import { startSearch } from '../utils';
 
 import './search-form.scss';
 
+import useLocalStorageQuery from '@/hooks/use-local-storage-query';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
 
 const SearchForm = (props: SearchFormProps) => {
-  const [query, setQuery] = useState(
-    localStorage.getItem('prevSearchInput') || ''
-  );
+  const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -26,7 +25,7 @@ const SearchForm = (props: SearchFormProps) => {
 
       if (results) {
         onResults(results);
-        localStorage.setItem('prevSearchInput', query);
+        setQuery(query);
       } else {
         return;
       }
@@ -39,7 +38,7 @@ const SearchForm = (props: SearchFormProps) => {
     } finally {
       onLoadingChange(false);
     }
-  }, [onResults, onLoadingChange, onError, query, props.pageNumber]);
+  }, [onResults, onLoadingChange, setQuery, onError, query, props.pageNumber]);
 
   useEffect(() => {
     handleSearch();
