@@ -23,6 +23,7 @@ export default defineConfig({
         '**/models/interfaces/**',
         '**/model/interfaces/**',
         '**/interfaces.ts',
+        '**/index.ts/**',
       ],
     },
     setupFiles: 'src/tests/test-utils/vitest.setup.ts',

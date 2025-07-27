@@ -9,7 +9,7 @@ const Header = () => {
         <li className="menu-item">
           <NavLink
             to={'/search'}
-            data-testId="navSearch"
+            data-testid="navSearch"
             className={({ isActive, isPending }) => {
               return isActive ? 'active' : isPending ? 'pending' : '';
             }}
@@ -21,7 +21,7 @@ const Header = () => {
         <li className="menu-item">
           <NavLink
             to={'/about'}
-            data-testId="navAbout"
+            data-testid="navAbout"
             className={({ isActive, isPending }) => {
               return isActive ? 'active' : isPending ? 'pending' : '';
             }}
