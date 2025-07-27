@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 import ResultCard from '../result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
 
+import './search-results.scss';
+
 import api from '@/shared/api/api';
 
 const SearchResults = (props: SearchResultsProps) => {

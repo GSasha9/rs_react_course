@@ -11,6 +11,8 @@ import Button from '@/shared/ui/button/button';
 const DetailedPage = () => {
   const location = useLocation();
   const item = location.state?.item;
+
+  console.log(item);
   const navigate = useNavigate();
 
   if (!item)
@@ -28,9 +30,15 @@ const DetailedPage = () => {
 
   return (
     <div className="detailed-page">
+      <Button
+        className="button-close"
+        type="button"
+        text="close"
+        callback={() => navigate(-1)}
+      />
       <ul>
         {Object.entries(itemData).map(([key, value]) => {
-          if (value === null || value === false) return null;
+          if (value === null || value === false || key === 'uid') return null;
 
           return (
             <li className="card__list-item" key={key}>
@@ -54,7 +62,6 @@ const DetailedPage = () => {
           );
         })}
       </ul>
-      <Button type="button" text="close" callback={() => navigate(-1)} />
     </div>
   );
 };

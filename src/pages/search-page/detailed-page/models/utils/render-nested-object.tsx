@@ -3,9 +3,13 @@ const renderNestedObject = (obj: Record<string, unknown>) => (
     {Object.entries(obj).map(([subKey, subValue]) =>
       subValue === null ||
       subValue === false ||
+      subKey === 'uid' ||
       typeof subValue === 'object' ? null : (
         <li key={subKey}>
-          <strong>{subKey}:</strong> {String(subValue)}
+          <strong>{subKey}:</strong>{' '}
+          {Array.isArray(subValue) && subValue.length === 0
+            ? 'No data'
+            : String(subValue)}
         </li>
       )
     )}

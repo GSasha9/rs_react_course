@@ -1,3 +1,23 @@
-.details {
-  width: 100vw;
+@use '../../../styles/scss/variables' as *;
+
+.detailed-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+
+  width: 50vw;
+  padding: $spacing-xl;
+  padding: 8px;
+  border: 1px solid #46a358;
+  border-radius: 8px;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-sm;
+  }
+
+  .list-item__prop-name {
+    color: $primary-button;
+  }
 }

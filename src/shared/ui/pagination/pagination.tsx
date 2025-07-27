@@ -18,7 +18,11 @@ const Pagination = (props: paginationProps) => {
     <div className="pagination">
       {Array.from({ length: props.pages }).map((_, index) => {
         return (
-          <button key={index} onClick={() => handleClick(index + 1)}>
+          <button
+            className="button-pagination"
+            key={index}
+            onClick={() => handleClick(index + 1)}
+          >
             {index + 1}
           </button>
         );
