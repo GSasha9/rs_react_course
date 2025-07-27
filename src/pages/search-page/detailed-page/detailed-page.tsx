@@ -28,12 +28,16 @@ const DetailedPage = () => {
   if (!itemData) return;
 
   return (
-    <div className="detailed-page" data-testId="detailedPage">
+    <div className="detailed-page" data-testid="detailedPage">
       <Button
         className="button-close"
         type="button"
         text="close"
-        callback={() => navigate(-1)}
+        callback={() =>
+          navigate(
+            `/search?pageNumber=${location.state.page === 0 ? 1 : location.state.page}`
+          )
+        }
       />
       <ul>
         {Object.entries(itemData).map(([key, value]) => {

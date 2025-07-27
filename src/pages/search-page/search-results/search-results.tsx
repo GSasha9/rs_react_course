@@ -15,7 +15,9 @@ const SearchResults = (props: SearchResultsProps) => {
 
     const card = await api.fetchDataById(uid);
 
-    navigate(`${props.page | 1}/${uid}`, { state: { item: card } });
+    navigate(`${props.page || 1}/${uid}`, {
+      state: { item: card, page: props.page },
+    });
   };
 
   return (
