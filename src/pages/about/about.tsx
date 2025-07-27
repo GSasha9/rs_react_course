@@ -11,10 +11,10 @@ const About = () => {
       <p>This is my study project for learning routings and hooks.</p>
       <div className="links">
         <Link to={'https://rs.school/'}>
-          <img src="./public/images.png"></img>RS School
+          <img src="/images.png"></img>RS School
         </Link>
         <Link to={'https://rs.school/courses/reactjs'}>
-          <img src="./public/react.svg"></img>React Course
+          <img src="/react.svg"></img>React Course
         </Link>
       </div>
     </Section>
