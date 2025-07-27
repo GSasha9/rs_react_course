@@ -11,4 +11,8 @@
   .button-pagination {
     min-width: 25px;
   }
+
+  .active {
+    background-color: $primary-button;
+  }
 }

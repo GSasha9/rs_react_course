@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './header.scss';
 
@@ -7,10 +7,25 @@ const Header = () => {
     <header className="container header">
       <ul className="menu">
         <li className="menu-item">
-          <Link to={'/search'}> Search page</Link>
+          <NavLink
+            to={'/search'}
+            className={({ isActive, isPending }) => {
+              return isActive ? 'active' : isPending ? 'pending' : '';
+            }}
+          >
+            {' '}
+            <span>Search page</span>
+          </NavLink>
         </li>
         <li className="menu-item">
-          <Link to={'/about'}>About</Link>
+          <NavLink
+            to={'/about'}
+            className={({ isActive, isPending }) => {
+              return isActive ? 'active' : isPending ? 'pending' : '';
+            }}
+          >
+            <span>About</span>
+          </NavLink>
         </li>
       </ul>
     </header>

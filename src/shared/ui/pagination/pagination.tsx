@@ -17,9 +17,11 @@ const Pagination = (props: paginationProps) => {
   return (
     <div className="pagination">
       {Array.from({ length: props.pages }).map((_, index) => {
+        const activeClass = props.activeNumber === index + 1 ? 'active' : '';
+
         return (
           <button
-            className="button-pagination"
+            className={`button-pagination ${activeClass}`}
             key={index}
             onClick={() => handleClick(index + 1)}
           >

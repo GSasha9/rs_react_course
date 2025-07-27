@@ -70,11 +70,11 @@ const SearchPage = () => {
             <>
               <div className="results">
                 <SearchResults results={results} page={pageNumber} />
-                <div className="details">
+                <div className={`details`}>
                   <Outlet />
                 </div>
               </div>
-              <Pagination pages={pages} />
+              <Pagination pages={pages} activeNumber={pageNumber} />
             </>
           )}
         </Section>

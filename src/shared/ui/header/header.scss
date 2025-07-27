@@ -1,3 +1,17 @@
+@use '../../../styles/scss/variables' as *;
+
+.active {
+  span {
+    color: $primary-button;
+  }
+}
+
+.pending {
+  span {
+    color: $text-secondary;
+  }
+}
+
 .header {
   .menu {
     display: flex;
