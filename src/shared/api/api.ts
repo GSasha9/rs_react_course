@@ -16,7 +16,10 @@ export class API {
     query: string = '',
     pageNumber: number
   ): Promise<RequestResults | undefined> => {
-    const url = `${this.baseURL}/search?pageNumber=${pageNumber}`;
+    const url =
+      query !== ''
+        ? `${this.baseURL}/search`
+        : `${this.baseURL}/search?pageNumber=${pageNumber}`;
 
     try {
       let response: Response;

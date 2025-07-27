@@ -1,5 +1,19 @@
+import type { Writer } from '.';
+import type { Character } from '.';
+
 export interface SelectedItem {
-  [category: string]: {
-    [key: string]: string | boolean | unknown[] | undefined;
-  };
+  title?: string;
+  numberOfPages?: number;
+  publishedDay?: number;
+  publishedMonth?: number;
+  publishedYear?: number;
+  photonovel?: boolean;
+  adaptation?: boolean;
+  yearFrom?: number;
+  yearTo?: number;
+
+  writers?: Writer[];
+  characters?: Character[];
+
+  [key: string]: unknown;
 }
