@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import About from './about';
@@ -7,8 +7,10 @@ import About from './about';
 describe('About page', () => {
   test('renders correctly', () => {
     render(
-      <MemoryRouter>
-        <About />
+      <MemoryRouter initialEntries={['/about']}>
+        <Routes>
+          <Route path="/about" element={<About />} />
+        </Routes>
       </MemoryRouter>
     );
 

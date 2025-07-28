@@ -1,32 +1,29 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import DetailedPage from './detailed-page';
 
-describe('Detailed page', () => {
-  const mockItem = {
-    comics: {
-      title: 'Test Comic',
-      author: 'Test Author',
-      year: 2023,
-      nested: {
-        publisher: 'Test Publisher',
-      },
+const mockItem = {
+  comics: {
+    title: 'Test Comic',
+    author: 'Test Author',
+    year: 2023,
+    nested: {
+      publisher: 'Test Publisher',
     },
-  };
+  },
+};
 
-  test('renders correctly with item data', () => {
+describe('Detailed page', () => {
+  test('renders detailed page correctly with route state', () => {
     render(
       <MemoryRouter
-        initialEntries={[
-          {
-            pathname: '/details',
-            state: { item: mockItem },
-          },
-        ]}
+        initialEntries={[{ pathname: '/details', state: { item: mockItem } }]}
       >
-        <DetailedPage />
+        <Routes>
+          <Route path="/details" element={<DetailedPage />} />
+        </Routes>
       </MemoryRouter>
     );
 

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import Header from './header';
@@ -8,8 +8,10 @@ import Header from './header';
 describe('Header', () => {
   test('renders correctly', () => {
     render(
-      <MemoryRouter>
-        <Header></Header>
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="*" element={<Header />} />
+        </Routes>
       </MemoryRouter>
     );
 
@@ -19,8 +21,10 @@ describe('Header', () => {
 
   test('active class adds after clicking', async () => {
     render(
-      <MemoryRouter>
-        <Header></Header>
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="*" element={<Header />} />
+        </Routes>
       </MemoryRouter>
     );
 

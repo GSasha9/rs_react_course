@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import type { paginationProps } from './model/interfaces';
@@ -13,11 +13,18 @@ const mockProps: paginationProps = {
 describe('Pagination', () => {
   test('renders correctly', () => {
     render(
-      <MemoryRouter>
-        <Pagination
-          pages={mockProps.pages}
-          activeNumber={mockProps.activeNumber}
-        ></Pagination>
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Pagination
+                pages={mockProps.pages}
+                activeNumber={mockProps.activeNumber}
+              />
+            }
+          />
+        </Routes>
       </MemoryRouter>
     );
 

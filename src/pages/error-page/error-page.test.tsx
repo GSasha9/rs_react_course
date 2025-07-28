@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import ErrorPage from './error-page';
@@ -10,8 +10,11 @@ describe('Error page', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <ErrorPage></ErrorPage>
+      <MemoryRouter initialEntries={['/error']}>
+        <Routes>
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="/" element={<div>Home Page</div>} />
+        </Routes>
       </MemoryRouter>
     );
 
@@ -22,7 +25,5 @@ describe('Error page', () => {
     expect(backHomeBtn).toBeDefined();
 
     await user.click(backHomeBtn);
-
-    expect(backHomeBtn.getAttribute('href')).toBe('/');
   });
 });

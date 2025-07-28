@@ -1,14 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import Root from './root';
 
 describe('Error page', () => {
-  test('renders correctly', async () => {
+  test('renders correctly', () => {
     render(
-      <MemoryRouter>
-        <Root></Root>
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="/" element={<Root />} />
+        </Routes>
       </MemoryRouter>
     );
 

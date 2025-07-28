@@ -1,31 +1,53 @@
-import { useLocation, useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import type { SelectedItem } from './models/interfaces';
 import renderNestedObject from './models/utils/render-nested-object';
 
 import './deatiled-page.scss';
 
+import api from '@/shared/api/api';
 import Button from '@/shared/ui/button/button';
 
 const DetailedPage = () => {
+  const { uid, page } = useParams();
   const location = useLocation();
-  const item = location.state?.item;
-
   const navigate = useNavigate();
 
-  if (!item)
+  const [itemData, setItemData] = useState<SelectedItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (location.state?.item) {
+        const categoryKey = Object.keys(location.state.item)[0];
+
+        setItemData(location.state.item[categoryKey]);
+        setIsLoading(false);
+      } else if (uid) {
+        const fetched = await api.fetchDataById(uid);
+        const categoryKey = Object.keys(fetched)[0];
+
+        setItemData(fetched[categoryKey]);
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [location.state, uid]);
+
+  if (isLoading) {
+    return <div className="detailed-page">Loading...</div>;
+  }
+
+  if (!itemData) {
     return (
       <div className="detailed-page">
         <div>Data not found</div>
-        <Link to={'/search'}>Back to search page</Link>
+        <Link to="/search">Back to search page</Link>
       </div>
     );
-
-  const categoryKey = Object.keys(item)[0];
-  const itemData: SelectedItem = item[categoryKey];
-
-  if (!itemData) return;
+  }
 
   return (
     <div className="detailed-page" data-testid="detailedPage">
@@ -33,11 +55,7 @@ const DetailedPage = () => {
         className="button-close"
         type="button"
         text="close"
-        callback={() =>
-          navigate(
-            `/search?pageNumber=${location.state.page === 0 ? 1 : location.state.page}`
-          )
-        }
+        callback={() => navigate(`/search?pageNumber=${page || 1}`)}
       />
       <ul>
         {Object.entries(itemData).map(([key, value]) => {
