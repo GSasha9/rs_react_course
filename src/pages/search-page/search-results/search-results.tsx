@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import ResultCard from '../result-card/ui/result-card';
 import type { SearchResultsProps } from './models/interfaces';
