@@ -28,11 +28,13 @@ describe('Search Page', () => {
   });
 
   test('search button onClick changes loading state and shows spinner', async () => {
+    let resolveSearch: (value: unknown) => void;
+
     (startSearch as ReturnType<typeof vi.fn>).mockImplementation(
       () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve({ array: [], page: {}, sort: {} }), 100)
-        )
+        new Promise((resolve) => {
+          resolveSearch = resolve;
+        })
     );
 
     render(
@@ -50,6 +52,9 @@ describe('Search Page', () => {
     const spinner = await screen.findByTestId('spinner');
 
     expect(spinner).toBeDefined();
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    resolveSearch!({ array: [], page: { totalPages: 1 }, sort: {} });
   });
 
   test('updates query state on input change', async () => {
@@ -150,7 +155,7 @@ describe('Search Page', () => {
 
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
       array: mockData,
-      page: {},
+      page: { totalPages: 1 },
       sort: {},
     });
 
