@@ -150,7 +150,7 @@ describe('Search Page', () => {
 
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
       array: mockData,
-      page: {},
+      page: { totalPages: 1 },
       sort: {},
     });
 

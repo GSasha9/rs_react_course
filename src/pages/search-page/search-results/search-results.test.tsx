@@ -1,12 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import SearchResults from './search-results';
 
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
+  vi.mock('@/shared/api/api', () => ({
+    default: {
+      fetchDataById: vi.fn().mockResolvedValue({}),
+    },
+  }));
+
   test('all results added to container', () => {
     const { container, rerender } = render(
       <MemoryRouter initialEntries={['/search']}>
@@ -56,7 +62,9 @@ describe('Search Results', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getAllByText('No title').length).toBe(4);
+    const noTitleElements = screen.getAllByText('No title');
+
+    expect(noTitleElements).toHaveLength(4);
     expect(container.firstChild?.childNodes.length).toBe(5);
   });
 });
