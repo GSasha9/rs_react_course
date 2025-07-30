@@ -13,7 +13,7 @@ describe('Button render correctly', () => {
 
     expect(screen.getByText(mockData.text)).not.toBeNull();
 
-    rerender(<Button text={''} />);
+    rerender(<Button text={'search'} />);
 
     expect(screen.getByRole('button', { name: 'search' })).not.toBeNull();
   });

@@ -54,7 +54,7 @@ const SearchForm = (props: SearchFormProps) => {
       className="form"
     >
       <Input value={query.trim()} onChange={handleInputChange}></Input>
-      <Button callback={handleSearch} type="button"></Button>
+      <Button callback={handleSearch} type="button" text={'search'}></Button>
     </form>
   );
 };
