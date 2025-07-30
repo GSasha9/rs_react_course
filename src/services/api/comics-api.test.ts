@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { mockResponse } from '../../tests/test-utils/mocks';
+import { ComicsApi } from './comics-api';
 
 import '@testing-library/user-event';
-import { API } from '@/shared/api/api';
 
-let api: API;
+let api: ComicsApi;
 
 beforeEach(() => {
-  api = API.getInstance();
+  api = new ComicsApi();
   global.fetch = vi.fn().mockResolvedValue({
     ok: true,
     json: async () => mockResponse,
@@ -16,12 +16,6 @@ beforeEach(() => {
 });
 
 describe('API', () => {
-  test('Can create only one instance', () => {
-    const oneMoreApi = API.getInstance();
-
-    expect(api).toBe(oneMoreApi);
-  });
-
   test('makes correct GET request and returns successful response', async () => {
     const results = await api.fetchData('', 0);
 

@@ -6,14 +6,14 @@ import type { SearchResultsProps } from './models/interfaces';
 
 import './search-results.scss';
 
-import api from '@/shared/api/api';
+import comicsService from '@/services/api/comics-api';
 
 const SearchResults = (props: SearchResultsProps) => {
   const navigate = useNavigate();
   const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
     const uid = e.currentTarget.getAttribute('data-uid') || '';
 
-    const card = await api.fetchDataById(uid);
+    const card = await comicsService.fetchDataById(uid);
 
     navigate(`${props.page || 1}/${uid}`, {
       state: { item: card, page: props.page },

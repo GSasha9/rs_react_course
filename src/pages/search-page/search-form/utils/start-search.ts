@@ -1,4 +1,4 @@
-import api from '@/shared/api/api';
+import comicsService from '@/services/api/comics-api';
 import type { RequestResults } from '@/shared/models/interfaces';
 
 export const startSearch = async (
@@ -7,5 +7,5 @@ export const startSearch = async (
 ): Promise<RequestResults | undefined> => {
   const page = pageNumber !== 0 ? pageNumber - 1 : 0;
 
-  return api.fetchData(query, page);
+  return comicsService.fetchData(query, page);
 };

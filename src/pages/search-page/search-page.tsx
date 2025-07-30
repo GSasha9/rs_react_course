@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 
 import SearchForm from './search-form/ui/search-form';
@@ -22,6 +22,12 @@ const SearchPage = () => {
 
   const pageNumber = Number(searchParams.get('pageNumber')) || 0;
 
+  useEffect(() => {
+    if (location.pathname === '/search' && pageNumber === 0) {
+      setSearchParams({ pageNumber: '1' });
+    }
+  });
+
   const handleResults = (response: RequestResults) => {
     const resultsArray = Object.entries(response).find(
       ([key, value]) => key !== 'sort' && key !== 'page' && Array.isArray(value)
@@ -30,10 +36,6 @@ const SearchPage = () => {
     if (!resultsArray) return;
 
     setPages(response.page.totalPages);
-
-    if (location.pathname === '/search' && pageNumber === 0) {
-      setSearchParams({ pageNumber: '1' });
-    }
 
     if (JSON.stringify(resultsArray) !== JSON.stringify(results)) {
       setResults(resultsArray);

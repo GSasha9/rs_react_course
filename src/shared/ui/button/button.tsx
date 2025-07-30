@@ -16,7 +16,7 @@ const Button = (props: ButtonProps) => {
       type={props.type}
       disabled={loading}
     >
-      {props.text || 'search'}
+      {props.text}
     </button>
   );
 };

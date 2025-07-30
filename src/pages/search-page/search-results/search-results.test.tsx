@@ -7,7 +7,7 @@ import SearchResults from './search-results';
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
-  vi.mock('@/shared/api/api', () => ({
+  vi.mock('@/services/api/comics-api.ts', () => ({
     default: {
       fetchDataById: vi.fn().mockResolvedValue({}),
     },
