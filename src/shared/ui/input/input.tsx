@@ -8,10 +8,11 @@ import { LoadingContext } from '@/shared/models/contexts';
 
 interface InputProps {
   placeholder?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 
 const Input = ({
@@ -20,6 +21,7 @@ const Input = ({
   className = 'input',
   value,
   onChange,
+  onClick,
 }: InputProps) => {
   const { loading } = useContext(LoadingContext);
 
@@ -32,6 +34,7 @@ const Input = ({
       onChange={onChange}
       name="input-search"
       disabled={loading}
+      onClick={onClick}
     ></input>
   );
 };
