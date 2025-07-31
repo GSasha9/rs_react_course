@@ -20,13 +20,13 @@ const SearchPage = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const currentPageNumber = Number(searchParams.get('pageNumber')) || 0;
+  const currentPageNumber = Number(searchParams.get('pageNumber')) || 1;
 
   useEffect(() => {
-    if (location.pathname === '/search' && currentPageNumber === 0) {
+    if (!searchParams.get('pageNumber')) {
       setSearchParams({ pageNumber: '1' });
     }
-  });
+  }, [setSearchParams, searchParams]);
 
   const handleResults = (response: RequestResults) => {
     const resultsArray = Object.entries(response).find(

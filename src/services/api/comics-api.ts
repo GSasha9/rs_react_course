@@ -7,10 +7,7 @@ export class ComicsApi {
     query: string = '',
     pageNumber: number
   ): Promise<RequestResults | undefined> => {
-    const url =
-      query !== ''
-        ? `${this.baseURL}/search`
-        : `${this.baseURL}/search?pageNumber=${pageNumber}`;
+    const url = `${this.baseURL}/search?pageNumber=${pageNumber}`;
 
     try {
       let response: Response;
@@ -24,8 +21,8 @@ export class ComicsApi {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
-            title: `${query}`,
-            name: `${query}`,
+            title: query,
+            name: query,
           }).toString(),
         });
       }
@@ -40,9 +37,7 @@ export class ComicsApi {
 
       return data;
     } catch (err) {
-      if (err instanceof Error) {
-        throw err;
-      }
+      if (err instanceof Error) throw err;
 
       throw new Error('Unknown error');
     }

@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router';
+import { Navigate } from 'react-router';
 
 import { ROUTES } from './routes';
 
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
     element: ROUTES.root.element,
     errorElement: <ErrorPage />,
     children: [
+      {
+        index: true,
+        element: <Navigate to={ROUTES.searchPage.path} replace />,
+      },
       {
         path: ROUTES.searchPage.path,
         element: ROUTES.searchPage.element,
