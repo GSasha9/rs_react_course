@@ -1,13 +1,19 @@
 import { useCallback, useEffect } from 'react';
 
-import type { SearchFormProps } from '../models/interfaces';
 import { startSearch } from '../utils';
 
 import './search-form.scss';
 
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
+import type { RequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
+
+interface SearchFormProps {
+  onResults: (response: RequestResults) => void;
+  onLoadingChange: (isLoading: boolean) => void;
+  pageNumber: number;
+}
 
 const SearchForm = (props: SearchFormProps) => {
   const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
@@ -16,12 +22,12 @@ const SearchForm = (props: SearchFormProps) => {
     setQuery(e.target.value);
   };
 
-  const { onResults, onLoadingChange, onError } = props;
+  const { onResults, onLoadingChange, pageNumber } = props;
 
   const handleSearch = useCallback(async () => {
     try {
       onLoadingChange(true);
-      const results = await startSearch(query, props.pageNumber);
+      const results = await startSearch(query, pageNumber);
 
       if (results) {
         onResults(results);
@@ -30,19 +36,15 @@ const SearchForm = (props: SearchFormProps) => {
         return;
       }
     } catch (err) {
-      if (onError) {
-        onError(err as Error);
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     } finally {
       onLoadingChange(false);
     }
-  }, [onResults, onLoadingChange, setQuery, onError, query, props.pageNumber]);
+  }, [onResults, onLoadingChange, setQuery, query, pageNumber]);
 
   useEffect(() => {
     handleSearch();
-  }, [props.pageNumber]);
+  }, [pageNumber]);
 
   return (
     <form

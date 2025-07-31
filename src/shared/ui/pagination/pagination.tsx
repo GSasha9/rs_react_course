@@ -1,10 +1,13 @@
 import { useSearchParams } from 'react-router-dom';
 
-import type { paginationProps } from './model/interfaces';
-
 import './pagination.scss';
 
-const Pagination = (props: paginationProps) => {
+interface PaginationProps {
+  pages: number;
+  activeNumber: number;
+}
+
+const Pagination = ({ pages, activeNumber }: PaginationProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleClick = (page: number) => {
@@ -16,8 +19,8 @@ const Pagination = (props: paginationProps) => {
 
   return (
     <div className="pagination">
-      {Array.from({ length: props.pages }).map((_, index) => {
-        const activeClass = props.activeNumber === index + 1 ? 'active' : '';
+      {Array.from({ length: pages }).map((_, index) => {
+        const activeClass = activeNumber === index + 1 ? 'active' : '';
 
         return (
           <button

@@ -2,27 +2,31 @@ import type { MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ResultCard from '../result-card/ui/result-card';
-import type { SearchResultsProps } from './models/interfaces';
 
 import './search-results.scss';
 
 import comicsService from '@/services/api/comics-api';
 
-const SearchResults = (props: SearchResultsProps) => {
+interface SearchResultsProps {
+  results: Record<string, unknown>[];
+  page: number;
+}
+
+const SearchResults = ({ results, page }: SearchResultsProps) => {
   const navigate = useNavigate();
   const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
     const uid = e.currentTarget.getAttribute('data-uid') || '';
 
     const card = await comicsService.fetchDataById(uid);
 
-    navigate(`${props.page || 1}/${uid}`, {
-      state: { item: card, page: props.page },
+    navigate(`${page || 1}/${uid}`, {
+      state: { item: card, page: page },
     });
   };
 
   return (
     <div className="card-container">
-      {props.results.map((item, index) => {
+      {results.map((item, index) => {
         const title =
           typeof item.title === 'string'
             ? item.title

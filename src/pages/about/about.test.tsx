@@ -15,7 +15,7 @@ describe('About page', () => {
     );
 
     expect(screen.getByRole('heading', { level: 1 })).toBeDefined();
-    expect(screen.getByRole('link', { name: /rs school/i })).toBeDefined();
+    expect(screen.getByRole('link', { name: /school/i })).toBeDefined();
     expect(screen.getByRole('link', { name: /react course/i })).toBeDefined();
   });
 });

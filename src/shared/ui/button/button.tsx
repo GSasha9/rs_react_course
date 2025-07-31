@@ -1,22 +1,33 @@
 import { useContext } from 'react';
 
-import type { ButtonProps } from './models/interfaces/button-props';
-
 import './button.scss';
 
 import { LoadingContext } from '@/shared/models/contexts';
 
-const Button = (props: ButtonProps) => {
+interface ButtonProps {
+  text?: string;
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
+  className?: string;
+  callback?: () => void;
+}
+
+const Button = ({
+  className = '',
+  callback,
+  text = '',
+  type = 'button',
+}: ButtonProps) => {
   const loading = useContext(LoadingContext);
 
   return (
     <button
-      className={`button ${props.className ?? ''}`}
-      onClick={props.callback}
-      type={props.type}
+      className={`button ${className ?? ''}`}
+      onClick={callback}
+      type={type}
       disabled={loading}
     >
-      {props.text}
+      {text}
     </button>
   );
 };

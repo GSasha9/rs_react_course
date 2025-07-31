@@ -1,22 +1,36 @@
 import { useContext } from 'react';
 
-import type { InputProps } from './models/interfaces';
+import DEFAULT_INPUT_VALUE from './models/constants/default-input-value';
 
 import './input.scss';
 
 import { LoadingContext } from '@/shared/models/contexts';
 
-const Input = (props: InputProps) => {
+interface InputProps {
+  placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  className?: string;
+}
+
+const Input = ({
+  type = 'text',
+  placeholder = DEFAULT_INPUT_VALUE,
+  className = 'input',
+  value,
+  onChange,
+}: InputProps) => {
   const loading = useContext(LoadingContext);
 
   return (
     <input
-      type={props.type || 'text'}
-      placeholder={props.placeholder || 'enter your search query'}
-      className={props.className || 'input'}
-      value={props.value}
-      onChange={props.onChange}
-      name="inpit-search"
+      type={type}
+      placeholder={placeholder}
+      className={className}
+      value={value}
+      onChange={onChange}
+      name="input-search"
       disabled={loading}
     ></input>
   );

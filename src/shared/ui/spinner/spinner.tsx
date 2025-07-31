@@ -1,8 +1,6 @@
 import './spinner.scss';
 
-import type { Props } from '@/shared/models/interfaces';
-
-const Spinner = ({ children }: Props) => {
+const Spinner = ({ children }: { children?: React.ReactNode }) => {
   return (
     <>
       <div className="spinner" data-testid="spinner">

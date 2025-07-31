@@ -14,16 +14,16 @@ import Spinner from '@/shared/ui/spinner/spinner';
 
 const SearchPage = () => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
-  const [pages, setPages] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('Something went wrong. Please try again.');
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const pageNumber = Number(searchParams.get('pageNumber')) || 0;
+  const currentPageNumber = Number(searchParams.get('pageNumber')) || 0;
 
   useEffect(() => {
-    if (location.pathname === '/search' && pageNumber === 0) {
+    if (location.pathname === '/search' && currentPageNumber === 0) {
       setSearchParams({ pageNumber: '1' });
     }
   });
@@ -35,20 +35,16 @@ const SearchPage = () => {
 
     if (!resultsArray) return;
 
-    setPages(response.page.totalPages);
+    setPageNumber(response.page.totalPages);
 
     if (JSON.stringify(resultsArray) !== JSON.stringify(results)) {
       setResults(resultsArray);
-      setError(false);
+      setError('');
     }
   };
 
   const handleLoadingChange = (isLoading: boolean) => {
     setLoading(isLoading);
-  };
-
-  const handleError = () => {
-    setError(true);
   };
 
   return (
@@ -58,8 +54,7 @@ const SearchPage = () => {
           <SearchForm
             onResults={handleResults}
             onLoadingChange={handleLoadingChange}
-            onError={handleError}
-            pageNumber={pageNumber}
+            pageNumber={currentPageNumber}
           ></SearchForm>
         </Section>
         <Section className="section-results">
@@ -71,12 +66,12 @@ const SearchPage = () => {
           {!loading && !error && results.length > 0 && (
             <>
               <div className="results">
-                <SearchResults results={results} page={pageNumber} />
+                <SearchResults results={results} page={currentPageNumber} />
                 <div className={`details`}>
                   <Outlet />
                 </div>
               </div>
-              <Pagination pages={pages} activeNumber={pageNumber} />
+              <Pagination pages={pageNumber} activeNumber={currentPageNumber} />
             </>
           )}
         </Section>

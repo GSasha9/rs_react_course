@@ -6,7 +6,7 @@ import Root from '@/pages/root/root';
 import DetailedPage from '@/pages/search-page/detailed-page/detailed-page';
 import SearchPage from '@/pages/search-page/search-page';
 
-const ROUTES = {
+export const ROUTES = {
   root: {
     path: '/',
     element: <Root />,
