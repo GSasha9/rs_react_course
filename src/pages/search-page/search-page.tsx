@@ -49,7 +49,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <LoadingContext.Provider value={loading}>
+      <LoadingContext.Provider value={{ loading, setLoading }}>
         <Section className="section-form">
           <SearchForm
             onResults={handleResults}

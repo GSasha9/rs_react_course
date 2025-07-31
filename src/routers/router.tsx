@@ -1,29 +1,8 @@
 import { createBrowserRouter } from 'react-router';
 
-import About from '@/pages/about/about';
-import ErrorPage from '@/pages/error-page/error-page';
-import Root from '@/pages/root/root';
-import DetailedPage from '@/pages/search-page/detailed-page/detailed-page';
-import SearchPage from '@/pages/search-page/search-page';
+import { ROUTES } from './routes';
 
-export const ROUTES = {
-  root: {
-    path: '/',
-    element: <Root />,
-  },
-  searchPage: {
-    path: 'search',
-    element: <SearchPage />,
-  },
-  aboutPage: {
-    path: 'about',
-    element: <About />,
-  },
-  deatiledPage: {
-    path: ':page/:uid',
-    element: <DetailedPage />,
-  },
-};
+import ErrorPage from '@/pages/error-page/error-page';
 
 const router = createBrowserRouter([
   {

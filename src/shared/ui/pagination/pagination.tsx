@@ -17,21 +17,26 @@ const Pagination = ({ pages, activeNumber }: PaginationProps) => {
     });
   };
 
+  const pageButtons = Array.from({ length: pages }, (_, index) => {
+    const page = index + 1;
+
+    return {
+      page,
+      isActive: page === activeNumber,
+    };
+  });
+
   return (
     <div className="pagination">
-      {Array.from({ length: pages }).map((_, index) => {
-        const activeClass = activeNumber === index + 1 ? 'active' : '';
-
-        return (
-          <button
-            className={`button-pagination ${activeClass}`}
-            key={index}
-            onClick={() => handleClick(index + 1)}
-          >
-            {index + 1}
-          </button>
-        );
-      })}
+      {pageButtons.map(({ page, isActive }) => (
+        <button
+          key={page}
+          className={`button-pagination ${isActive ? 'active' : ''}`}
+          onClick={() => handleClick(page)}
+        >
+          {page}
+        </button>
+      ))}
     </div>
   );
 };

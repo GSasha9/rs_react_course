@@ -18,7 +18,7 @@ const Button = ({
   text = '',
   type = 'button',
 }: ButtonProps) => {
-  const loading = useContext(LoadingContext);
+  const { loading } = useContext(LoadingContext);
 
   return (
     <button

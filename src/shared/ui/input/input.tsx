@@ -21,7 +21,7 @@ const Input = ({
   value,
   onChange,
 }: InputProps) => {
-  const loading = useContext(LoadingContext);
+  const { loading } = useContext(LoadingContext);
 
   return (
     <input

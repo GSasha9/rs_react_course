@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { ROUTES } from '@/router/router';
+import { ROUTES } from '@/routers/routes';
 
 const ErrorPage = () => {
   return (
