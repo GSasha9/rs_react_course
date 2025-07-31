@@ -1,18 +1,9 @@
-import type { RequestResults } from '../models/interfaces/request-results';
+import type { RequestResults } from '@/shared/models/interfaces';
 
-export class API {
-  private static instance: API;
+export class ComicsApi {
   private baseURL = 'https://stapi.co/api/v1/rest/comics';
 
-  public static getInstance = (): API => {
-    if (!API.instance) {
-      API.instance = new API();
-    }
-
-    return API.instance;
-  };
-
-  fetchData = async (
+  public fetchData = async (
     query: string = '',
     pageNumber: number
   ): Promise<RequestResults | undefined> => {
@@ -57,7 +48,7 @@ export class API {
     }
   };
 
-  fetchDataById = async (id: string) => {
+  public fetchDataById = async (id: string) => {
     const url = `${this.baseURL}?uid=${id}`;
 
     try {
@@ -82,6 +73,6 @@ export class API {
   };
 }
 
-const api = new API();
+const comicsService = new ComicsApi();
 
-export default api;
+export default comicsService;

@@ -6,7 +6,7 @@ import renderNestedObject from './models/utils/render-nested-object';
 
 import './deatiled-page.scss';
 
-import api from '@/shared/api/api';
+import comicsService from '@/services/api/comics-api';
 import Button from '@/shared/ui/button/button';
 
 const DetailedPage = () => {
@@ -25,7 +25,7 @@ const DetailedPage = () => {
         setItemData(location.state.item[categoryKey]);
         setIsLoading(false);
       } else if (uid) {
-        const fetched = await api.fetchDataById(uid);
+        const fetched = await comicsService.fetchDataById(uid);
         const categoryKey = Object.keys(fetched)[0];
 
         setItemData(fetched[categoryKey]);

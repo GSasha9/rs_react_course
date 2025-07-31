@@ -2,33 +2,32 @@ import { NavLink } from 'react-router-dom';
 
 import './header.scss';
 
+import getNavLink from '@/shared/models/utils/getNavLink';
+
+const navItems = [
+  {
+    to: '/search',
+    label: 'Search page',
+    testId: 'navSearch',
+  },
+  {
+    to: '/about',
+    label: 'About',
+    testId: 'navAbout',
+  },
+];
+
 const Header = () => {
   return (
     <header className="container header">
       <ul className="menu">
-        <li className="menu-item">
-          <NavLink
-            to={'/search'}
-            data-testid="navSearch"
-            className={({ isActive, isPending }) => {
-              return isActive ? 'active' : isPending ? 'pending' : '';
-            }}
-          >
-            {' '}
-            <span>Search page</span>
-          </NavLink>
-        </li>
-        <li className="menu-item">
-          <NavLink
-            to={'/about'}
-            data-testid="navAbout"
-            className={({ isActive, isPending }) => {
-              return isActive ? 'active' : isPending ? 'pending' : '';
-            }}
-          >
-            <span>About</span>
-          </NavLink>
-        </li>
+        {navItems.map(({ to, label, testId }) => (
+          <li key={testId} className="menu-item">
+            <NavLink to={to} data-testid={testId} className={getNavLink}>
+              <span>{label}</span>
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </header>
   );

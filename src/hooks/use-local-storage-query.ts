@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 const useLocalStorageQuery = (
   key: string,
   defaultValue: string = ''
@@ -11,6 +12,7 @@ const useLocalStorageQuery = (
 
   const updateValue = (newValue: string) => {
     localStorage.setItem(key, newValue);
+
     setValue(newValue);
   };
 
