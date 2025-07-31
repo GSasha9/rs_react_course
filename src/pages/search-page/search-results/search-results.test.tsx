@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 
 import SearchResults from './search-results';
 
+import { store } from '@/store/store';
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
@@ -15,14 +17,16 @@ describe('Search Results', () => {
 
   test('all results added to container', () => {
     const { container, rerender } = render(
-      <MemoryRouter initialEntries={['/search']}>
-        <Routes>
-          <Route
-            path="/search"
-            element={<SearchResults results={mockResult} page={1} />}
-          />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route
+              path="/search"
+              element={<SearchResults results={mockResult} page={1} />}
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(container.firstChild?.childNodes.length).toBe(5);
@@ -37,14 +41,16 @@ describe('Search Results', () => {
     ];
 
     rerender(
-      <MemoryRouter initialEntries={['/search']}>
-        <Routes>
-          <Route
-            path="/search"
-            element={<SearchResults results={newMockResults} page={1} />}
-          />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route
+              path="/search"
+              element={<SearchResults results={newMockResults} page={1} />}
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(container.firstChild?.childNodes.length).toBe(6);
@@ -52,14 +58,16 @@ describe('Search Results', () => {
 
   test('result card with no title or name renders correctly', () => {
     const { container } = render(
-      <MemoryRouter initialEntries={['/search']}>
-        <Routes>
-          <Route
-            path="/search"
-            element={<SearchResults results={mockResult} page={1} />}
-          />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route
+              path="/search"
+              element={<SearchResults results={mockResult} page={1} />}
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
     const noTitleElements = screen.getAllByText('No title');
