@@ -8,6 +8,7 @@ import useLocalStorageQuery from '@/hooks/use-local-storage-query';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
+import DEFAULT_INPUT_VALUE from '@/shared/ui/input/models/constants/default-input-value';
 
 interface SearchFormProps {
   onResults: (response: RequestResults) => void;
@@ -55,7 +56,12 @@ const SearchForm = (props: SearchFormProps) => {
       }}
       className="form"
     >
-      <Input value={query.trim()} onChange={handleInputChange}></Input>
+      <Input
+        value={query.trim()}
+        onChange={handleInputChange}
+        placeholder={DEFAULT_INPUT_VALUE}
+        name="input-search"
+      ></Input>
       <Button callback={handleSearch} type="button" text={'search'}></Button>
     </form>
   );

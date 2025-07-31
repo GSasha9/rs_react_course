@@ -6,6 +6,7 @@ import SearchResults from './search-results/search-results';
 
 import './search-page.scss';
 
+import SelectedCardFlyout from '@/features/selected-cards/selected-card-flyout';
 import { LoadingContext } from '@/shared/models/contexts';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Pagination from '@/shared/ui/pagination/pagination';
@@ -74,6 +75,7 @@ const SearchPage = () => {
               <Pagination pages={pageNumber} activeNumber={currentPageNumber} />
             </>
           )}
+          <SelectedCardFlyout></SelectedCardFlyout>
         </Section>
       </LoadingContext.Provider>
     </>
