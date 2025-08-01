@@ -3,8 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
 import { mockThrowingSection } from '../../../tests/test-utils/mocks';
-
-import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
+import ErrorBoundary from './error-boundary';
 
 describe('ErrorBoundary', () => {
   test('catch error and renders correctly whith default fallback', async () => {
@@ -12,7 +11,7 @@ describe('ErrorBoundary', () => {
 
     render(
       <ErrorBoundary>
-        <Section />
+        <Section className="section" />
       </ErrorBoundary>
     );
 

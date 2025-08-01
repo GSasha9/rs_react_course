@@ -4,8 +4,8 @@ const Section = ({
   children,
   className = '',
 }: {
-  children: React.ReactNode;
-  className: string;
+  children?: React.ReactNode;
+  className?: string;
 }) => {
   return (
     <section className={`section ${className}`} data-testid="section">

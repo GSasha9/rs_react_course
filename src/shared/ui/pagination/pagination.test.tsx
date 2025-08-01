@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
-import type { paginationProps } from './model/interfaces';
+import type { PaginationProps } from './pagination';
 import Pagination from './pagination';
 
-const mockProps: paginationProps = {
+const mockProps: PaginationProps = {
   pages: 2,
   activeNumber: 1,
 };
