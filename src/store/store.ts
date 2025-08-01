@@ -4,7 +4,7 @@ import SelectedCardsReducer from '../features/selected-cards/selected-card-slice
 
 export const store = configureStore({
   reducer: {
-    selectedCardsCount: SelectedCardsReducer,
+    selectedCard: SelectedCardsReducer,
   },
 });
 

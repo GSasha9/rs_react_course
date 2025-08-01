@@ -1,7 +1,10 @@
+import { useSearchParams } from 'react-router';
+
 import type { CardProps } from '../model/interfaces';
 
 import './result-card.scss';
 
+import type { Card } from '@/features/selected-cards/selected-card-slice';
 import {
   addCard,
   deleteCard,
@@ -12,24 +15,36 @@ import Input from '@/shared/ui/input/input';
 
 const ResultCard = ({ title, uid, onClick, name, description }: CardProps) => {
   const dispatch = useAppDispatch();
-  const cards = useAppSelector((state) => state.selectedCardsCount.cardUID);
+  const cards = useAppSelector((state) => state.selectedCard.cards);
+  const [searchParams] = useSearchParams();
 
-  const handleCheckboxClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    const checkbox = e.currentTarget;
 
+    const checkbox = e.currentTarget;
     const uid = checkbox.dataset.checkboxuid;
+
+    const descriptionText = description
+      .map((item) =>
+        Object.entries(item)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(', ')
+      )
+      .join('; ');
+
+    const newCard: Card = {
+      uid: uid ?? '',
+      title: (title || name) ?? 'No title',
+      description: descriptionText ?? '',
+      url: `${searchParams.toString()}/${uid}`,
+    };
 
     if (!uid) return;
 
     if (checkbox.checked) {
-      console.log(uid);
-
-      if (!uid) return;
-
-      dispatch(addCard(uid));
+      dispatch(addCard(newCard));
     } else {
-      dispatch(deleteCard(uid));
+      dispatch(deleteCard(newCard));
     }
   };
 
@@ -38,11 +53,12 @@ const ResultCard = ({ title, uid, onClick, name, description }: CardProps) => {
       <Input
         type="checkbox"
         className="card-checkbox"
-        onClick={handleCheckboxClick}
+        onChange={handleCheckboxChange}
+        onClick={(e) => e.stopPropagation()}
         data-checkboxuid={uid}
         checked={
           typeof uid !== 'undefined'
-            ? cards.indexOf(uid) !== -1
+            ? cards.find((el) => el.uid === uid)
               ? true
               : false
             : false
