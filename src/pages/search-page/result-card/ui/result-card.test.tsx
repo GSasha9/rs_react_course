@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { expect, test } from 'vitest';
 
 import ResultCard from './result-card';
@@ -15,7 +16,11 @@ const mockData = {
 test('Result card renders correctly', () => {
   render(
     <Provider store={store}>
-      <ResultCard {...mockData} />
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<ResultCard {...mockData} />} />
+        </Routes>
+      </MemoryRouter>
     </Provider>
   );
 

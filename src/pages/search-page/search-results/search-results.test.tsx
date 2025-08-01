@@ -3,18 +3,18 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 
+vi.mock('@/services/api/comics-api.ts', () => ({
+  default: {
+    fetchDataById: vi.fn().mockResolvedValue({}),
+  },
+}));
+
 import SearchResults from './search-results';
 
 import { store } from '@/store/store';
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
-  vi.mock('@/services/api/comics-api.ts', () => ({
-    default: {
-      fetchDataById: vi.fn().mockResolvedValue({}),
-    },
-  }));
-
   test('all results added to container', () => {
     const { container, rerender } = render(
       <Provider store={store}>

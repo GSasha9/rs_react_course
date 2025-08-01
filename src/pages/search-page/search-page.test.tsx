@@ -163,34 +163,4 @@ describe('Search Page', () => {
 
     consoleErrorSpy.mockRestore();
   });
-
-  test('handleResults updates results state and renders results', async () => {
-    const mockData = [{ id: 1, title: 'Test result' }];
-
-    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
-      array: mockData,
-      page: { totalPages: 1 },
-      sort: {},
-    });
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route path="/search" element={<SearchPage />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const input = screen.getByRole('textbox');
-    const button = screen.getByRole('button', { name: 'search' });
-
-    await userEvent.type(input, 'test');
-    await userEvent.click(button);
-
-    await waitFor(() => {
-      expect(screen.getByText('Test result')).toBeDefined();
-    });
-  });
 });

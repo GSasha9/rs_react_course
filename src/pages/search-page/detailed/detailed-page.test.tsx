@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import DetailedPage from './detailed-page';
+
+import { store } from '@/store/store';
 
 const mockItem = {
   comics: {
@@ -18,13 +21,15 @@ const mockItem = {
 describe('Detailed page', () => {
   test('renders detailed page correctly with route state', () => {
     render(
-      <MemoryRouter
-        initialEntries={[{ pathname: '/details', state: { item: mockItem } }]}
-      >
-        <Routes>
-          <Route path="/details" element={<DetailedPage />} />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: '/details', state: { item: mockItem } }]}
+        >
+          <Routes>
+            <Route path="/details" element={<DetailedPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(screen.getByTestId('detailedPage')).toBeDefined();

@@ -1,10 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import SearchForm from './search-form';
 
 import '@testing-library/user-event';
+import { store } from '@/store/store';
 import { mockResponse } from '@/tests/test-utils/mocks';
 
 vi.mock('../utils', () => ({
@@ -19,12 +22,23 @@ const pageNumber = 20;
 
 const renderForm = (props = {}) =>
   render(
-    <SearchForm
-      onResults={mockOnResults}
-      onLoadingChange={mockOnLoadingChange}
-      pageNumber={pageNumber}
-      {...props}
-    />
+    <Provider store={store}>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={mockOnResults}
+                onLoadingChange={mockOnLoadingChange}
+                pageNumber={pageNumber}
+                {...props}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    </Provider>
   );
 
 describe('Search form', () => {
