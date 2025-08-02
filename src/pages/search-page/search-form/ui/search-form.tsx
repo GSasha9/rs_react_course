@@ -63,9 +63,16 @@ const SearchForm = (props: SearchFormProps) => {
         onChange={handleInputChange}
         placeholder={DEFAULT_INPUT_VALUE}
         name="input-search"
-        className={nightTheme ? 'night-input' : ''}
+        className={
+          nightTheme ? 'input search-input night-input' : 'input search-input'
+        }
       ></Input>
-      <Button callback={handleSearch} type="button" text={'search'}></Button>
+      <Button
+        callback={handleSearch}
+        type="button"
+        text={'search'}
+        className="search-button"
+      ></Button>
     </form>
   );
 };

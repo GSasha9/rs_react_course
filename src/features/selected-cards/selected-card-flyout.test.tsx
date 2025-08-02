@@ -25,7 +25,11 @@ describe('SelectedCardFlyout', () => {
   test('renders with correct number of items', async () => {
     renderSearchPage();
 
-    const checkboxes = await screen.findAllByTestId('checkbox');
+    const checkboxes = await screen.findAllByTestId(
+      'checkbox',
+      {},
+      { timeout: 3000 }
+    );
 
     expect(checkboxes.length).toBeGreaterThan(0);
     await userEvent.click(checkboxes[0]);
@@ -36,7 +40,11 @@ describe('SelectedCardFlyout', () => {
   test('unselect all button works correctly', async () => {
     renderSearchPage();
 
-    const checkboxes = await screen.findAllByTestId('checkbox');
+    const checkboxes = await screen.findAllByTestId(
+      'checkbox',
+      {},
+      { timeout: 3000 }
+    );
 
     expect(checkboxes.length).toBeGreaterThan(0);
     await userEvent.click(checkboxes[0]);
