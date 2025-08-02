@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import './root.scss';
@@ -15,10 +16,22 @@ const Root = () => {
     setNightTheme((prevNightTheme) => !prevNightTheme);
   };
 
+  useEffect(() => {
+    const root = document.getElementById('root');
+
+    if (!root) return;
+
+    if (nightTheme) {
+      root.classList.add('night-theme');
+    } else {
+      root.classList.remove('night-theme');
+    }
+  });
+
   return (
     <>
       <ThemeContext.Provider value={{ nightTheme }}>
-        <Header></Header>
+        <Header className={`${nightTheme} ? ' night-theme' : ''`}></Header>
         <Button
           className={`theme${nightTheme ? ' night' : ''}`}
           callback={toggleTheme}

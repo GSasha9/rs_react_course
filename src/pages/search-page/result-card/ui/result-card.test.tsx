@@ -5,7 +5,7 @@ import { expect, test } from 'vitest';
 
 import ResultCard from './result-card';
 
-import { store } from '@/store/store';
+import { appStore } from '@/store/app-store';
 
 const mockData = {
   key: 'uid1',
@@ -15,7 +15,7 @@ const mockData = {
 
 test('Result card renders correctly', () => {
   render(
-    <Provider store={store}>
+    <Provider store={appStore}>
       <MemoryRouter initialEntries={['/search']}>
         <Routes>
           <Route path="/search" element={<ResultCard {...mockData} />} />

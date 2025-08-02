@@ -11,13 +11,13 @@ vi.mock('@/services/api/comics-api.ts', () => ({
 
 import SearchResults from './search-results';
 
-import { store } from '@/store/store';
+import { appStore } from '@/store/app-store';
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
   test('all results added to container', () => {
     const { container, rerender } = render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route
@@ -41,7 +41,7 @@ describe('Search Results', () => {
     ];
 
     rerender(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route
@@ -58,7 +58,7 @@ describe('Search Results', () => {
 
   test('result card with no title or name renders correctly', () => {
     const { container } = render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route

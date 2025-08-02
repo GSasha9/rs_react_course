@@ -6,3 +6,9 @@
   padding: $spacing-sm;
   border-radius: $border-radius-input;
 }
+
+.night-input {
+  border: 1px solid white;
+  border-radius: $border-radius-input;
+  background-color: black;
+}

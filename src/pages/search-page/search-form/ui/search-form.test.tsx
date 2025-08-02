@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import SearchForm from './search-form';
 
 import '@testing-library/user-event';
-import { store } from '@/store/store';
+import { appStore } from '@/store/app-store';
 import { mockResponse } from '@/tests/test-utils/mocks';
 
 vi.mock('../utils', () => ({
@@ -22,7 +22,7 @@ const pageNumber = 20;
 
 const renderForm = (props = {}) =>
   render(
-    <Provider store={store}>
+    <Provider store={appStore}>
       <MemoryRouter initialEntries={['/search']}>
         <Routes>
           <Route

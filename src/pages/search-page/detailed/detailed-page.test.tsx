@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 
 import DetailedPage from './detailed-page';
 
-import { store } from '@/store/store';
+import { appStore } from '@/store/app-store';
 
 const mockItem = {
   comics: {
@@ -21,7 +21,7 @@ const mockItem = {
 describe('Detailed page', () => {
   test('renders detailed page correctly with route state', () => {
     render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter
           initialEntries={[{ pathname: '/details', state: { item: mockItem } }]}
         >

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 
 import router from './routers/router';
-import { store } from './store/store';
+import { appStore } from './store/app-store';
 
 import './styles/style.scss';
 
@@ -14,7 +14,7 @@ if (!container) throw new Error('Root container not found');
 
 ReactDom.createRoot(container).render(
   <StrictMode>
-    <Provider store={store}>
+    <Provider store={appStore}>
       <RouterProvider router={router} />
     </Provider>
   </StrictMode>

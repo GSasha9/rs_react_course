@@ -17,9 +17,13 @@ const navItems = [
   },
 ];
 
-const Header = () => {
+interface HeaderProps {
+  className?: string;
+}
+
+const Header = ({ className = '' }: HeaderProps) => {
   return (
-    <header className="container header">
+    <header className={`container header ${className}`}>
       <ul className="menu">
         {navItems.map(({ to, label, testId }) => (
           <li key={testId} className="menu-item">

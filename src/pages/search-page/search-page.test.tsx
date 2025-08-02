@@ -15,12 +15,12 @@ import { Provider } from 'react-redux';
 
 import { startSearch } from './search-form/utils';
 
-import { store } from '@/store/store';
+import { appStore } from '@/store/app-store';
 
 describe('Search Page', () => {
   test('renders correctly', () => {
     render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route path="/search" element={<SearchPage />} />
@@ -44,7 +44,7 @@ describe('Search Page', () => {
     );
 
     render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route path="/search" element={<SearchPage />} />
@@ -67,7 +67,7 @@ describe('Search Page', () => {
 
   test('updates query state on input change', async () => {
     render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route
@@ -97,7 +97,7 @@ describe('Search Page', () => {
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockData);
 
     render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route
@@ -135,7 +135,7 @@ describe('Search Page', () => {
     (startSearch as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
     render(
-      <Provider store={store}>
+      <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
             <Route

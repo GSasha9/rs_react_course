@@ -2,14 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import SelectedCardsReducer from '../features/selected-cards/selected-card-slice';
 
-export const store = configureStore({
+export const appStore = configureStore({
   reducer: {
     selectedCard: SelectedCardsReducer,
   },
 });
 
-export type AppType = typeof store;
+export type AppType = typeof appStore;
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof appStore.dispatch;
 
-export type RootSate = ReturnType<typeof store.getState>;
+export type RootSate = ReturnType<typeof appStore.getState>;
