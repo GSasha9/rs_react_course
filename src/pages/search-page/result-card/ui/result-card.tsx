@@ -56,6 +56,7 @@ const ResultCard = ({ title, uid, onClick, name, description }: CardProps) => {
         onChange={handleCheckboxChange}
         onClick={(e) => e.stopPropagation()}
         data-checkboxuid={uid}
+        data-testid="checkbox"
         checked={
           typeof uid !== 'undefined'
             ? cards.find((el) => el.uid === uid)
