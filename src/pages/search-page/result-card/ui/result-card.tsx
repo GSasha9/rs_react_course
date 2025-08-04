@@ -4,14 +4,14 @@ import type { CardProps } from '../model/interfaces';
 
 import './result-card.scss';
 
-import type { Card } from '@/features/selected-cards/selected-card-slice';
-import {
-  addCard,
-  deleteCard,
-} from '@/features/selected-cards/selected-card-slice';
 import { useAppDispatch } from '@/hooks/redux-hooks';
 import { useAppSelector } from '@/hooks/redux-hooks';
 import Input from '@/shared/ui/input/input';
+import type { Card } from '@/store/features/selected-cards/slices/selected-card-slice';
+import {
+  addCard,
+  deleteCard,
+} from '@/store/features/selected-cards/slices/selected-card-slice';
 
 const ResultCard = ({ title, uid, onClick, name, description }: CardProps) => {
   const dispatch = useAppDispatch();

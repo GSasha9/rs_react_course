@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import SelectedCardsReducer from '../features/selected-cards/selected-card-slice';
+import SelectedCardsReducer from './features/selected-cards/slices/selected-card-slice';
 
 export const appStore = configureStore({
   reducer: {

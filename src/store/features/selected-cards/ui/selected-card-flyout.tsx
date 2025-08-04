@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { deleteAllCards } from './selected-card-slice';
-import { downloadCSV } from './utils/download-csv';
+import { deleteAllCards } from '../slices/selected-card-slice';
+import { downloadCSV } from '../utils/download-csv';
 
 import './selected-card-flyout.scss';
 

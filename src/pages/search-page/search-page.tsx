@@ -6,12 +6,12 @@ import SearchResults from './search-results/search-results';
 
 import './search-page.scss';
 
-import SelectedCardFlyout from '@/features/selected-cards/selected-card-flyout';
 import { LoadingContext } from '@/shared/models/contexts';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Pagination from '@/shared/ui/pagination/pagination';
 import Section from '@/shared/ui/section/section';
 import Spinner from '@/shared/ui/spinner/spinner';
+import SelectedCardFlyout from '@/store/features/selected-cards/ui/selected-card-flyout';
 
 const SearchPage = () => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
