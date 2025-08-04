@@ -18,7 +18,7 @@ import { startSearch } from './search-form/utils';
 import { appStore } from '@/store/app-store';
 
 describe('Search Page', () => {
-  test('renders correctly', () => {
+  test('renders search form', () => {
     render(
       <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
@@ -29,8 +29,8 @@ describe('Search Page', () => {
       </Provider>
     );
 
-    expect(screen.getByRole('textbox')).toBeDefined();
-    expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
   });
 
   test('search button onClick changes loading state and shows spinner', async () => {
@@ -59,7 +59,7 @@ describe('Search Page', () => {
 
     const spinner = await screen.findByTestId('spinner');
 
-    expect(spinner).toBeDefined();
+    expect(spinner).toBeInTheDocument();
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resolveSearch!({ array: [], page: { totalPages: 1 }, sort: {} });

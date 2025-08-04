@@ -32,10 +32,10 @@ describe('Detailed page', () => {
       </Provider>
     );
 
-    expect(screen.getByTestId('detailedPage')).toBeDefined();
-    expect(screen.getByRole('button', { name: /close/i })).toBeDefined();
-    expect(screen.getByText(/Test Comic/)).toBeDefined();
-    expect(screen.getByText(/Test Author/)).toBeDefined();
-    expect(screen.getByText(/Test Publisher/)).toBeDefined();
+    expect(screen.getByTestId('detailedPage')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+    expect(screen.getByText(/Test Comic/)).toBeInTheDocument();
+    expect(screen.getByText(/Test Author/)).toBeInTheDocument();
+    expect(screen.getByText(/Test Publisher/)).toBeInTheDocument();
   });
 });

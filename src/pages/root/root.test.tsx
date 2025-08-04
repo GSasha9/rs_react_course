@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 import Root from './root';
 
 describe('Error page', () => {
-  test('renders correctly', () => {
+  test('renders main seaction', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -14,6 +14,6 @@ describe('Error page', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByTestId('main')).toBeDefined();
+    expect(screen.getByTestId('main')).toBeInTheDocument();
   });
 });

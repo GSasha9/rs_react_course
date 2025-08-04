@@ -6,7 +6,7 @@ import { describe, expect, test } from 'vitest';
 import ErrorPage from './error-page';
 
 describe('Error page', () => {
-  test('renders correctly', async () => {
+  test('renders error message and return button', async () => {
     const user = userEvent.setup();
 
     render(
@@ -18,11 +18,11 @@ describe('Error page', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Error 404')).toBeDefined();
+    expect(screen.getByText('Error 404')).toBeInTheDocument();
 
     const backHomeBtn = screen.getByRole('link');
 
-    expect(backHomeBtn).toBeDefined();
+    expect(backHomeBtn).toBeInTheDocument();
 
     await user.click(backHomeBtn);
   });

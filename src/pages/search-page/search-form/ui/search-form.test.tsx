@@ -46,11 +46,11 @@ describe('Search form', () => {
     localStorage.clear();
     vi.clearAllMocks();
   });
-  test('renders correctly', () => {
+  test('renders form whit text input and search button', () => {
     renderForm();
 
-    expect(screen.getByRole('textbox')).not.toBeNull();
-    expect(screen.getByRole('button')).not.toBeNull();
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
   test('should be submitted by search button with correct data', async () => {

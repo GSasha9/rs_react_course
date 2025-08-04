@@ -13,7 +13,7 @@ const mockData = {
   description: [{ hologram: 'false', mirror: 'false' }],
 };
 
-test('Result card renders correctly', () => {
+test('Result card should display title and hologram', () => {
   render(
     <Provider store={appStore}>
       <MemoryRouter initialEntries={['/search']}>
@@ -24,6 +24,6 @@ test('Result card renders correctly', () => {
     </Provider>
   );
 
-  expect(screen.getByText(/title/i)).not.toBeNull();
-  expect(screen.getByText(/hologram/i)).not.toBeNull();
+  expect(screen.getByText(/title/i)).toBeVisible();
+  expect(screen.getByText(/hologram/i)).toBeVisible();
 });
