@@ -1,15 +1,14 @@
-import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import './root.scss';
 import '../../styles/style.scss';
 
-import { ThemeContext } from '@/contexts/theme-context';
+import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';
 import Header from '@/shared/ui/header/header';
 
 const Root = () => {
-  const { nightTheme, toggleTheme } = useContext(ThemeContext);
+  const { nightTheme, toggleTheme } = useTheme();
 
   return (
     <>

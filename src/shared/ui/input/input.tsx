@@ -1,8 +1,6 @@
-import { useContext } from 'react';
-
 import './input.scss';
 
-import { LoadingContext } from '@/contexts';
+import { useLoadingStatus } from '@/hooks/use-loading-status';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
@@ -21,7 +19,7 @@ const Input = ({
   onClick,
   ...props
 }: InputProps) => {
-  const { loading } = useContext(LoadingContext);
+  const { loadingStatus } = useLoadingStatus();
 
   return (
     <input
@@ -30,7 +28,7 @@ const Input = ({
       className={className}
       value={value}
       onChange={onChange}
-      disabled={loading}
+      disabled={loadingStatus}
       onClick={onClick}
     ></input>
   );

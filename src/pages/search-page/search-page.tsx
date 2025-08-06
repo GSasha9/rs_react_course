@@ -6,7 +6,7 @@ import SearchResults from './search-results/search-results';
 
 import './search-page.scss';
 
-import { LoadingContext } from '@/contexts';
+import { useLoadingStatus } from '@/hooks/use-loading-status';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Pagination from '@/shared/ui/pagination/pagination';
 import Section from '@/shared/ui/section/section';
@@ -16,7 +16,7 @@ import Spinner from '@/shared/ui/spinner/spinner';
 const SearchPage = () => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const { loadingStatus, toggleLoadingStatus } = useLoadingStatus();
   const [error, setError] = useState('Something went wrong. Please try again.');
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,39 +45,37 @@ const SearchPage = () => {
   };
 
   const handleLoadingChange = (isLoading: boolean) => {
-    setLoading(isLoading);
+    toggleLoadingStatus(isLoading);
   };
 
   return (
     <>
-      <LoadingContext.Provider value={{ loading, setLoading }}>
-        <Section className="section-form">
-          <SearchForm
-            onResults={handleResults}
-            onLoadingChange={handleLoadingChange}
-            pageNumber={currentPageNumber}
-          ></SearchForm>
-        </Section>
-        <Section className="section-results">
-          {loading && <Spinner />}
-          {!loading && error && (
-            <p className="error">Something went wrong. Please try again.</p>
-          )}
-          {!loading && !error && results.length === 0 && <p>No results</p>}
-          {!loading && !error && results.length > 0 && (
-            <>
-              <div className="results">
-                <SearchResults results={results} page={currentPageNumber} />
-                <div className={`details`}>
-                  <Outlet />
-                </div>
+      <Section className="section-form">
+        <SearchForm
+          onResults={handleResults}
+          onLoadingChange={handleLoadingChange}
+          pageNumber={currentPageNumber}
+        ></SearchForm>
+      </Section>
+      <Section className="section-results">
+        {loadingStatus && <Spinner />}
+        {!loadingStatus && error && (
+          <p className="error">Something went wrong. Please try again.</p>
+        )}
+        {!loadingStatus && !error && results.length === 0 && <p>No results</p>}
+        {!loadingStatus && !error && results.length > 0 && (
+          <>
+            <div className="results">
+              <SearchResults results={results} page={currentPageNumber} />
+              <div className={`details`}>
+                <Outlet />
               </div>
-              <Pagination pages={pageNumber} activeNumber={currentPageNumber} />
-            </>
-          )}
-          <SelectedCardFlyout></SelectedCardFlyout>
-        </Section>
-      </LoadingContext.Provider>
+            </div>
+            <Pagination pages={pageNumber} activeNumber={currentPageNumber} />
+          </>
+        )}
+        <SelectedCardFlyout></SelectedCardFlyout>
+      </Section>
     </>
   );
 };

@@ -1,19 +1,29 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
 import { describe, expect, test, vi } from 'vitest';
 
 import Button from '@/shared/ui/button/button';
+import { appStore } from '@/store';
 
 describe('Button', () => {
   test('renders with correct text', () => {
     const mockData = {
       text: 'Test text',
     };
-    const { rerender } = render(<Button {...mockData} />);
+    const { rerender } = render(
+      <Provider store={appStore}>
+        <Button {...mockData} />
+      </Provider>
+    );
 
     expect(screen.getByText(mockData.text)).toBeInTheDocument();
 
-    rerender(<Button text={'search'} />);
+    rerender(
+      <Provider store={appStore}>
+        <Button text={'search'} />
+      </Provider>
+    );
 
     expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
   });
@@ -21,7 +31,11 @@ describe('Button', () => {
   test('click handler called', async () => {
     const mockHandlerClick = vi.fn();
 
-    render(<Button callback={mockHandlerClick} text={'Click me'} />);
+    render(
+      <Provider store={appStore}>
+        <Button callback={mockHandlerClick} text={'Click me'} />
+      </Provider>
+    );
 
     const button = screen.getByRole('button', { name: 'Click me' });
 

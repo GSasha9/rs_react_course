@@ -1,24 +1,16 @@
-import { useContext } from 'react';
-
-import { deleteAllCards } from '../../../store/selected-cards/slices/selected-cards-slice';
-
 import './selected-card-flyout.scss';
 
-import { ThemeContext } from '@/contexts/theme-context';
+import { useSelectedCards } from '@/hooks/use-selected-cards';
+import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';
 import { downloadCSV } from '@/shared/utils/download-csv';
-import { useAppSelector } from '@/store/redux-hooks';
-import { useAppDispatch } from '@/store/redux-hooks';
-import { getSelectedCards } from '@/store/selectors/selectedCardSelector';
 
 const SelectedCardFlyout = () => {
-  const cards = useAppSelector(getSelectedCards);
-  const { nightTheme } = useContext(ThemeContext);
-
-  const dispatch = useAppDispatch();
+  const { cards, deleteAllCards } = useSelectedCards();
+  const { nightTheme } = useTheme();
 
   const handleUnselect = () => {
-    dispatch(deleteAllCards());
+    deleteAllCards();
   };
 
   const handleDownload = () => {

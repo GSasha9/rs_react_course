@@ -88,11 +88,14 @@ describe('Search form', () => {
     await userEvent.type(input, 'test');
 
     rerender(
-      <SearchForm
-        onResults={mockOnResults}
-        onLoadingChange={mockOnLoadingChange}
-        pageNumber={pageNumber}
-      />
+      <Provider store={appStore}>
+        {' '}
+        <SearchForm
+          onResults={mockOnResults}
+          onLoadingChange={mockOnLoadingChange}
+          pageNumber={pageNumber}
+        />
+      </Provider>
     );
 
     expect(input.value).toBe('test');

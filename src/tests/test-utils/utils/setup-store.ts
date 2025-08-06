@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import selectedCardsReducer from '../../../store/selected-cards/slices/selected-cards-slice';
+import isLoadingReducer from '../../../store/slices/is-loading-slice';
+import selectedCardsReducer from '../../../store/slices/selected-cards-slice';
 
 export const setupStore = () =>
   configureStore({
     reducer: {
       selectedCard: selectedCardsReducer,
+      isLoading: isLoadingReducer,
     },
   });
 

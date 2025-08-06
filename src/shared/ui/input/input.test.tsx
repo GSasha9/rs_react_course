@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
 import { expect, test, vi } from 'vitest';
 
 import Input from '@/shared/ui/input/input';
+import { appStore } from '@/store';
 
 const mockCallback = vi.fn();
 const mockProps = {
@@ -13,7 +15,11 @@ const mockProps = {
 };
 
 test('Input with given props renders correctly', async () => {
-  render(<Input {...mockProps} />);
+  render(
+    <Provider store={appStore}>
+      <Input {...mockProps} />
+    </Provider>
+  );
 
   const input = screen.getByPlaceholderText(
     /test placeholder/i

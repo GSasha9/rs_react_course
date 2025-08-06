@@ -1,4 +1,4 @@
-import type { Card } from '@/store/selected-cards/slices/selected-cards-slice';
+import type { Card } from '@/store/slices/selected-cards-slice';
 
 export function downloadCSV(data: Card[], filename: string) {
   if (data.length === 0) return;

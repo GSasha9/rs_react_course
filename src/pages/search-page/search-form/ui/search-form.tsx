@@ -1,11 +1,11 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { startSearch } from '../utils';
 
 import './search-form.scss';
 
-import { ThemeContext } from '@/contexts/theme-context';
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
+import { useTheme } from '@/hooks/use-theme';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
@@ -19,7 +19,7 @@ interface SearchFormProps {
 
 const SearchForm = (props: SearchFormProps) => {
   const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
-  const { nightTheme } = useContext(ThemeContext);
+  const { nightTheme } = useTheme();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
