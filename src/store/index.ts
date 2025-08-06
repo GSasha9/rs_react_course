@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import SelectedCardsReducer from './features/selected-cards/slices/selected-card-slice';
+import SelectedCardsReducer from './selected-cards/slices/selected-cards-slice';
 
 export const appStore = configureStore({
   reducer: {
@@ -12,4 +12,4 @@ export type AppType = typeof appStore;
 
 export type AppDispatch = typeof appStore.dispatch;
 
-export type RootSate = ReturnType<typeof appStore.getState>;
+export type RootState = ReturnType<typeof appStore.getState>;

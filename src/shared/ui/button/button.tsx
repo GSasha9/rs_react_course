@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import './button.scss';
 
-import { LoadingContext } from '@/shared/models/contexts';
+import { LoadingContext } from '@/contexts';
 
 interface ButtonProps {
   text?: string;

@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 
 import DetailedPage from './detailed-page';
 
-import { appStore } from '@/store/app-store';
+import { appStore } from '@/store';
 
 const mockItem = {
   comics: {

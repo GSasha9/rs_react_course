@@ -5,7 +5,7 @@ import { expect, test } from 'vitest';
 
 import ResultCard from './result-card';
 
-import { appStore } from '@/store/app-store';
+import { appStore } from '@/store';
 
 const mockData = {
   key: 'uid1',

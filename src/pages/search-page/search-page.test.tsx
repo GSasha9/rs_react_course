@@ -15,7 +15,7 @@ import { Provider } from 'react-redux';
 
 import { startSearch } from './search-form/utils';
 
-import { appStore } from '@/store/app-store';
+import { appStore } from '@/store';
 
 describe('Search Page', () => {
   test('renders search form', () => {

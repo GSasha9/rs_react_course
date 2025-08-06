@@ -4,8 +4,8 @@ import { startSearch } from '../utils';
 
 import './search-form.scss';
 
+import { ThemeContext } from '@/contexts/theme-context';
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
-import { ThemeContext } from '@/shared/models/contexts/theme-context';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';

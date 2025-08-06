@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import SearchForm from './search-form';
 
 import '@testing-library/user-event';
-import { appStore } from '@/store/app-store';
+import { appStore } from '@/store';
 import { mockResponse } from '@/tests/test-utils/mocks';
 
 vi.mock('../utils', () => ({

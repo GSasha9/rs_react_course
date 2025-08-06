@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import './input.scss';
 
-import { LoadingContext } from '@/shared/models/contexts';
+import { LoadingContext } from '@/contexts';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;

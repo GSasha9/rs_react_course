@@ -16,7 +16,7 @@ export const ROUTES = {
     path: 'about',
     element: <About />,
   },
-  deatiledPage: {
+  detailedPage: {
     path: ':page/:uid',
     element: <DetailedPage />,
   },
