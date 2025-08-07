@@ -20,4 +20,10 @@
   .list-item__prop-name {
     color: $primary-button;
   }
+
+  .buttons {
+    display: flex;
+    gap: 5%;
+    width: 100%;
+  }
 }

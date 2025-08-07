@@ -34,9 +34,9 @@ describe('Search Page', () => {
               path="/search"
               element={
                 <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
+                  onSearch={vi.fn()}
                   pageNumber={1}
+                  disabled={false}
                 />
               }
             />

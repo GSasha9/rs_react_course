@@ -1,53 +1,31 @@
-import { useCallback, useEffect } from 'react';
-import { useMemo } from 'react';
+import { useState } from 'react';
 
 import './search-form.scss';
 
-import useLocalStorageQuery from '@/hooks/use-local-storage-query';
 import { useTheme } from '@/hooks/use-theme';
-import type { RequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
 import DEFAULT_INPUT_VALUE from '@/shared/ui/input/models/constants/default-input-value';
-import { useGetCardsByQueryAndPageQuery } from '@/store/api/comics-api';
 
 interface SearchFormProps {
-  onResults: (response: RequestResults) => void;
-  onLoadingChange: (isLoading: boolean) => void;
+  disabled: boolean;
   pageNumber: number;
+  onSearch: (query: string) => void;
 }
 
 const SearchForm = (props: SearchFormProps) => {
-  const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
   const { nightTheme } = useTheme();
+  const [input, setInput] = useState('');
 
-  const { onResults, onLoadingChange, pageNumber } = props;
-
-  const searchArgs = useMemo(
-    () => ({ query, pageNumber }),
-    [query, pageNumber]
-  );
-
-  const { data } = useGetCardsByQueryAndPageQuery(searchArgs);
+  const { onSearch, disabled } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+    setInput(e.target.value);
   };
 
-  const handleSearch = useCallback(async () => {
-    setQuery(query);
-  }, [setQuery, query]);
-
-  useEffect(() => {
-    onLoadingChange(true);
-
-    if (data) {
-      onResults(data);
-      setQuery(query);
-    }
-
-    onLoadingChange(false);
-  }, [data, onLoadingChange, onResults, query, setQuery]);
+  const handleSearch = () => {
+    onSearch(input);
+  };
 
   return (
     <form
@@ -59,19 +37,21 @@ const SearchForm = (props: SearchFormProps) => {
       className="form"
     >
       <Input
-        value={query.trim()}
+        value={input}
         onChange={handleInputChange}
         placeholder={DEFAULT_INPUT_VALUE}
         name="input-search"
         className={
           nightTheme ? 'input search-input night-input' : 'input search-input'
         }
+        disabled={disabled}
       ></Input>
       <Button
         callback={handleSearch}
         type="button"
         text={'search'}
         className="search-button"
+        disabled={disabled}
       ></Button>
     </form>
   );

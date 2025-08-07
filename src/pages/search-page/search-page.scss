@@ -1,5 +1,14 @@
 @use '../../styles/scss/variables.scss' as *;
 
+.fetching {
+  filter: blur(5px);
+}
+
+.refetch-button {
+  position: fixed;
+  height: fit-content;
+}
+
 .main {
   display: flex;
   flex-direction: column;

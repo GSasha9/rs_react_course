@@ -1,13 +1,12 @@
 import './button.scss';
 
-import { useLoadingStatus } from '@/hooks/use-loading-status';
-
 interface ButtonProps {
   text?: string;
   type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
   className?: string;
   callback?: () => void;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -15,15 +14,14 @@ const Button = ({
   callback,
   text = '',
   type = 'button',
+  disabled = false,
 }: ButtonProps) => {
-  const { loadingStatus } = useLoadingStatus();
-
   return (
     <button
       className={`button ${className ?? ''}`}
       onClick={callback}
       type={type}
-      disabled={loadingStatus}
+      disabled={disabled}
     >
       {text}
     </button>

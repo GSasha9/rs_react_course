@@ -1,7 +1,5 @@
 import './input.scss';
 
-import { useLoadingStatus } from '@/hooks/use-loading-status';
-
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   value?: string;
@@ -9,6 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: string;
   className?: string;
   name?: string;
+  disabled?: boolean;
 }
 
 const Input = ({
@@ -17,10 +16,9 @@ const Input = ({
   value,
   onChange,
   onClick,
+  disabled = false,
   ...props
 }: InputProps) => {
-  const { loadingStatus } = useLoadingStatus();
-
   return (
     <input
       {...props}
@@ -28,7 +26,7 @@ const Input = ({
       className={className}
       value={value}
       onChange={onChange}
-      disabled={loadingStatus}
+      disabled={disabled}
       onClick={onClick}
     ></input>
   );

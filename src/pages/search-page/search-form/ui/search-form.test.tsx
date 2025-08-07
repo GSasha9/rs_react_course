@@ -9,8 +9,7 @@ import SearchForm from './search-form';
 import '@testing-library/user-event';
 import { appStore } from '@/store';
 
-const mockOnResults = vi.fn();
-const mockOnLoadingChange = vi.fn();
+const mockOnSearch = vi.fn();
 const pageNumber = 20;
 
 const renderForm = (props = {}) =>
@@ -22,9 +21,9 @@ const renderForm = (props = {}) =>
             path="/search"
             element={
               <SearchForm
-                onResults={mockOnResults}
-                onLoadingChange={mockOnLoadingChange}
+                onSearch={mockOnSearch}
                 pageNumber={pageNumber}
+                disabled={false}
                 {...props}
               />
             }
@@ -46,17 +45,6 @@ describe('Search form', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  test('should get previous search query from LocalStorage', () => {
-    const getItemSpy = vi
-      .spyOn(Storage.prototype, 'getItem')
-      .mockReturnValue('comics');
-
-    renderForm();
-
-    expect(getItemSpy).toHaveBeenCalledWith('prevSearchInput');
-    expect(getItemSpy).toHaveBeenCalledTimes(1);
-  });
-
   test('select and input are changed correctly', async () => {
     const { rerender } = renderForm();
 
@@ -68,26 +56,14 @@ describe('Search form', () => {
       <Provider store={appStore}>
         {' '}
         <SearchForm
-          onResults={mockOnResults}
-          onLoadingChange={mockOnLoadingChange}
+          onSearch={mockOnSearch}
           pageNumber={pageNumber}
+          disabled={true}
         />
       </Provider>
     );
 
     expect(input.value).toBe('test');
-  });
-
-  test('should render default values if localStorage is empty', () => {
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
-
-    renderForm();
-
-    expect(localStorage.getItem).toHaveBeenCalledWith('prevSearchInput');
-
-    const input = screen.getByRole('textbox') as HTMLInputElement;
-
-    expect(input.value).toBe('');
   });
 
   test('form submits by key', async () => {
@@ -98,8 +74,7 @@ describe('Search form', () => {
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(mockOnLoadingChange).toHaveBeenCalledWith(true);
-      expect(mockOnLoadingChange).toHaveBeenCalledWith(false);
+      expect(mockOnSearch).toHaveBeenCalled();
     });
   });
 });

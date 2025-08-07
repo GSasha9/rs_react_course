@@ -11,6 +11,7 @@ interface SearchArgs {
 export const comicsApi = createApi({
   reducerPath: 'comicsApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://stapi.co/api/v1/rest/comics' }),
+  tagTypes: ['Comic', 'Search'],
   endpoints: (builder) => ({
     getCardsByQueryAndPage: builder.query<RequestResults, SearchArgs>({
       query: ({ query, pageNumber }) => {
@@ -30,11 +31,15 @@ export const comicsApi = createApi({
           }).toString(),
         };
       },
+      providesTags: () => {
+        return [{ type: 'Search' }];
+      },
     }),
     fetchDataByUid: builder.query<Record<string, SelectedItem>, string>({
       query: (uid: string) => {
         return { url: `?uid=${uid}` };
       },
+      providesTags: (_result, _error, uid) => [{ type: 'Comic', id: uid }],
     }),
   }),
 });
