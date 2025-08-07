@@ -1,11 +1,12 @@
-import type { MouseEvent } from 'react';
+import { type MouseEvent } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ResultCard from '../result-card/ui/result-card';
 
 import './search-results.scss';
 
-import comicsService from '@/services/api/comics-api';
+import { useFetchDataByUidQuery } from '@/store/api/comics-api';
 
 interface SearchResultsProps {
   results: Record<string, unknown>[];
@@ -14,13 +15,18 @@ interface SearchResultsProps {
 
 const SearchResults = ({ results, page }: SearchResultsProps) => {
   const navigate = useNavigate();
+  const [uid, setUid] = useState('');
+  const { data } = useFetchDataByUidQuery(uid ?? '', {
+    skip: !uid,
+  });
+
   const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
-    const uid = e.currentTarget.getAttribute('data-uid') || '';
+    const newUid = e.currentTarget.getAttribute('data-uid') || '';
 
-    const card = await comicsService.fetchDataById(uid);
+    setUid(newUid);
 
-    navigate(`${page || 1}/${uid}`, {
-      state: { item: card, page: page },
+    navigate(`${page || 1}/${newUid}`, {
+      state: { item: data, page: page },
     });
   };
 

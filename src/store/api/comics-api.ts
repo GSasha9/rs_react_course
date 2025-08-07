@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import type { SelectedItem } from '@/pages/search-page/detailed/models/interfaces';
 import type { RequestResults } from '@/shared/models/interfaces';
 
 interface SearchArgs {
@@ -13,7 +14,7 @@ export const comicsApi = createApi({
   endpoints: (builder) => ({
     getCardsByQueryAndPage: builder.query<RequestResults, SearchArgs>({
       query: ({ query, pageNumber }) => {
-        if (!query || query === '') {
+        if (!query) {
           return { url: `/search?pageNumber=${pageNumber}`, method: 'GET' };
         }
 
@@ -30,7 +31,7 @@ export const comicsApi = createApi({
         };
       },
     }),
-    fetchDataByUid: builder.query({
+    fetchDataByUid: builder.query<Record<string, SelectedItem>, string>({
       query: (uid: string) => {
         return { url: `?uid=${uid}` };
       },

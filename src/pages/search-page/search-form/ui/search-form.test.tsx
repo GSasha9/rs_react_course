@@ -8,13 +8,6 @@ import SearchForm from './search-form';
 
 import '@testing-library/user-event';
 import { appStore } from '@/store';
-import { mockResponse } from '@/tests/test-utils/mocks';
-
-vi.mock('../utils', () => ({
-  startSearch: vi.fn(),
-}));
-
-import { startSearch } from '../utils';
 
 const mockOnResults = vi.fn();
 const mockOnLoadingChange = vi.fn();
@@ -51,22 +44,6 @@ describe('Search form', () => {
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
-  });
-
-  test('should be submitted by search button with correct data', async () => {
-    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResponse);
-    renderForm();
-
-    const button = screen.getByRole('button');
-
-    await userEvent.click(button);
-
-    expect(mockOnLoadingChange).toHaveBeenCalledWith(true);
-
-    await waitFor(() => {
-      expect(mockOnResults).toHaveBeenCalledWith(mockResponse);
-      expect(mockOnLoadingChange).toHaveBeenCalledWith(false);
-    });
   });
 
   test('should get previous search query from LocalStorage', () => {

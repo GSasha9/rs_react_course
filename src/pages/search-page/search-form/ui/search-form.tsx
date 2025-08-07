@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { useMemo } from 'react';
 
 import './search-form.scss';
 
@@ -22,10 +23,12 @@ const SearchForm = (props: SearchFormProps) => {
 
   const { onResults, onLoadingChange, pageNumber } = props;
 
-  const { data } = useGetCardsByQueryAndPageQuery({
-    query: query,
-    pageNumber: pageNumber,
-  });
+  const searchArgs = useMemo(
+    () => ({ query, pageNumber }),
+    [query, pageNumber]
+  );
+
+  const { data } = useGetCardsByQueryAndPageQuery(searchArgs);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);

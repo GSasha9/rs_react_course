@@ -4,10 +4,10 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { SelectedItem } from './models/interfaces';
 import renderNestedObject from './models/utils/render-nested-object';
 
-import './deatiled-page.scss';
+import './detailed-page.scss';
 
-import comicsService from '@/services/api/comics-api';
 import Button from '@/shared/ui/button/button';
+import { useFetchDataByUidQuery } from '@/store/api/comics-api';
 
 const DetailedPage = () => {
   const { uid, page } = useParams();
@@ -15,30 +15,22 @@ const DetailedPage = () => {
   const navigate = useNavigate();
 
   const [itemData, setItemData] = useState<SelectedItem | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const { data } = useFetchDataByUidQuery(uid ?? '', {
+    skip: !uid,
+  });
 
   useEffect(() => {
-    const loadData = async () => {
-      if (location.state?.item) {
-        const categoryKey = Object.keys(location.state.item)[0];
+    if (location.state?.item) {
+      const categoryKey = Object.keys(location.state.item)[0];
 
-        setItemData(location.state.item[categoryKey]);
-        setIsLoading(false);
-      } else if (uid) {
-        const fetched = await comicsService.fetchDataById(uid);
-        const categoryKey = Object.keys(fetched)[0];
+      setItemData(location.state.item[categoryKey]);
+    } else if (data) {
+      const categoryKey = Object.keys(data)[0];
 
-        setItemData(fetched[categoryKey]);
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, [location.state, uid]);
-
-  if (isLoading) {
-    return <div className="detailed-page">Loading...</div>;
-  }
+      setItemData(data[categoryKey]);
+    }
+  }, [location.state, data]);
 
   if (!itemData) {
     return (
