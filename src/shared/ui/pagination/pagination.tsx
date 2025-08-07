@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import './pagination.scss';
 
-export interface PaginationProps {
+interface PaginationProps {
   pages: number;
   activeNumber: number;
 }

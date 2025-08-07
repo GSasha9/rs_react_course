@@ -1,6 +1,8 @@
+import { useContext } from 'react';
+
 import './button.scss';
 
-import { useLoadingStatus } from '@/hooks/use-loading-status';
+import { LoadingContext } from '@/shared/models/contexts';
 
 interface ButtonProps {
   text?: string;
@@ -16,14 +18,14 @@ const Button = ({
   text = '',
   type = 'button',
 }: ButtonProps) => {
-  const { loadingStatus } = useLoadingStatus();
+  const { loading } = useContext(LoadingContext);
 
   return (
     <button
       className={`button ${className ?? ''}`}
       onClick={callback}
       type={type}
-      disabled={loadingStatus}
+      disabled={loading}
     >
       {text}
     </button>

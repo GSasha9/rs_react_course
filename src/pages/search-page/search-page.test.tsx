@@ -11,26 +11,20 @@ vi.mock('./search-form/utils', () => ({
   startSearch: vi.fn(),
 }));
 
-import { Provider } from 'react-redux';
-
 import { startSearch } from './search-form/utils';
 
-import { appStore } from '@/store';
-
 describe('Search Page', () => {
-  test('renders search form', () => {
+  test('renders correctly', () => {
     render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route path="/search" element={<SearchPage />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<SearchPage />} />
+        </Routes>
+      </MemoryRouter>
     );
 
-    expect(screen.getByRole('textbox')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox')).toBeDefined();
+    expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
   });
 
   test('search button onClick changes loading state and shows spinner', async () => {
@@ -44,13 +38,11 @@ describe('Search Page', () => {
     );
 
     render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route path="/search" element={<SearchPage />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<SearchPage />} />
+        </Routes>
+      </MemoryRouter>
     );
 
     const buttonSearch = screen.getByRole('button', { name: 'search' });
@@ -59,7 +51,7 @@ describe('Search Page', () => {
 
     const spinner = await screen.findByTestId('spinner');
 
-    expect(spinner).toBeInTheDocument();
+    expect(spinner).toBeDefined();
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resolveSearch!({ array: [], page: { totalPages: 1 }, sort: {} });
@@ -67,22 +59,20 @@ describe('Search Page', () => {
 
   test('updates query state on input change', async () => {
     render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route
-              path="/search"
-              element={
-                <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
-                  pageNumber={1}
-                />
-              }
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={vi.fn()}
+                onLoadingChange={vi.fn()}
+                pageNumber={1}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
     );
 
     const input = screen.getByRole('textbox');
@@ -97,22 +87,20 @@ describe('Search Page', () => {
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockData);
 
     render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route
-              path="/search"
-              element={
-                <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
-                  pageNumber={1}
-                />
-              }
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={vi.fn()}
+                onLoadingChange={vi.fn()}
+                pageNumber={1}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
     );
 
     const input = screen.getByRole('textbox');
@@ -135,22 +123,20 @@ describe('Search Page', () => {
     (startSearch as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
     render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route
-              path="/search"
-              element={
-                <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
-                  pageNumber={1}
-                />
-              }
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={vi.fn()}
+                onLoadingChange={vi.fn()}
+                pageNumber={1}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
     );
 
     const button = screen.getByRole('button', { name: 'search' });
@@ -162,5 +148,33 @@ describe('Search Page', () => {
     });
 
     consoleErrorSpy.mockRestore();
+  });
+
+  test('handleResults updates results state and renders results', async () => {
+    const mockData = [{ id: 1, title: 'Test result' }];
+
+    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
+      array: mockData,
+      page: { totalPages: 1 },
+      sort: {},
+    });
+
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<SearchPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const input = screen.getByRole('textbox');
+    const button = screen.getByRole('button', { name: 'search' });
+
+    await userEvent.type(input, 'test');
+    await userEvent.click(button);
+
+    await waitFor(() => {
+      expect(screen.getByText('Test result')).toBeDefined();
+    });
   });
 });

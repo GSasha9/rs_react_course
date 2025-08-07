@@ -6,12 +6,12 @@
   align-content: space-between;
 
   width: 100%;
-  height: calc(100% - 38.4px);
+  height: 100%;
 }
 
 .section-form {
   position: relative;
-  min-height: 100px;
+  min-height: 200px;
 
   .error-button-form {
     position: absolute;
@@ -31,7 +31,6 @@
 .section-results {
   position: relative;
 
-  overflow: scroll;
   flex-grow: 1;
   justify-content: flex-start !important;
 

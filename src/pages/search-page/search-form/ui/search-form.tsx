@@ -5,11 +5,9 @@ import { startSearch } from '../utils';
 import './search-form.scss';
 
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
-import { useTheme } from '@/hooks/use-theme';
 import type { RequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
-import DEFAULT_INPUT_VALUE from '@/shared/ui/input/models/constants/default-input-value';
 
 interface SearchFormProps {
   onResults: (response: RequestResults) => void;
@@ -19,7 +17,6 @@ interface SearchFormProps {
 
 const SearchForm = (props: SearchFormProps) => {
   const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
-  const { nightTheme } = useTheme();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -58,21 +55,8 @@ const SearchForm = (props: SearchFormProps) => {
       }}
       className="form"
     >
-      <Input
-        value={query.trim()}
-        onChange={handleInputChange}
-        placeholder={DEFAULT_INPUT_VALUE}
-        name="input-search"
-        className={
-          nightTheme ? 'input search-input night-input' : 'input search-input'
-        }
-      ></Input>
-      <Button
-        callback={handleSearch}
-        type="button"
-        text={'search'}
-        className="search-button"
-      ></Button>
+      <Input value={query.trim()} onChange={handleInputChange}></Input>
+      <Button callback={handleSearch} type="button" text={'search'}></Button>
     </form>
   );
 };

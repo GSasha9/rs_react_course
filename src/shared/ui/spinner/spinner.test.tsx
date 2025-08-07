@@ -6,5 +6,5 @@ import Spinner from '@/shared/ui/spinner/spinner';
 test('Spinner renders without crash', () => {
   render(<Spinner>Text content</Spinner>);
 
-  expect(screen.getByText('Text content')).toBeInTheDocument();
+  expect(screen.getByText('Text content')).not.toBeNull();
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 
-export interface ErrorBoundaryProps {
+import type { Props } from '../../../../models/interfaces';
+
+export interface ErrorBoundaryProps extends Props {
   fallback?: React.ReactNode;
-  children?: React.ReactNode;
 }

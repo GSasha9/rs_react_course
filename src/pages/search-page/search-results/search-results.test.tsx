@@ -1,32 +1,28 @@
 import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 
-vi.mock('@/services/api/comics-api.ts', () => ({
-  default: {
-    fetchDataById: vi.fn().mockResolvedValue({}),
-  },
-}));
-
 import SearchResults from './search-results';
 
-import { appStore } from '@/store';
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {
+  vi.mock('@/services/api/comics-api.ts', () => ({
+    default: {
+      fetchDataById: vi.fn().mockResolvedValue({}),
+    },
+  }));
+
   test('all results added to container', () => {
     const { container, rerender } = render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route
-              path="/search"
-              element={<SearchResults results={mockResult} page={1} />}
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={<SearchResults results={mockResult} page={1} />}
+          />
+        </Routes>
+      </MemoryRouter>
     );
 
     expect(container.firstChild?.childNodes.length).toBe(5);
@@ -41,16 +37,14 @@ describe('Search Results', () => {
     ];
 
     rerender(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route
-              path="/search"
-              element={<SearchResults results={newMockResults} page={1} />}
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={<SearchResults results={newMockResults} page={1} />}
+          />
+        </Routes>
+      </MemoryRouter>
     );
 
     expect(container.firstChild?.childNodes.length).toBe(6);
@@ -58,16 +52,14 @@ describe('Search Results', () => {
 
   test('result card with no title or name renders correctly', () => {
     const { container } = render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route
-              path="/search"
-              element={<SearchResults results={mockResult} page={1} />}
-            />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={<SearchResults results={mockResult} page={1} />}
+          />
+        </Routes>
+      </MemoryRouter>
     );
 
     const noTitleElements = screen.getAllByText('No title');

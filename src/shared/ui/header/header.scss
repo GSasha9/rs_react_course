@@ -13,15 +13,9 @@
 }
 
 .header {
-  position: relative;
-
   .menu {
     display: flex;
     justify-content: space-between;
     width: 30%;
-
-    .menu-item > a {
-      color: inherit;
-    }
   }
 }
