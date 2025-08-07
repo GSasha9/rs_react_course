@@ -1,8 +1,11 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import DetailedPage from './detailed-page';
+
+import { appStore } from '@/store';
 
 const mockItem = {
   comics: {
@@ -18,19 +21,21 @@ const mockItem = {
 describe('Detailed page', () => {
   test('renders detailed page correctly with route state', () => {
     render(
-      <MemoryRouter
-        initialEntries={[{ pathname: '/details', state: { item: mockItem } }]}
-      >
-        <Routes>
-          <Route path="/details" element={<DetailedPage />} />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={appStore}>
+        <MemoryRouter
+          initialEntries={[{ pathname: '/details', state: { item: mockItem } }]}
+        >
+          <Routes>
+            <Route path="/details" element={<DetailedPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
-    expect(screen.getByTestId('detailedPage')).toBeDefined();
-    expect(screen.getByRole('button', { name: /close/i })).toBeDefined();
-    expect(screen.getByText(/Test Comic/)).toBeDefined();
-    expect(screen.getByText(/Test Author/)).toBeDefined();
-    expect(screen.getByText(/Test Publisher/)).toBeDefined();
+    expect(screen.getByTestId('detailedPage')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+    expect(screen.getByText(/Test Comic/)).toBeInTheDocument();
+    expect(screen.getByText(/Test Author/)).toBeInTheDocument();
+    expect(screen.getByText(/Test Publisher/)).toBeInTheDocument();
   });
 });

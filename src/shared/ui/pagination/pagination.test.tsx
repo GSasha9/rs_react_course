@@ -2,16 +2,16 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
-import type { paginationProps } from './model/interfaces';
+import type { PaginationProps } from './pagination';
 import Pagination from './pagination';
 
-const mockProps: paginationProps = {
+const mockProps: PaginationProps = {
   pages: 2,
   activeNumber: 1,
 };
 
 describe('Pagination', () => {
-  test('renders correctly', () => {
+  test('renders page numbers', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -30,7 +30,7 @@ describe('Pagination', () => {
 
     const firstPage = screen.getByText('1');
 
-    expect(firstPage).toBeDefined();
+    expect(firstPage).toBeInTheDocument();
     expect(firstPage.classList.contains('active')).toBe(true);
     expect(screen.getAllByText('2')).toBeDefined();
   });

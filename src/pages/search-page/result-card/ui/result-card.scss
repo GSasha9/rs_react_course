@@ -6,6 +6,11 @@
   border: 1px solid $primary-button;
   border-radius: $border-radius-md;
 
+  .card-checkbox {
+    width: $spacing-lg;
+    height: $spacing-lg;
+  }
+
   .card-title {
     text-align: center;
   }

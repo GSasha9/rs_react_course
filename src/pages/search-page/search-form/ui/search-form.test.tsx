@@ -1,10 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import SearchForm from './search-form';
 
 import '@testing-library/user-event';
+import { appStore } from '@/store';
 import { mockResponse } from '@/tests/test-utils/mocks';
 
 vi.mock('../utils', () => ({
@@ -19,12 +22,23 @@ const pageNumber = 20;
 
 const renderForm = (props = {}) =>
   render(
-    <SearchForm
-      onResults={mockOnResults}
-      onLoadingChange={mockOnLoadingChange}
-      pageNumber={pageNumber}
-      {...props}
-    />
+    <Provider store={appStore}>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={mockOnResults}
+                onLoadingChange={mockOnLoadingChange}
+                pageNumber={pageNumber}
+                {...props}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    </Provider>
   );
 
 describe('Search form', () => {
@@ -32,11 +46,11 @@ describe('Search form', () => {
     localStorage.clear();
     vi.clearAllMocks();
   });
-  test('renders correctly', () => {
+  test('renders form whit text input and search button', () => {
     renderForm();
 
-    expect(screen.getByRole('textbox')).not.toBeNull();
-    expect(screen.getByRole('button')).not.toBeNull();
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
   test('should be submitted by search button with correct data', async () => {
@@ -74,11 +88,14 @@ describe('Search form', () => {
     await userEvent.type(input, 'test');
 
     rerender(
-      <SearchForm
-        onResults={mockOnResults}
-        onLoadingChange={mockOnLoadingChange}
-        pageNumber={pageNumber}
-      />
+      <Provider store={appStore}>
+        {' '}
+        <SearchForm
+          onResults={mockOnResults}
+          onLoadingChange={mockOnLoadingChange}
+          pageNumber={pageNumber}
+        />
+      </Provider>
     );
 
     expect(input.value).toBe('test');

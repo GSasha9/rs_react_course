@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
 import Header from './header';
 
 describe('Header', () => {
-  test('renders correctly', () => {
+  test('renders menu items', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -14,7 +14,7 @@ describe('Header', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText('Search page')).toBeDefined();
-    expect(screen.getByText('About')).toBeDefined();
+    expect(screen.getByText('Search page')).toBeInTheDocument();
+    expect(screen.getByText('About')).toBeInTheDocument();
   });
 });

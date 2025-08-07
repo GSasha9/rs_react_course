@@ -1,3 +1,3 @@
-const DEFAULT_INPUT_VALUE = 'enter your search query';
+const DEFAULT_INPUT_VALUE = 'search';
 
 export default DEFAULT_INPUT_VALUE;

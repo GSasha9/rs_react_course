@@ -5,4 +5,19 @@
   gap: $spacing-xxl;
   justify-content: center;
   width: 100%;
+
+  .search-button {
+    min-width: 70px;
+    min-height: 40px;
+  }
+
+  .search-input {
+    min-height: 40px;
+    padding: 10px;
+  }
+}
+
+.nigth-input {
+  border: 1px solid white;
+  border-radius: 8px;
 }

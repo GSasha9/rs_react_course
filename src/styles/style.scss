@@ -41,7 +41,7 @@ a:visited {
   justify-content: center;
 
   width: 100%;
-  padding: 15px;
+  height: 100%;
 
   font-family: 'Cera Pro', sans-serif;
 }
@@ -67,4 +67,9 @@ a:visited {
   gap: $spacing-lg;
   align-items: center;
   justify-content: center;
+}
+
+.night-theme {
+  color: white;
+  background-color: black !important;
 }

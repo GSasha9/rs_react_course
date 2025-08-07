@@ -1,6 +1,4 @@
-import type { Props } from '../../../../models/interfaces';
-
-export interface FallbackProps extends Props {
+export interface FallbackProps {
   message: string;
   onClick: () => void;
 }

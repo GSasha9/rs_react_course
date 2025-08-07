@@ -3,8 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 
 import { mockThrowingSection } from '../../../tests/test-utils/mocks';
-
-import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
+import ErrorBoundary from './error-boundary';
 
 describe('ErrorBoundary', () => {
   test('catch error and renders correctly whith default fallback', async () => {
@@ -12,12 +11,12 @@ describe('ErrorBoundary', () => {
 
     render(
       <ErrorBoundary>
-        <Section />
+        <Section className="section" />
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('mock error')).toBeDefined();
-    expect(screen.getByRole('button', { name: /cancel/i })).toBeDefined();
+    expect(screen.getByText('mock error')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
   });
 
   test('fallback closes correctly', async () => {
@@ -58,6 +57,6 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByTestId('custom-fallback')).toBeDefined();
+    expect(screen.getByTestId('custom-fallback')).toBeInTheDocument();
   });
 });
