@@ -47,19 +47,19 @@ const DetailedPage = () => {
     );
   }
 
-  if (!itemData) {
+  if (isError) {
     return (
       <div className="detailed-page">
-        <div>Data not found</div>
+        <div>Something went wrong</div>
         <Link to="/search">Back to search page</Link>
       </div>
     );
   }
 
-  if (isError) {
+  if (!itemData) {
     return (
       <div className="detailed-page">
-        <div>Something went wrong</div>
+        <div>Data not found</div>
         <Link to="/search">Back to search page</Link>
       </div>
     );

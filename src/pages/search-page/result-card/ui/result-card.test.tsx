@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { expect, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 
 import ResultCard from './result-card';
 
@@ -13,17 +13,20 @@ const mockData = {
   description: [{ hologram: 'false', mirror: 'false' }],
 };
 
-test('Result card should display title and hologram', () => {
-  render(
-    <Provider store={appStore}>
-      <MemoryRouter initialEntries={['/search']}>
-        <Routes>
-          <Route path="/search" element={<ResultCard {...mockData} />} />
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
+describe('Result card', () => {
+  test('should display title and hologram', () => {
+    render(
+      <Provider store={appStore}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route path="/search" element={<ResultCard {...mockData} />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
 
-  expect(screen.getByText(/title/i)).toBeVisible();
-  expect(screen.getByText(/hologram/i)).toBeVisible();
+    expect(screen.getByText(/title/i)).toBeVisible();
+    expect(screen.getByText(/hologram/i)).toBeVisible();
+    expect(screen.getByRole('checkbox')).toBeInTheDocument();
+  });
 });
