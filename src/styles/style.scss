@@ -1,15 +1,37 @@
-@use './normalize.css';
-@use './scss/fonts.scss';
+@use './normalize.css' as *;
+@use './scss/fonts.scss' as *;
+@use './scss/variables.scss' as *;
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 ul,
 ol {
   list-style: none;
+}
+
+a,
+a:visited {
+  color: $text-primary;
+  text-decoration: none;
 }
 
 #root {
@@ -19,6 +41,30 @@ ol {
   justify-content: center;
 
   width: 100%;
+  padding: 15px;
 
   font-family: 'Cera Pro', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding: 10px;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  align-items: center;
+  justify-content: center;
 }

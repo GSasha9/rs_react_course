@@ -1,3 +1,11 @@
 import { createContext } from 'react';
 
-export const LoadingContext = createContext(false);
+interface LoadingContextType {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+export const LoadingContext = createContext<LoadingContextType>({
+  loading: false,
+  setLoading: () => {},
+});

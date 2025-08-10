@@ -1,85 +1,117 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test, vi } from 'vitest';
 
-import SearchForm from '@/features/search/ui/search-form';
+import SearchForm from './search-form/ui/search-form';
+
 import SearchPage from '@/pages/search-page/search-page';
 
-vi.mock('@/features/search/utils', () => ({
+vi.mock('./search-form/utils', () => ({
   startSearch: vi.fn(),
 }));
 
-import { startSearch } from '@/features/search/utils';
-import ErrorBoundary from '@/shared/ui/error-boundary/error-boundary';
+import { startSearch } from './search-form/utils';
 
 describe('Search Page', () => {
   test('renders correctly', () => {
-    render(<SearchPage />);
-
-    expect(screen.getByRole('combobox')).toBeDefined();
-    expect(screen.getByRole('textbox')).toBeDefined();
-    expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
-    expect(
-      screen.getByRole('button', { name: 'throw Page Error' })
-    ).toBeDefined();
-  });
-
-  test('shows fallback UI after triggering error', async () => {
     render(
-      <ErrorBoundary>
-        <SearchPage />
-      </ErrorBoundary>
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<SearchPage />} />
+        </Routes>
+      </MemoryRouter>
     );
 
-    const errorButton = screen.getByRole('button', {
-      name: 'throw Page Error',
-    });
-
-    await userEvent.click(errorButton);
-
-    expect(await screen.findByText(/Page error/i)).toBeDefined();
+    expect(screen.getByRole('textbox')).toBeDefined();
+    expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
   });
 
-  test('search button onClick changes loading state and show spinner', async () => {
-    render(<SearchPage />);
+  test('search button onClick changes loading state and shows spinner', async () => {
+    let resolveSearch: (value: unknown) => void;
+
+    (startSearch as ReturnType<typeof vi.fn>).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveSearch = resolve;
+        })
+    );
+
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<SearchPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
 
     const buttonSearch = screen.getByRole('button', { name: 'search' });
 
     await userEvent.click(buttonSearch);
 
-    const spinner = screen.findByTestId('spinner');
+    const spinner = await screen.findByTestId('spinner');
 
-    await waitFor(() => {
-      expect(spinner).toBeDefined();
-    });
+    expect(spinner).toBeDefined();
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    resolveSearch!({ array: [], page: { totalPages: 1 }, sort: {} });
   });
 
   test('updates query state on input change', async () => {
-    render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={vi.fn()}
+                onLoadingChange={vi.fn()}
+                pageNumber={1}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    );
 
     const input = screen.getByRole('textbox');
 
     await userEvent.type(input, 'startrek');
-
     expect((input as HTMLInputElement).value).toBe('startrek');
   });
 
   test('calls startSearch with correct args', async () => {
-    const mockResult = { array: ['test'], page: {}, sort: {} };
+    const mockData = { array: ['test'], page: {}, sort: {} };
 
-    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockResult);
+    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockData);
 
-    render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={vi.fn()}
+                onLoadingChange={vi.fn()}
+                pageNumber={1}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    );
 
     const input = screen.getByRole('textbox');
-    const select = screen.getByRole('combobox');
     const button = screen.getByRole('button', { name: 'search' });
 
-    await userEvent.selectOptions(select, 'animal');
-    await userEvent.type(input, 'lion');
+    await userEvent.type(input, 'startrek');
     await userEvent.click(button);
 
-    expect(startSearch).toHaveBeenCalledWith('animal', 'lion');
+    await waitFor(() => {
+      expect(startSearch).toHaveBeenCalledWith('startrek', 1);
+    });
   });
 
   test('logs error when startSearch fails', async () => {
@@ -90,7 +122,22 @@ describe('Search Page', () => {
 
     (startSearch as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
-    render(<SearchForm onResults={vi.fn()} onLoadingChange={vi.fn()} />);
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchForm
+                onResults={vi.fn()}
+                onLoadingChange={vi.fn()}
+                pageNumber={1}
+              />
+            }
+          />
+        </Routes>
+      </MemoryRouter>
+    );
 
     const button = screen.getByRole('button', { name: 'search' });
 
@@ -104,15 +151,21 @@ describe('Search Page', () => {
   });
 
   test('handleResults updates results state and renders results', async () => {
-    const mockResult = [{ id: 1, title: 'Test result' }];
+    const mockData = [{ id: 1, title: 'Test result' }];
 
     (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue({
-      array: mockResult,
-      page: {},
+      array: mockData,
+      page: { totalPages: 1 },
       sort: {},
     });
 
-    render(<SearchPage />);
+    render(
+      <MemoryRouter initialEntries={['/search']}>
+        <Routes>
+          <Route path="/search" element={<SearchPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
 
     const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: 'search' });

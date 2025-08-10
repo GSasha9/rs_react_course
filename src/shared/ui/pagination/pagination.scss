@@ -1,0 +1,18 @@
+@use '@/styles/scss/_variables.scss' as *;
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-lg;
+
+  max-width: 100%;
+  padding: $spacing-lg;
+
+  .button-pagination {
+    min-width: 25px;
+  }
+
+  .active {
+    background-color: $primary-button;
+  }
+}

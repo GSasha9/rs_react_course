@@ -1,27 +1,39 @@
-import React from 'react';
+import { useContext } from 'react';
 
-import type { InputProps, State } from './models/interfaces';
+import DEFAULT_INPUT_VALUE from './models/constants/default-input-value';
 
 import './input.scss';
 
 import { LoadingContext } from '@/shared/models/contexts';
 
-export default class Input extends React.Component<InputProps, State> {
-  static contextType = LoadingContext;
-  declare context: React.ContextType<typeof LoadingContext>;
-  render = () => {
-    const loading: boolean = this.context;
-
-    return (
-      <input
-        type={this.props.type || 'text'}
-        placeholder={this.props.placeholder || 'enter your search query'}
-        className={this.props.className || 'input'}
-        value={this.props.value}
-        onChange={this.props.onChange}
-        name="inpit-search"
-        disabled={loading}
-      ></input>
-    );
-  };
+interface InputProps {
+  placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  className?: string;
 }
+
+const Input = ({
+  type = 'text',
+  placeholder = DEFAULT_INPUT_VALUE,
+  className = 'input',
+  value,
+  onChange,
+}: InputProps) => {
+  const { loading } = useContext(LoadingContext);
+
+  return (
+    <input
+      type={type}
+      placeholder={placeholder}
+      className={className}
+      value={value}
+      onChange={onChange}
+      name="input-search"
+      disabled={loading}
+    ></input>
+  );
+};
+
+export default Input;
