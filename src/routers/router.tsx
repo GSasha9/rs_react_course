@@ -20,8 +20,8 @@ const router = createBrowserRouter([
         element: ROUTES.searchPage.element,
         children: [
           {
-            path: ROUTES.deatiledPage.path,
-            element: ROUTES.deatiledPage.element,
+            path: ROUTES.detailedPage.path,
+            element: ROUTES.detailedPage.element,
           },
         ],
       },

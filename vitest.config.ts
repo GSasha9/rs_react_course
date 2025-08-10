@@ -20,6 +20,7 @@ export default defineConfig({
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
         'src/main.tsx',
+        'src/app.tsx',
         '**/models/interfaces/**',
         '**/model/interfaces/**',
         '**/interfaces.ts',

@@ -1,53 +1,31 @@
-import { useCallback, useContext, useEffect } from 'react';
-
-import { startSearch } from '../utils';
+import { useState } from 'react';
 
 import './search-form.scss';
 
-import useLocalStorageQuery from '@/hooks/use-local-storage-query';
-import { ThemeContext } from '@/shared/models/contexts/theme-context';
-import type { RequestResults } from '@/shared/models/interfaces';
+import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
 import DEFAULT_INPUT_VALUE from '@/shared/ui/input/models/constants/default-input-value';
 
 interface SearchFormProps {
-  onResults: (response: RequestResults) => void;
-  onLoadingChange: (isLoading: boolean) => void;
+  disabled: boolean;
   pageNumber: number;
+  onSearch: (query: string) => void;
 }
 
 const SearchForm = (props: SearchFormProps) => {
-  const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
-  const { nightTheme } = useContext(ThemeContext);
+  const { nightTheme } = useTheme();
+  const [input, setInput] = useState('');
+
+  const { onSearch, disabled } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+    setInput(e.target.value);
   };
 
-  const { onResults, onLoadingChange, pageNumber } = props;
-
-  const handleSearch = useCallback(async () => {
-    try {
-      onLoadingChange(true);
-      const results = await startSearch(query, pageNumber);
-
-      if (results) {
-        onResults(results);
-        setQuery(query);
-      } else {
-        return;
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      onLoadingChange(false);
-    }
-  }, [onResults, onLoadingChange, setQuery, query, pageNumber]);
-
-  useEffect(() => {
-    handleSearch();
-  }, [pageNumber]);
+  const handleSearch = () => {
+    onSearch(input);
+  };
 
   return (
     <form
@@ -59,19 +37,21 @@ const SearchForm = (props: SearchFormProps) => {
       className="form"
     >
       <Input
-        value={query.trim()}
+        value={input}
         onChange={handleInputChange}
         placeholder={DEFAULT_INPUT_VALUE}
         name="input-search"
         className={
           nightTheme ? 'input search-input night-input' : 'input search-input'
         }
+        disabled={disabled}
       ></Input>
       <Button
         callback={handleSearch}
         type="button"
         text={'search'}
         className="search-button"
+        disabled={disabled}
       ></Button>
     </form>
   );

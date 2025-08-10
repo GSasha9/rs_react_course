@@ -1,8 +1,4 @@
-import { useContext } from 'react';
-
 import './button.scss';
-
-import { LoadingContext } from '@/shared/models/contexts';
 
 interface ButtonProps {
   text?: string;
@@ -10,6 +6,7 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   callback?: () => void;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -17,15 +14,14 @@ const Button = ({
   callback,
   text = '',
   type = 'button',
+  disabled = false,
 }: ButtonProps) => {
-  const { loading } = useContext(LoadingContext);
-
   return (
     <button
       className={`button ${className ?? ''}`}
       onClick={callback}
       type={type}
-      disabled={loading}
+      disabled={disabled}
     >
       {text}
     </button>
