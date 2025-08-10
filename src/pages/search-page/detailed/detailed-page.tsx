@@ -24,6 +24,7 @@ const DetailedPage = () => {
     uid ?? '',
     {
       skip: !uid,
+      refetchOnReconnect: true,
     }
   );
 

@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
+import { beforeEach } from 'node:test';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
@@ -21,6 +23,9 @@ const mockItem = {
 };
 
 describe('Detailed page', () => {
+  beforeEach(() => {
+    server.resetHandlers();
+  });
   test('renders detailed page correctly with route state', () => {
     render(
       <Provider store={appStore}>
@@ -63,12 +68,12 @@ describe('Detailed page', () => {
     ).toBeInTheDocument();
   });
 
-  test('initialize new API call by clicking refetch button', async () => {
-    let callCount = 0;
+  test('detailed card data cashed', async () => {
+    let callCountForCash = 0;
 
     server.use(
       http.get('https://stapi.co/api/v1/rest/comics', async ({ request }) => {
-        callCount += 1;
+        callCountForCash += 1;
 
         const url = new URL(request.url);
         const uid = url.searchParams.get('uid');
@@ -91,7 +96,7 @@ describe('Detailed page', () => {
       })
     );
 
-    render(
+    const { rerender } = render(
       <Provider store={appStore}>
         <MemoryRouter initialEntries={['/details/CCMA0000189821']}>
           <Routes>
@@ -104,11 +109,72 @@ describe('Detailed page', () => {
     expect(
       await screen.findByText(/Mock Comic with UID CCMA0000189821/)
     ).toBeInTheDocument();
+    expect(callCountForCash).toBe(1);
+
+    rerender(
+      <Provider store={appStore}>
+        <MemoryRouter initialEntries={['/details/CCMA0000189821']}>
+          <Routes>
+            <Route path="/details/:uid" element={<DetailedPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      await screen.findByText(/Mock Comic with UID CCMA0000189821/)
+    ).toBeInTheDocument();
+    expect(callCountForCash).toBe(1);
+  });
+
+  test('initialize new API call by clicking refetch button', async () => {
+    let callCount = 0;
+
+    server.resetHandlers();
+    server.use(
+      http.get('https://stapi.co/api/v1/rest/comics', async ({ request }) => {
+        callCount += 1;
+
+        const url = new URL(request.url);
+        const uid = url.searchParams.get('uid');
+
+        if (uid === 'CCMA0000060022') {
+          await new Promise((r) => setTimeout(r, 300));
+
+          return HttpResponse.json({
+            comics: {
+              uid,
+              title: `Mock Comic with UID ${uid}`,
+              description: 'Some description',
+            },
+          });
+        }
+
+        return HttpResponse.json({
+          comics: null,
+        });
+      })
+    );
+
+    render(
+      <Provider store={appStore}>
+        <MemoryRouter initialEntries={['/details/CCMA0000060022']}>
+          <Routes>
+            <Route path="/details/:uid" element={<DetailedPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      await screen.findByText(/Mock Comic with UID CCMA0000060022/)
+    ).toBeInTheDocument();
     expect(callCount).toBe(1);
 
-    screen.getByRole('button', { name: /refetch/i }).click();
+    const button = screen.getByRole('button', { name: /refetch/i });
 
-    await screen.findByText(/Mock Comic with UID CCMA0000189821/);
+    await userEvent.click(button);
+
+    await screen.findByText(/Mock Comic with UID CCMA0000060022/);
 
     expect(callCount).toBe(2);
   });

@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { Provider } from 'react-redux';
@@ -9,13 +10,18 @@ import SearchForm from './search-form/ui/search-form';
 
 import SearchPage from '@/pages/search-page/search-page';
 import { appStore } from '@/store';
+import { mockResponse } from '@/tests/test-utils/mocks';
 import { server } from '@/tests/test-utils/mocks/setup-server';
 
 describe('Search Page', () => {
+  let callCount = 0;
+
   beforeEach(() => {
     server.resetHandlers();
     server.use(
       http.get('https://stapi.co/api/v1/rest/comics/search', () => {
+        callCount += 1;
+
         return HttpResponse.error();
       })
     );
@@ -79,5 +85,50 @@ describe('Search Page', () => {
         { timeout: 4000 }
       )
     ).toBeInTheDocument();
+  });
+
+  test('shows loading status', async () => {
+    server.use(
+      http.get('https://stapi.co/api/v1/rest/comics/search', async () => {
+        await new Promise((r) => setTimeout(r, 100));
+
+        return HttpResponse.json(mockResponse);
+      })
+    );
+
+    render(
+      <Provider store={appStore}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(await screen.findByTestId('spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'));
+  });
+
+  test('initialize new API call by clicking refetch button', async () => {
+    server.resetHandlers();
+
+    render(
+      <Provider store={appStore}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const button = await screen.findByRole('button', { name: /refetch/i });
+
+    await userEvent.click(button);
+
+    await waitFor(() => {
+      expect(callCount).toBe(2);
+    });
   });
 });
