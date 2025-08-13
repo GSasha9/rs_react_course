@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import type { SelectedItem } from './models/interfaces';
 import renderNestedObject from './models/utils/render-nested-object';
 
-import './deatiled-page.scss';
+import './detailed-page.scss';
 
-import comicsService from '@/services/api/comics-api';
 import Button from '@/shared/ui/button/button';
+import { useFetchDataByUidQuery } from '@/store/api/comics.api';
+import { comicsApi } from '@/store/api/comics.api';
 
 const DetailedPage = () => {
   const { uid, page } = useParams();
@@ -15,29 +17,44 @@ const DetailedPage = () => {
   const navigate = useNavigate();
 
   const [itemData, setItemData] = useState<SelectedItem | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const dispatch = useDispatch();
+
+  const { data, isLoading, isFetching, isError } = useFetchDataByUidQuery(
+    uid ?? '',
+    {
+      skip: !uid,
+      refetchOnReconnect: true,
+    }
+  );
 
   useEffect(() => {
-    const loadData = async () => {
-      if (location.state?.item) {
-        const categoryKey = Object.keys(location.state.item)[0];
+    if (location.state?.item) {
+      const categoryKey = Object.keys(location.state.item)[0];
 
-        setItemData(location.state.item[categoryKey]);
-        setIsLoading(false);
-      } else if (uid) {
-        const fetched = await comicsService.fetchDataById(uid);
-        const categoryKey = Object.keys(fetched)[0];
+      setItemData(location.state.item[categoryKey]);
+    } else if (data) {
+      const categoryKey = Object.keys(data)[0];
 
-        setItemData(fetched[categoryKey]);
-        setIsLoading(false);
-      }
-    };
+      setItemData(data[categoryKey]);
+    }
+  }, [location.state, data]);
 
-    loadData();
-  }, [location.state, uid]);
+  if (isLoading || isFetching) {
+    return (
+      <div className="detailed-page">
+        <div>Loading...</div>
+      </div>
+    );
+  }
 
-  if (isLoading) {
-    return <div className="detailed-page">Loading...</div>;
+  if (isError) {
+    return (
+      <div className="detailed-page">
+        <div>Something went wrong</div>
+        <Link to="/search">Back to search page</Link>
+      </div>
+    );
   }
 
   if (!itemData) {
@@ -51,12 +68,27 @@ const DetailedPage = () => {
 
   return (
     <div className="detailed-page" data-testid="detailedPage">
-      <Button
-        className="button-close"
-        type="button"
-        text="close"
-        callback={() => navigate(`/search?pageNumber=${page || 1}`)}
-      />
+      <div className="buttons">
+        <Button
+          className="button-close"
+          type="button"
+          text="close"
+          callback={() => navigate(`/search?pageNumber=${page || 1}`)}
+        />
+        <Button
+          className="button-close"
+          type="button"
+          text="refetch"
+          callback={() => {
+            if (uid) {
+              dispatch(
+                comicsApi.util.invalidateTags([{ type: 'Comic', id: uid }])
+              );
+            }
+          }}
+        />
+      </div>
+
       <ul>
         {Object.entries(itemData).map(([key, value]) => {
           if (value === null || value === false || key === 'uid') return null;

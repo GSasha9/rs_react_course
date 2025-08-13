@@ -11,7 +11,7 @@ vi.mock('@/services/api/comics-api.ts', () => ({
 
 import SearchResults from './search-results';
 
-import { appStore } from '@/store/app-store';
+import { appStore } from '@/store';
 import { mockResult } from '@/tests/test-utils/mocks';
 
 describe('Search Results', () => {

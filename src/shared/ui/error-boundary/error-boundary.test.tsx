@@ -15,8 +15,8 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByText('mock error')).toBeDefined();
-    expect(screen.getByRole('button', { name: /cancel/i })).toBeDefined();
+    expect(screen.getByText('mock error')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
   });
 
   test('fallback closes correctly', async () => {
@@ -57,6 +57,6 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(screen.getByTestId('custom-fallback')).toBeDefined();
+    expect(screen.getByTestId('custom-fallback')).toBeInTheDocument();
   });
 });

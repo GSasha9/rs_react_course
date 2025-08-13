@@ -1,48 +1,32 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
+import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import SearchForm from './search-form/ui/search-form';
 
 import SearchPage from '@/pages/search-page/search-page';
-
-vi.mock('./search-form/utils', () => ({
-  startSearch: vi.fn(),
-}));
-
-import { Provider } from 'react-redux';
-
-import { startSearch } from './search-form/utils';
-
-import { appStore } from '@/store/app-store';
+import { appStore } from '@/store';
+import { mockResponse } from '@/tests/test-utils/mocks';
+import { server } from '@/tests/test-utils/mocks/setup-server';
 
 describe('Search Page', () => {
-  test('renders correctly', () => {
-    render(
-      <Provider store={appStore}>
-        <MemoryRouter initialEntries={['/search']}>
-          <Routes>
-            <Route path="/search" element={<SearchPage />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+  let callCount = 0;
 
-    expect(screen.getByRole('textbox')).toBeDefined();
-    expect(screen.getByRole('button', { name: 'search' })).toBeDefined();
+  beforeEach(() => {
+    server.resetHandlers();
+    server.use(
+      http.get('https://stapi.co/api/v1/rest/comics/search', () => {
+        callCount += 1;
+
+        return HttpResponse.error();
+      })
+    );
   });
-
-  test('search button onClick changes loading state and shows spinner', async () => {
-    let resolveSearch: (value: unknown) => void;
-
-    (startSearch as ReturnType<typeof vi.fn>).mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          resolveSearch = resolve;
-        })
-    );
-
+  test('renders search form', () => {
     render(
       <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
@@ -53,16 +37,8 @@ describe('Search Page', () => {
       </Provider>
     );
 
-    const buttonSearch = screen.getByRole('button', { name: 'search' });
-
-    await userEvent.click(buttonSearch);
-
-    const spinner = await screen.findByTestId('spinner');
-
-    expect(spinner).toBeDefined();
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    resolveSearch!({ array: [], page: { totalPages: 1 }, sort: {} });
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'search' })).toBeInTheDocument();
   });
 
   test('updates query state on input change', async () => {
@@ -74,9 +50,9 @@ describe('Search Page', () => {
               path="/search"
               element={
                 <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
+                  onSearch={vi.fn()}
                   pageNumber={1}
+                  disabled={false}
                 />
               }
             />
@@ -91,76 +67,68 @@ describe('Search Page', () => {
     expect((input as HTMLInputElement).value).toBe('startrek');
   });
 
-  test('calls startSearch with correct args', async () => {
-    const mockData = { array: ['test'], page: {}, sort: {} };
-
-    (startSearch as ReturnType<typeof vi.fn>).mockResolvedValue(mockData);
-
+  test('shows error message on failed fetch', async () => {
     render(
       <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
-            <Route
-              path="/search"
-              element={
-                <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
-                  pageNumber={1}
-                />
-              }
-            />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>
         </MemoryRouter>
       </Provider>
     );
 
-    const input = screen.getByRole('textbox');
-    const button = screen.getByRole('button', { name: 'search' });
-
-    await userEvent.type(input, 'startrek');
-    await userEvent.click(button);
-
-    await waitFor(() => {
-      expect(startSearch).toHaveBeenCalledWith('startrek', 1);
-    });
+    expect(
+      await screen.findByText(
+        /Something went wrong. Please try again./i,
+        {},
+        { timeout: 4000 }
+      )
+    ).toBeInTheDocument();
   });
 
-  test('logs error when startSearch fails', async () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-    const error = new Error('Search failed');
+  test('shows loading status', async () => {
+    server.use(
+      http.get('https://stapi.co/api/v1/rest/comics/search', async () => {
+        await new Promise((r) => setTimeout(r, 100));
 
-    (startSearch as ReturnType<typeof vi.fn>).mockRejectedValue(error);
+        return HttpResponse.json(mockResponse);
+      })
+    );
 
     render(
       <Provider store={appStore}>
         <MemoryRouter initialEntries={['/search']}>
           <Routes>
-            <Route
-              path="/search"
-              element={
-                <SearchForm
-                  onResults={vi.fn()}
-                  onLoadingChange={vi.fn()}
-                  pageNumber={1}
-                />
-              }
-            />
+            <Route path="/search" element={<SearchPage />} />
           </Routes>
         </MemoryRouter>
       </Provider>
     );
 
-    const button = screen.getByRole('button', { name: 'search' });
+    expect(await screen.findByTestId('spinner')).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.queryByTestId('spinner'));
+  });
+
+  test('initialize new API call by clicking refetch button', async () => {
+    server.resetHandlers();
+
+    render(
+      <Provider store={appStore}>
+        <MemoryRouter initialEntries={['/search']}>
+          <Routes>
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const button = await screen.findByRole('button', { name: /refetch/i });
 
     await userEvent.click(button);
 
     await waitFor(() => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      expect(callCount).toBe(2);
     });
-
-    consoleErrorSpy.mockRestore();
   });
 });

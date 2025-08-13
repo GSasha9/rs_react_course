@@ -1,8 +1,4 @@
-import { useContext } from 'react';
-
 import './input.scss';
-
-import { LoadingContext } from '@/shared/models/contexts';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
@@ -11,6 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: string;
   className?: string;
   name?: string;
+  disabled?: boolean;
 }
 
 const Input = ({
@@ -19,10 +16,9 @@ const Input = ({
   value,
   onChange,
   onClick,
+  disabled = false,
   ...props
 }: InputProps) => {
-  const { loading } = useContext(LoadingContext);
-
   return (
     <input
       {...props}
@@ -30,7 +26,7 @@ const Input = ({
       className={className}
       value={value}
       onChange={onChange}
-      disabled={loading}
+      disabled={disabled}
       onClick={onClick}
     ></input>
   );

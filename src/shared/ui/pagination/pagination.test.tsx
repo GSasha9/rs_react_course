@@ -11,7 +11,7 @@ const mockProps: PaginationProps = {
 };
 
 describe('Pagination', () => {
-  test('renders correctly', () => {
+  test('renders page numbers', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -30,7 +30,7 @@ describe('Pagination', () => {
 
     const firstPage = screen.getByText('1');
 
-    expect(firstPage).toBeDefined();
+    expect(firstPage).toBeInTheDocument();
     expect(firstPage.classList.contains('active')).toBe(true);
     expect(screen.getAllByText('2')).toBeDefined();
   });

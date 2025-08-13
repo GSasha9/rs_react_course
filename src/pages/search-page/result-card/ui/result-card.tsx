@@ -4,18 +4,13 @@ import type { CardProps } from '../model/interfaces';
 
 import './result-card.scss';
 
-import type { Card } from '@/features/selected-cards/selected-card-slice';
-import {
-  addCard,
-  deleteCard,
-} from '@/features/selected-cards/selected-card-slice';
-import { useAppDispatch } from '@/hooks/redux-hooks';
-import { useAppSelector } from '@/hooks/redux-hooks';
+import { useSelectedCards } from '@/hooks/use-selected-cards';
 import Input from '@/shared/ui/input/input';
+import type { Card } from '@/store/slices/selected-cards-slice';
 
 const ResultCard = ({ title, uid, onClick, name, description }: CardProps) => {
-  const dispatch = useAppDispatch();
-  const cards = useAppSelector((state) => state.selectedCard.cards);
+  const { cards, addCard, deleteCard } = useSelectedCards();
+
   const [searchParams] = useSearchParams();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,9 +37,9 @@ const ResultCard = ({ title, uid, onClick, name, description }: CardProps) => {
     if (!uid) return;
 
     if (checkbox.checked) {
-      dispatch(addCard(newCard));
+      addCard(newCard);
     } else {
-      dispatch(deleteCard(newCard));
+      deleteCard(newCard);
     }
   };
 

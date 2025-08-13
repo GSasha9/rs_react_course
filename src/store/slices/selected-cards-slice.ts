@@ -15,33 +15,33 @@ const initialState: SelectedCards = {
   cards: [],
 };
 
-const SelectedCardSlice = createSlice({
+const SelectedCardsSlice = createSlice({
   name: 'selectedCard',
   initialState,
   reducers: {
     addCard(state, action: PayloadAction<Card>) {
+      const card: Card = action.payload;
+
+      if (state.cards.find((el) => el.uid === card.uid)) return;
+
       state.cards.push(action.payload);
     },
     deleteCard(state, action: PayloadAction<Card>) {
       const card: Card = action.payload;
 
-      const savedCard = state.cards.find((el) => el.uid === card.uid);
+      const existingCard = state.cards.find((el) => el.uid === card.uid);
 
-      if (!savedCard) return;
+      if (!existingCard) return;
 
-      const cardIndex = state.cards.indexOf(savedCard);
-
-      if (cardIndex !== -1) {
-        state.cards.splice(cardIndex, 1);
-      }
+      state.cards = state.cards.filter((el) => el.uid !== card.uid);
     },
     deleteAllCards(state) {
-      state.cards.length = 0;
+      state.cards = [];
     },
   },
 });
 
 export const { addCard, deleteCard, deleteAllCards } =
-  SelectedCardSlice.actions;
+  SelectedCardsSlice.actions;
 
-export default SelectedCardSlice.reducer;
+export default SelectedCardsSlice.reducer;
