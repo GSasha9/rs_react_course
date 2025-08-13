@@ -1,8 +1,9 @@
-import { NavLink } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import './header.scss';
-
-import getNavLink from '@/shared/models/utils/getNavLink';
 
 const navItems = [
   {
@@ -22,14 +23,20 @@ interface HeaderProps {
 }
 
 const Header = ({ className = '' }: HeaderProps) => {
+  const pathname = usePathname();
+
   return (
     <header className={`container header ${className}`}>
       <ul className="menu">
         {navItems.map(({ to, label, testId }) => (
           <li key={testId} className="menu-item">
-            <NavLink to={to} data-testid={testId} className={getNavLink}>
+            <Link
+              href={to}
+              data-testid={testId}
+              className={pathname === to ? 'active' : ''}
+            >
               <span>{label}</span>
-            </NavLink>
+            </Link>
           </li>
         ))}
       </ul>

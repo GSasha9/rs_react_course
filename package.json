@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "next dev",
+    "build": "tsc -b && next build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "preview": "vite preview",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "next": "^15.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 import './about.scss';
 
@@ -15,10 +15,10 @@ const About = () => {
       <h1>My name is Sasha Hurbanava</h1>
       <p>This is my study project for learning routings and hooks.</p>
       <div className="links">
-        <Link to={SchoolLinks.SCHOOL} title="school">
+        <Link href={SchoolLinks.SCHOOL} title="school">
           <img src="/images.png"></img>
         </Link>
-        <Link to={SchoolLinks.REACT_CORSE} title="react course">
+        <Link href={SchoolLinks.REACT_CORSE} title="react course">
           <img src="/react.svg"></img>
         </Link>
       </div>

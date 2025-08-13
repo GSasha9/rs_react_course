@@ -9,15 +9,6 @@
   height: fit-content;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-
-  width: 100%;
-  height: calc(100% - 38.4px);
-}
-
 .section-form {
   position: relative;
   min-height: 100px;

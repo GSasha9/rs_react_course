@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+'use client';
 
 import './root.scss';
 import '../../styles/style.scss';
@@ -7,7 +7,7 @@ import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';
 import Header from '@/shared/ui/header/header';
 
-const Root = () => {
+const Root = ({ children }: { children: React.ReactNode }) => {
   const { nightTheme, toggleTheme } = useTheme();
 
   return (
@@ -21,7 +21,7 @@ const Root = () => {
         className={`main${nightTheme ? ' night-theme' : ''}`}
         data-testid="main"
       >
-        <Outlet />
+        {children}
       </main>
     </>
   );
