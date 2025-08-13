@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '@/tests/test-utils/utils/setup-store';
+import type { RootState } from '..';
 
 export const selectSelectedCards = (state: RootState) =>
   state.selectedCard.cards;

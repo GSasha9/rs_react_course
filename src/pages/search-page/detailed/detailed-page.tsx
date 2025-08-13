@@ -8,8 +8,8 @@ import renderNestedObject from './models/utils/render-nested-object';
 import './detailed-page.scss';
 
 import Button from '@/shared/ui/button/button';
-import { useFetchDataByUidQuery } from '@/store/api/comics-api';
-import { comicsApi } from '@/store/api/comics-api';
+import { useFetchDataByUidQuery } from '@/store/api/comics.api';
+import { comicsApi } from '@/store/api/comics.api';
 
 const DetailedPage = () => {
   const { uid, page } = useParams();

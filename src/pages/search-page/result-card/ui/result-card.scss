@@ -6,9 +6,17 @@
   border: 1px solid $primary-button;
   border-radius: $border-radius-md;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   .card-checkbox {
     width: $spacing-lg;
     height: $spacing-lg;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .card-title {

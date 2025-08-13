@@ -6,7 +6,7 @@ import ResultCard from '../result-card/ui/result-card';
 
 import './search-results.scss';
 
-import { useFetchDataByUidQuery } from '@/store/api/comics-api';
+import { useFetchDataByUidQuery } from '@/store/api/comics.api';
 
 interface SearchResultsProps {
   results: Record<string, unknown>[];

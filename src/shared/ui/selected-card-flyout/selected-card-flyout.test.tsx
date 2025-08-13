@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
 import SearchPage from '@/pages/search-page/search-page';
-import { setupStore } from '@/tests/test-utils/utils/setup-store';
+import { setupStore } from '@/store';
 
 const renderSearchPage = () => {
   const store = setupStore();

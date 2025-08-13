@@ -8,14 +8,14 @@ import SearchResults from './search-results/search-results';
 import './search-page.scss';
 
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
-import type { RequestResults } from '@/shared/models/interfaces';
+import type { ComicsRequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Pagination from '@/shared/ui/pagination/pagination';
 import Section from '@/shared/ui/section/section';
 import SelectedCardFlyout from '@/shared/ui/selected-card-flyout/selected-card-flyout';
 import Spinner from '@/shared/ui/spinner/spinner';
-import { useGetCardsByQueryAndPageQuery } from '@/store/api/comics-api';
-import { comicsApi } from '@/store/api/comics-api';
+import { useGetCardsByQueryAndPageQuery } from '@/store/api/comics.api';
+import { comicsApi } from '@/store/api/comics.api';
 
 const SearchPage = () => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
@@ -44,7 +44,7 @@ const SearchPage = () => {
   }, [setSearchParams, searchParams]);
 
   const handleResults = useCallback(
-    (response: RequestResults) => {
+    (response: ComicsRequestResults) => {
       const resultsArray = Object.entries(response).find(
         ([key, value]) =>
           key !== 'sort' && key !== 'page' && Array.isArray(value)
@@ -94,7 +94,14 @@ const SearchPage = () => {
                 type="button"
                 text="refetch"
                 callback={() =>
-                  dispatch(comicsApi.util.invalidateTags([{ type: 'Search' }]))
+                  dispatch(
+                    comicsApi.util.invalidateTags([
+                      {
+                        type: 'Comic',
+                        id: `${query || 'all'}-${currentPageNumber}`,
+                      },
+                    ])
+                  )
                 }
                 className="refetch-button"
               />
