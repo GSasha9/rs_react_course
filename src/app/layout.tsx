@@ -5,7 +5,7 @@ import { ClientApp } from './client-app';
 import '../styles/style.scss';
 import '../shared/ui/header/header.scss';
 
-import Root from '@/pages/root/root';
+import Root from '@/shared/components/root/root';
 
 export const metadata: Metadata = {
   title: 'react-task-1',

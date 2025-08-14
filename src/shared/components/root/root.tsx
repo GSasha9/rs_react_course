@@ -1,7 +1,7 @@
 'use client';
 
 import './root.scss';
-import '../../styles/style.scss';
+import '../../../styles/style.scss';
 
 import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';

@@ -1,6 +1,5 @@
-import About from '@/pages/about/about';
-import DetailedPage from '@/pages/search-page/detailed/detailed-page';
-import SearchPage from '@/pages/search-page/search-page';
+import DetailedPage from '@/shared/components/search-page/detailed/detailed-page';
+import SearchPage from '@/shared/components/search-page/search-page';
 
 export const ROUTES = {
   searchPage: {
@@ -9,7 +8,6 @@ export const ROUTES = {
   },
   aboutPage: {
     path: 'about',
-    element: <About />,
   },
   detailedPage: {
     path: ':page/:uid',

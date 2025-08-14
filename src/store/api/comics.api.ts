@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import type { SelectedItem } from '@/pages/search-page/detailed/models/interfaces';
+import type { SelectedItem } from '@/shared/components/search-page/detailed/models/interfaces';
 import type { ComicsRequestResults } from '@/shared/models/interfaces';
 
 interface SearchArgs {

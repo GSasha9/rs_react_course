@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
-import { server } from '../../../tests/test-utils/mocks/setup-server';
+import { server } from '../../../../tests/test-utils/mocks/setup-server';
 import DetailedPage from './detailed-page';
 
 import { appStore } from '@/store';

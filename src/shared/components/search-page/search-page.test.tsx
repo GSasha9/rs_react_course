@@ -7,8 +7,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import SearchForm from './search-form/ui/search-form';
+import SearchPage from './search-page';
 
-import SearchPage from '@/pages/search-page/search-page';
 import { appStore } from '@/store';
 import { mockResponse } from '@/tests/test-utils/mocks';
 import { server } from '@/tests/test-utils/mocks/setup-server';

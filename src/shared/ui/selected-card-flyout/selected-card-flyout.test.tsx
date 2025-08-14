@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, test } from 'vitest';
 
-import SearchPage from '@/pages/search-page/search-page';
+import SearchPage from '@/shared/components/search-page/search-page';
 import { setupStore } from '@/store';
 
 const renderSearchPage = () => {
