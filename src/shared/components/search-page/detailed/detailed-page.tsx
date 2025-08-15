@@ -79,7 +79,7 @@ const DetailedPage = (props: DetailedPageProps) => {
           text="close"
           callback={() => {
             dispatch(clearItem());
-            router.push(`/search?pageNumber=${page || 1}`);
+            router.replace(`/search?pageNumber=${page || 1}`);
           }}
         />
         <Button

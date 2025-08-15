@@ -11,7 +11,7 @@ import Input from '@/shared/ui/input/input';
 import DEFAULT_INPUT_VALUE from '@/shared/ui/input/models/constants/default-input-value';
 
 interface SearchFormProps {
-  disabled: boolean;
+  disabled?: boolean;
   pageNumber: number;
   onSearch: (query: string) => void;
 }
