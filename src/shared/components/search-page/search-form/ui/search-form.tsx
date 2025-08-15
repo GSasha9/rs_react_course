@@ -1,7 +1,10 @@
-import { useState } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 
 import './search-form.scss';
 
+import useLocalStorageQuery from '@/hooks/use-local-storage-query';
 import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';
 import Input from '@/shared/ui/input/input';
@@ -15,9 +18,15 @@ interface SearchFormProps {
 
 const SearchForm = (props: SearchFormProps) => {
   const { nightTheme } = useTheme();
+
+  const [value] = useLocalStorageQuery('prevSearchInput');
   const [input, setInput] = useState('');
 
   const { onSearch, disabled } = props;
+
+  useEffect(() => {
+    if (value) setInput(value);
+  }, [value]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);

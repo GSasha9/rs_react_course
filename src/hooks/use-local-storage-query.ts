@@ -1,22 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useLocalStorageQuery = (
-  key: string,
-  defaultValue: string = ''
-): [string, (value: string) => void] => {
-  const [value, setValue] = useState<string>(() => {
+export default function useLocalStorageQuery(key: string) {
+  const [state, setState] = useState<string | null>(null);
+
+  useEffect(() => {
     const stored = localStorage.getItem(key);
 
-    return stored ?? defaultValue;
-  });
+    if (stored) setState(stored);
+  }, [key]);
 
-  const updateValue = (newValue: string) => {
-    localStorage.setItem(key, newValue);
+  const setLocalStorage = (value: string) => {
+    setState(value);
 
-    setValue(newValue);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(key, value);
+    }
   };
 
-  return [value, updateValue];
-};
-
-export default useLocalStorageQuery;
+  return [state, setLocalStorage] as const;
+}

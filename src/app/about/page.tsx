@@ -10,7 +10,7 @@ enum SchoolLinks {
   REACT_CORSE = 'https://rs.school/courses/reactjs',
 }
 
-export default function AboutLayout() {
+export default function AboutPage() {
   return (
     <Section className="about">
       <h1>My name is Sasha Hurbanava</h1>

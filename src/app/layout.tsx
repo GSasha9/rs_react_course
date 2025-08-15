@@ -24,8 +24,7 @@ export default function RootLayout({
       <body>
         <ClientApp>
           <Suspense fallback={<Spinner />}>
-            {' '}
-            <Root> {children} </Root>
+            <Root>{children}</Root>
           </Suspense>
         </ClientApp>
       </body>

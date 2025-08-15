@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 
-import { ThemeContext } from '../contexts/theme-context';
 import StoreProvider from './store-provider';
+
+import { ThemeContext } from '@/contexts/theme-context';
 
 export const ClientApp = ({ children }: { children: React.ReactNode }) => {
   const [nightTheme, setNightTheme] = useState(false);

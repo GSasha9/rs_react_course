@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import './search-page.scss';
 
-//import useLocalStorageQuery from '@/hooks/use-local-storage-query';
+import useLocalStorageQuery from '@/hooks/use-local-storage-query';
 import SearchForm from '@/shared/components/search-page/search-form/ui/search-form';
 import SearchResults from '@/shared/components/search-page/search-results/search-results';
 import type { ComicsRequestResults } from '@/shared/models/interfaces';
@@ -17,6 +17,7 @@ import SelectedCardFlyout from '@/shared/ui/selected-card-flyout/selected-card-f
 import Spinner from '@/shared/ui/spinner/spinner';
 import { useGetCardsByQueryAndPageQuery } from '@/store/api/comics.api';
 import { comicsApi } from '@/store/api/comics.api';
+import { selectItem } from '@/store/slices/selected-item-slice';
 
 interface SearchPageProps {
   children: React.ReactNode;
@@ -29,16 +30,13 @@ const SearchPage = (props: SearchPageProps) => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const params = useParams();
 
-  //const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
-  const [query, setQuery] = [
-    '',
-    (q: string) => {
-      return q;
-    },
-  ];
+  const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
 
   const currentPageNumber = Number(searchParams.get('pageNumber')) || 1;
+
+  const uid = params.uid;
 
   const { data, isLoading, isFetching, isError } =
     useGetCardsByQueryAndPageQuery(
@@ -56,6 +54,12 @@ const SearchPage = (props: SearchPageProps) => {
 
     router.push(`/search?${query.toString()}`);
   };
+
+  useEffect(() => {
+    if (uid) {
+      dispatch(selectItem({ uid: uid[1], page: currentPageNumber }));
+    }
+  }, [uid, currentPageNumber, dispatch]);
 
   useEffect(() => {
     if (!searchParams.get('pageNumber')) {
