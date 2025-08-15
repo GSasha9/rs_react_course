@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -31,6 +32,7 @@ const SearchPage = (props: SearchPageProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = useParams();
+  const t = useTranslations();
 
   const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
 
@@ -109,7 +111,7 @@ const SearchPage = (props: SearchPageProps) => {
       <Section className="section-results">
         {(isLoading || isFetching) && <Spinner />}
         {!isLoading && !isFetching && isError && (
-          <p className="error">Something went wrong. Please try again.</p>
+          <p className="error">{t('somethingWentWrong')}</p>
         )}
         {!isLoading && !isFetching && !isError && results.length === 0 && (
           <p>No results</p>
@@ -119,7 +121,7 @@ const SearchPage = (props: SearchPageProps) => {
             <div className={`results ${isFetching ? 'fetching' : ''}`}>
               <Button
                 type="button"
-                text="refetch"
+                text={t('refetch')}
                 callback={() =>
                   dispatch(
                     comicsApi.util.invalidateTags([

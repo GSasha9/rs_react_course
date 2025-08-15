@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { getMessages } from 'next-intl/server';
 
 import './about.scss';
 
@@ -10,11 +11,17 @@ enum SchoolLinks {
   REACT_CORSE = 'https://rs.school/courses/reactjs',
 }
 
-export default function AboutPage() {
+interface AboutPageProps {
+  params: { locale: string };
+}
+
+export default async function AboutPage({ params }: AboutPageProps) {
+  const messages = await getMessages({ locale: params.locale });
+
   return (
     <Section className="about">
-      <h1>My name is Sasha Hurbanava</h1>
-      <p>This is my study project for learning routings and hooks.</p>
+      <h1>{messages.myNameIsSahaH}</h1>
+      <p>{messages.thisIsMyStudyProject}</p>
       <div className="links">
         <Link href={SchoolLinks.SCHOOL} title="school">
           <Image src="/images.png" alt="logo_school" width={150} height={100} />

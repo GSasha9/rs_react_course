@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import './search-form.scss';
@@ -23,6 +24,7 @@ const SearchForm = (props: SearchFormProps) => {
   const [input, setInput] = useState('');
 
   const { onSearch, disabled } = props;
+  const t = useTranslations();
 
   useEffect(() => {
     if (value) setInput(value);
@@ -48,7 +50,7 @@ const SearchForm = (props: SearchFormProps) => {
       <Input
         value={input}
         onChange={handleInputChange}
-        placeholder={DEFAULT_INPUT_VALUE}
+        placeholder={t(DEFAULT_INPUT_VALUE)}
         name="input-search"
         className={
           nightTheme ? 'input search-input night-input' : 'input search-input'
@@ -58,7 +60,7 @@ const SearchForm = (props: SearchFormProps) => {
       <Button
         callback={handleSearch}
         type="button"
-        text={'search'}
+        text={t('search')}
         className="search-button"
         disabled={disabled}
       ></Button>

@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -27,6 +28,8 @@ const DetailedPage = (props: DetailedPageProps) => {
   const [itemData, setItemData] = useState<SelectedItem | null>(null);
 
   const dispatch = useDispatch();
+
+  const locale = useLocale();
 
   const { data, isLoading, isFetching, isError } = useFetchDataByUidQuery(
     uid ?? '',
@@ -56,7 +59,7 @@ const DetailedPage = (props: DetailedPageProps) => {
     return (
       <div className="detailed-page">
         <div>Something went wrong</div>
-        <Link href="/search">Back to search page</Link>
+        <Link href={`/${locale}/search`}>Back to search page</Link>
       </div>
     );
   }
@@ -65,7 +68,7 @@ const DetailedPage = (props: DetailedPageProps) => {
     return (
       <div className="detailed-page">
         <div>Data not found</div>
-        <Link href="/search">Back to search page</Link>
+        <Link href={`/${locale}/search`}>Back to search page</Link>
       </div>
     );
   }
@@ -79,7 +82,7 @@ const DetailedPage = (props: DetailedPageProps) => {
           text="close"
           callback={() => {
             dispatch(clearItem());
-            router.replace(`/search?pageNumber=${page || 1}`);
+            router.replace(`${locale}/search?pageNumber=${page || 1}`);
           }}
         />
         <Button

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import './header.scss';
 
@@ -24,6 +25,7 @@ interface HeaderProps {
 
 const Header = ({ className = '' }: HeaderProps) => {
   const pathname = usePathname();
+  const t = useTranslations();
 
   return (
     <header className={`container header ${className}`}>
@@ -35,7 +37,7 @@ const Header = ({ className = '' }: HeaderProps) => {
               data-testid={testId}
               className={pathname === to ? 'active' : ''}
             >
-              <span>{label}</span>
+              <span>{t(label)}</span>
             </Link>
           </li>
         ))}
