@@ -7,15 +7,23 @@ import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import nextPlugin from '@next/eslint-plugin-next';
 
 export default tseslint.config(
-  { ignores: ['eslint.config.js', 'vite.config.js', 'dist', 'coverage'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'vite.config.js',
+      'dist',
+      'coverage',
+      '.next',
+    ],
+  },
   {
     extends: [
       js.configs.recommended,
       ...tseslint.configs.strict,
       eslintPluginPrettier,
+      // 'plugin:@next/next/recommended',
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -28,7 +36,6 @@ export default tseslint.config(
       'react-refresh': reactRefresh,
       'react-compiler': reactCompiler,
       'simple-import-sort': simpleImportSort,
-      '@next/next': nextPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,

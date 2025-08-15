@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { expect, test, vi } from 'vitest';
 
 import Input from '@/shared/ui/input/input';
-import { appStore } from '@/store';
+import { setupStore } from '@/store';
 
 const mockCallback = vi.fn();
 const mockProps = {
@@ -16,7 +16,7 @@ const mockProps = {
 
 test('Input with given props renders correctly', async () => {
   render(
-    <Provider store={appStore}>
+    <Provider store={setupStore()}>
       <Input {...mockProps} />
     </Provider>
   );

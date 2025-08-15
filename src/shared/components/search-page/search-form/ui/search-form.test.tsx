@@ -7,14 +7,14 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import SearchForm from './search-form';
 
 import '@testing-library/user-event';
-import { appStore } from '@/store';
+import { setupStore } from '@/store';
 
 const mockOnSearch = vi.fn();
 const pageNumber = 20;
 
 const renderForm = (props = {}) =>
   render(
-    <Provider store={appStore}>
+    <Provider store={setupStore()}>
       <MemoryRouter initialEntries={['/search']}>
         <Routes>
           <Route
@@ -53,7 +53,7 @@ describe('Search form', () => {
     await userEvent.type(input, 'test');
 
     rerender(
-      <Provider store={appStore}>
+      <Provider store={setupStore()}>
         {' '}
         <SearchForm
           onSearch={mockOnSearch}

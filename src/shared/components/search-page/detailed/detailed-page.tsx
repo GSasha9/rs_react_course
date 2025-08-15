@@ -1,6 +1,8 @@
+'use client';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import type { SelectedItem } from './models/interfaces';
 import renderNestedObject from './models/utils/render-nested-object';
@@ -10,11 +12,17 @@ import './detailed-page.scss';
 import Button from '@/shared/ui/button/button';
 import { useFetchDataByUidQuery } from '@/store/api/comics.api';
 import { comicsApi } from '@/store/api/comics.api';
+import { clearItem } from '@/store/slices/selected-item-slice';
 
-const DetailedPage = () => {
-  const { uid, page } = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
+interface DetailedPageProps {
+  uid: string;
+  page: number;
+}
+
+const DetailedPage = (props: DetailedPageProps) => {
+  const uid = props.uid;
+  const page = props.page;
+  const router = useRouter();
 
   const [itemData, setItemData] = useState<SelectedItem | null>(null);
 
@@ -29,16 +37,12 @@ const DetailedPage = () => {
   );
 
   useEffect(() => {
-    if (location.state?.item) {
-      const categoryKey = Object.keys(location.state.item)[0];
-
-      setItemData(location.state.item[categoryKey]);
-    } else if (data) {
+    if (data) {
       const categoryKey = Object.keys(data)[0];
 
       setItemData(data[categoryKey]);
     }
-  }, [location.state, data]);
+  }, [data]);
 
   if (isLoading || isFetching) {
     return (
@@ -52,7 +56,7 @@ const DetailedPage = () => {
     return (
       <div className="detailed-page">
         <div>Something went wrong</div>
-        <Link to="/search">Back to search page</Link>
+        <Link href="/search">Back to search page</Link>
       </div>
     );
   }
@@ -61,7 +65,7 @@ const DetailedPage = () => {
     return (
       <div className="detailed-page">
         <div>Data not found</div>
-        <Link to="/search">Back to search page</Link>
+        <Link href="/search">Back to search page</Link>
       </div>
     );
   }
@@ -73,7 +77,10 @@ const DetailedPage = () => {
           className="button-close"
           type="button"
           text="close"
-          callback={() => navigate(`/search?pageNumber=${page || 1}`)}
+          callback={() => {
+            dispatch(clearItem());
+            router.push(`/search?pageNumber=${page || 1}`);
+          }}
         />
         <Button
           className="button-close"

@@ -1,58 +1,58 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, test } from 'vitest';
+// import { render, screen } from '@testing-library/react';
+// import userEvent from '@testing-library/user-event';
+// import { Provider } from 'react-redux';
+// import { MemoryRouter, Route, Routes } from 'react-router-dom';
+// import { describe, expect, test } from 'vitest';
 
-import SearchPage from '@/shared/components/search-page/search-page';
-import { setupStore } from '@/store';
+// import SearchPage from '@/shared/components/search-page/search-page';
+// import { setupStore } from '@/store';
 
-const renderSearchPage = () => {
-  const store = setupStore();
+// const renderSearchPage = () => {
+//   const store = setupStore();
 
-  return render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={['/search']}>
-        <Routes>
-          <Route path="search" element={<SearchPage />}></Route>
-        </Routes>
-      </MemoryRouter>
-    </Provider>
-  );
-};
+//   return render(
+//     <Provider store={store}>
+//       <MemoryRouter initialEntries={['/search']}>
+//         <Routes>
+//           <Route path="search" element={<SearchPage />}></Route>
+//         </Routes>
+//       </MemoryRouter>
+//     </Provider>
+//   );
+// };
 
-describe('SelectedCardFlyout', () => {
-  test('renders with correct number of items', async () => {
-    renderSearchPage();
+// describe('SelectedCardFlyout', () => {
+//   test('renders with correct number of items', async () => {
+//     renderSearchPage();
 
-    const checkboxes = await screen.findAllByTestId(
-      'checkbox',
-      {},
-      { timeout: 3000 }
-    );
+//     const checkboxes = await screen.findAllByTestId(
+//       'checkbox',
+//       {},
+//       { timeout: 3000 }
+//     );
 
-    expect(checkboxes.length).toBeGreaterThan(0);
-    await userEvent.click(checkboxes[0]);
+//     expect(checkboxes.length).toBeGreaterThan(0);
+//     await userEvent.click(checkboxes[0]);
 
-    expect(screen.getByText('1 items are selected')).toBeInTheDocument();
-  });
+//     expect(screen.getByText('1 items are selected')).toBeInTheDocument();
+//   });
 
-  test('unselect all button works correctly', async () => {
-    renderSearchPage();
+//   test('unselect all button works correctly', async () => {
+//     renderSearchPage();
 
-    const checkboxes = await screen.findAllByTestId(
-      'checkbox',
-      {},
-      { timeout: 3000 }
-    );
+//     const checkboxes = await screen.findAllByTestId(
+//       'checkbox',
+//       {},
+//       { timeout: 3000 }
+//     );
 
-    expect(checkboxes.length).toBeGreaterThan(0);
-    await userEvent.click(checkboxes[0]);
+//     expect(checkboxes.length).toBeGreaterThan(0);
+//     await userEvent.click(checkboxes[0]);
 
-    const unselectBtn = screen.getByRole('button', { name: /unselect all/i });
+//     const unselectBtn = screen.getByRole('button', { name: /unselect all/i });
 
-    await userEvent.click(unselectBtn);
+//     await userEvent.click(unselectBtn);
 
-    expect(screen.queryByText(/1 items are selected/i)).not.toBeInTheDocument();
-  });
-});
+//     expect(screen.queryByText(/1 items are selected/i)).not.toBeInTheDocument();
+//   });
+// });

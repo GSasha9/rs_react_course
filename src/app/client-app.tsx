@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Provider } from 'react-redux';
 
 import { ThemeContext } from '../contexts/theme-context';
-import { appStore } from '../store';
+import StoreProvider from './store-provider';
 
 export const ClientApp = ({ children }: { children: React.ReactNode }) => {
   const [nightTheme, setNightTheme] = useState(false);
@@ -15,7 +14,7 @@ export const ClientApp = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ThemeContext.Provider value={{ nightTheme, toggleTheme }}>
-      <Provider store={appStore}>{children}</Provider>
+      <StoreProvider>{children}</StoreProvider>
     </ThemeContext.Provider>
   );
 };

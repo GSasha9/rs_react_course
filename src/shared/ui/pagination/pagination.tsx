@@ -1,4 +1,7 @@
-import { useSearchParams } from 'react-router-dom';
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import './pagination.scss';
 
@@ -8,13 +11,15 @@ export interface PaginationProps {
 }
 
 const Pagination = ({ pages, activeNumber }: PaginationProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const handleClick = (page: number) => {
-    setSearchParams({
-      ...Object.fromEntries(searchParams.entries()),
-      pageNumber: String(page),
-    });
+    const query = new URLSearchParams(searchParams.toString());
+
+    query.set('pageNumber', String(page));
+
+    router.push(`/search?${query.toString()}`);
   };
 
   const pageButtons = Array.from({ length: pages }, (_, index) => {

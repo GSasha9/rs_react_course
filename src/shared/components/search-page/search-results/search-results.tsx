@@ -1,33 +1,26 @@
-import { type MouseEvent } from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+'use client';
 
 import ResultCard from '../result-card/ui/result-card';
 
 import './search-results.scss';
 
-import { useFetchDataByUidQuery } from '@/store/api/comics.api';
+import { useAppDispatch } from '@/store/redux-hooks';
+import { selectItem } from '@/store/slices/selected-item-slice';
 
 interface SearchResultsProps {
   results: Record<string, unknown>[];
   page: number;
 }
 
-const SearchResults = ({ results, page }: SearchResultsProps) => {
-  const navigate = useNavigate();
-  const [uid, setUid] = useState('');
-  const { data } = useFetchDataByUidQuery(uid ?? '', {
-    skip: !uid,
-  });
+const SearchResults = ({ results, page = 1 }: SearchResultsProps) => {
+  const dispatch = useAppDispatch();
 
-  const openDetails = async (e: MouseEvent<HTMLDivElement>) => {
-    const newUid = e.currentTarget.getAttribute('data-uid') || '';
+  const handleSelectItem = (uid: string) => {
+    dispatch(selectItem({ uid: uid, page: page }));
 
-    setUid(newUid);
+    const newUrl = `/search/${page}/${uid}?pageNumber=${page}`;
 
-    navigate(`${page || 1}/${newUid}`, {
-      state: { item: data, page: page },
-    });
+    window.history.replaceState(null, '', newUrl);
   };
 
   return (
@@ -61,7 +54,7 @@ const SearchResults = ({ results, page }: SearchResultsProps) => {
             key={typeof item.uid === 'string' ? item.uid : index}
             title={title}
             description={description}
-            onClick={openDetails}
+            onClick={() => handleSelectItem(String(item.uid))}
             uid={`${item.uid}`}
           />
         );

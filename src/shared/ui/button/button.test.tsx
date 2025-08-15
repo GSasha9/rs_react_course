@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { describe, expect, test, vi } from 'vitest';
 
 import Button from '@/shared/ui/button/button';
-import { appStore } from '@/store';
+import { setupStore } from '@/store';
 
 describe('Button', () => {
   test('renders with correct text', () => {
@@ -12,7 +12,7 @@ describe('Button', () => {
       text: 'Test text',
     };
     const { rerender } = render(
-      <Provider store={appStore}>
+      <Provider store={setupStore()}>
         <Button {...mockData} />
       </Provider>
     );
@@ -20,7 +20,7 @@ describe('Button', () => {
     expect(screen.getByText(mockData.text)).toBeInTheDocument();
 
     rerender(
-      <Provider store={appStore}>
+      <Provider store={setupStore()}>
         <Button text={'search'} />
       </Provider>
     );
@@ -32,7 +32,7 @@ describe('Button', () => {
     const mockHandlerClick = vi.fn();
 
     render(
-      <Provider store={appStore}>
+      <Provider store={setupStore()}>
         <Button callback={mockHandlerClick} text={'Click me'} />
       </Provider>
     );

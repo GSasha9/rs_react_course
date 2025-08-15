@@ -1,13 +1,14 @@
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Outlet, useSearchParams } from 'react-router-dom';
-
-import SearchForm from './search-form/ui/search-form';
-import SearchResults from './search-results/search-results';
 
 import './search-page.scss';
 
-import useLocalStorageQuery from '@/hooks/use-local-storage-query';
+//import useLocalStorageQuery from '@/hooks/use-local-storage-query';
+import SearchForm from '@/shared/components/search-page/search-form/ui/search-form';
+import SearchResults from '@/shared/components/search-page/search-results/search-results';
 import type { ComicsRequestResults } from '@/shared/models/interfaces';
 import Button from '@/shared/ui/button/button';
 import Pagination from '@/shared/ui/pagination/pagination';
@@ -17,14 +18,25 @@ import Spinner from '@/shared/ui/spinner/spinner';
 import { useGetCardsByQueryAndPageQuery } from '@/store/api/comics.api';
 import { comicsApi } from '@/store/api/comics.api';
 
-const SearchPage = () => {
+interface SearchPageProps {
+  children: React.ReactNode;
+}
+
+const SearchPage = (props: SearchPageProps) => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
+  //const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
+  const [query, setQuery] = [
+    '',
+    (q: string) => {
+      return q;
+    },
+  ];
 
   const currentPageNumber = Number(searchParams.get('pageNumber')) || 1;
 
@@ -37,11 +49,22 @@ const SearchPage = () => {
       { refetchOnReconnect: true }
     );
 
+  const updatePageNumberInQuery = (page: number) => {
+    const query = new URLSearchParams(searchParams.toString());
+
+    query.set('pageNumber', String(page));
+
+    router.push(`/search?${query.toString()}`);
+  };
+
   useEffect(() => {
     if (!searchParams.get('pageNumber')) {
-      setSearchParams({ pageNumber: '1' });
+      const query = new URLSearchParams(searchParams.toString());
+
+      query.set('pageNumber', '1');
+      router.replace(`/search?${query.toString()}`);
     }
-  }, [setSearchParams, searchParams]);
+  }, [searchParams, router]);
 
   const handleResults = useCallback(
     (response: ComicsRequestResults) => {
@@ -75,7 +98,7 @@ const SearchPage = () => {
           pageNumber={currentPageNumber}
           onSearch={(newQuery) => {
             setQuery(newQuery);
-            setSearchParams({ pageNumber: '1' });
+            updatePageNumberInQuery(1);
           }}
         ></SearchForm>
       </Section>
@@ -106,9 +129,7 @@ const SearchPage = () => {
                 className="refetch-button"
               />
               <SearchResults results={results} page={currentPageNumber} />
-              <div className={`details`}>
-                <Outlet />
-              </div>
+              <div className={`details`}>{props.children}</div>
             </div>
             <Pagination pages={pageNumber} activeNumber={currentPageNumber} />
           </>
