@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import './search-page.scss';
 
+import ErrorPage from '@/app/[locale]/not-found';
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
 import { useRouter } from '@/i18n/navigation';
 import SearchForm from '@/shared/components/search-page/search-form/ui/search-form';
@@ -36,7 +37,12 @@ const SearchPageClient = (props: SearchPageProps) => {
 
   const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
 
-  const currentPageNumber = Number(searchParams.get('pageNumber')) || 1;
+  const pageNumberParam = searchParams.get('pageNumber');
+
+  const currentPageNumber =
+    pageNumberParam && !isNaN(Number(pageNumberParam))
+      ? Number(pageNumberParam)
+      : null;
 
   const uid = searchParams.get('uid');
 
@@ -44,7 +50,7 @@ const SearchPageClient = (props: SearchPageProps) => {
     useGetCardsByQueryAndPageQuery(
       {
         query: query ?? '',
-        pageNumber: currentPageNumber,
+        pageNumber: currentPageNumber ?? 1,
       },
       { refetchOnReconnect: true }
     );
@@ -57,7 +63,7 @@ const SearchPageClient = (props: SearchPageProps) => {
   };
 
   useEffect(() => {
-    if (uid) {
+    if (uid && currentPageNumber) {
       dispatch(selectItem({ uid, page: currentPageNumber }));
     }
   }, [uid, currentPageNumber, dispatch]);
@@ -95,12 +101,16 @@ const SearchPageClient = (props: SearchPageProps) => {
     }
   }, [data, handleResults]);
 
+  if (currentPageNumber === null) {
+    return <ErrorPage />;
+  }
+
   return (
     <>
       <Section className="section-form">
         <SearchForm
           disabled={isLoading || isFetching}
-          pageNumber={currentPageNumber}
+          pageNumber={currentPageNumber ?? 1}
           onSearch={(newQuery) => {
             setQuery(newQuery);
             updatePageNumberInQuery(1);

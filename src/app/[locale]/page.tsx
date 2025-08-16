@@ -7,5 +7,5 @@ interface PageProps {
 export default function Page({ params }: PageProps) {
   const { locale } = params;
 
-  redirect(`/${locale}/about`);
+  redirect(`/${locale}/search`);
 }

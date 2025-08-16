@@ -7,6 +7,7 @@ import './header.scss';
 
 import { pathnames } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
+import LanguageSwitcher from '@/shared/utils/language-switcher';
 
 const navItems: {
   to: keyof typeof pathnames;
@@ -47,6 +48,7 @@ const Header = ({ className = '' }: HeaderProps) => {
             </Link>
           </li>
         ))}
+        <LanguageSwitcher />
       </ul>
     </header>
   );

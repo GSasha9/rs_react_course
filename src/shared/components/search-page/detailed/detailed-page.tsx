@@ -58,7 +58,7 @@ const DetailedPage = (props: DetailedPageProps) => {
     return (
       <div className="detailed-page">
         <div>{t('somethingWentWrong')}</div>
-        <Link href={`/search`}>Back to search page</Link>
+        <Link href={`/`}>Back to search page</Link>
       </div>
     );
   }
@@ -67,7 +67,7 @@ const DetailedPage = (props: DetailedPageProps) => {
     return (
       <div className="detailed-page">
         <div>{t('noResults')}</div>
-        <Link href={`/search`}>{t('backToSearchPage')}</Link>
+        <Link href={`/`}>{t('backToSearchPage')}</Link>
       </div>
     );
   }
