@@ -1,12 +1,18 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import './header.scss';
 
-const navItems = [
+import { pathnames } from '@/i18n/config';
+import { Link } from '@/i18n/navigation';
+
+const navItems: {
+  to: keyof typeof pathnames;
+  label: string;
+  testId: string;
+}[] = [
   {
     to: '/search',
     label: 'Search page',

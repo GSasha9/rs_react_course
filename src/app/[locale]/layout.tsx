@@ -22,15 +22,10 @@ export default async function LocaleLayout({ children, params }: IProps) {
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale}>
-      <head />
-      <body>
-        <ClientApp messages={messages} locale={locale}>
-          <Suspense fallback={<Spinner />}>
-            <Root>{children}</Root>
-          </Suspense>
-        </ClientApp>
-      </body>
-    </html>
+    <ClientApp messages={messages} locale={locale}>
+      <Suspense fallback={<Spinner />}>
+        <Root>{children}</Root>
+      </Suspense>
+    </ClientApp>
   );
 }

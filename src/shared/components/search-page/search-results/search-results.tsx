@@ -4,6 +4,7 @@ import ResultCard from '../result-card/ui/result-card';
 
 import './search-results.scss';
 
+import { useRouter } from '@/i18n/navigation';
 import { useAppDispatch } from '@/store/redux-hooks';
 import { selectItem } from '@/store/slices/selected-item-slice';
 
@@ -14,13 +15,18 @@ interface SearchResultsProps {
 
 const SearchResults = ({ results, page = 1 }: SearchResultsProps) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleSelectItem = (uid: string) => {
     dispatch(selectItem({ uid: uid, page: page }));
 
-    const newUrl = `/search/${page}/${uid}?pageNumber=${page}`;
-
-    window.history.replaceState(null, '', newUrl);
+    router.replace({
+      pathname: '/search',
+      query: {
+        pageNumber: String(page),
+        uid: uid,
+      },
+    });
   };
 
   return (

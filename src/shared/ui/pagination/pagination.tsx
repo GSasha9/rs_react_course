@@ -1,9 +1,8 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-
 import './pagination.scss';
+
+import { useRouter } from '@/i18n/navigation';
 
 export interface PaginationProps {
   pages: number;
@@ -11,15 +10,15 @@ export interface PaginationProps {
 }
 
 const Pagination = ({ pages, activeNumber }: PaginationProps) => {
-  const searchParams = useSearchParams();
   const router = useRouter();
 
   const handleClick = (page: number) => {
-    const query = new URLSearchParams(searchParams.toString());
-
-    query.set('pageNumber', String(page));
-
-    router.push(`/search?${query.toString()}`);
+    router.push({
+      pathname: '/search',
+      query: {
+        pageNumber: String(page),
+      },
+    });
   };
 
   const pageButtons = Array.from({ length: pages }, (_, index) => {

@@ -1,8 +1,15 @@
-import { ReactNode } from 'react';
-
 interface IProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  params: { locale: string };
 }
-export default function RootLayout({ children }: IProps) {
-  return children;
+
+export default async function RootLayout({ children, params }: IProps) {
+  const { locale } = await params;
+
+  return (
+    <html lang={locale}>
+      <head />
+      <body>{children}</body>
+    </html>
+  );
 }

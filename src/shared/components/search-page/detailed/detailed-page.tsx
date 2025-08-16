@@ -1,7 +1,5 @@
 'use client';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -10,6 +8,8 @@ import renderNestedObject from './models/utils/render-nested-object';
 
 import './detailed-page.scss';
 
+import { useRouter } from '@/i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import Button from '@/shared/ui/button/button';
 import { useFetchDataByUidQuery } from '@/store/api/comics.api';
 import { comicsApi } from '@/store/api/comics.api';
@@ -24,12 +24,11 @@ const DetailedPage = (props: DetailedPageProps) => {
   const uid = props.uid;
   const page = props.page;
   const router = useRouter();
+  const t = useTranslations();
 
   const [itemData, setItemData] = useState<SelectedItem | null>(null);
 
   const dispatch = useDispatch();
-
-  const locale = useLocale();
 
   const { data, isLoading, isFetching, isError } = useFetchDataByUidQuery(
     uid ?? '',
@@ -58,8 +57,8 @@ const DetailedPage = (props: DetailedPageProps) => {
   if (isError) {
     return (
       <div className="detailed-page">
-        <div>Something went wrong</div>
-        <Link href={`/${locale}/search`}>Back to search page</Link>
+        <div>{t('somethingWentWrong')}</div>
+        <Link href={`/search`}>Back to search page</Link>
       </div>
     );
   }
@@ -67,8 +66,8 @@ const DetailedPage = (props: DetailedPageProps) => {
   if (!itemData) {
     return (
       <div className="detailed-page">
-        <div>Data not found</div>
-        <Link href={`/${locale}/search`}>Back to search page</Link>
+        <div>{t('noResults')}</div>
+        <Link href={`/search`}>{t('backToSearchPage')}</Link>
       </div>
     );
   }
@@ -79,16 +78,19 @@ const DetailedPage = (props: DetailedPageProps) => {
         <Button
           className="button-close"
           type="button"
-          text="close"
+          text={t('close')}
           callback={() => {
             dispatch(clearItem());
-            router.replace(`${locale}/search?pageNumber=${page || 1}`);
+            router.replace({
+              pathname: '/search',
+              query: { pagenumber: `${page || 1}` },
+            });
           }}
         />
         <Button
           className="button-close"
           type="button"
-          text="refetch"
+          text={t('refetch')}
           callback={() => {
             if (uid) {
               dispatch(

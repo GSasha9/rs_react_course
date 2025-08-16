@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import './search-page.scss';
 
 import useLocalStorageQuery from '@/hooks/use-local-storage-query';
+import { useRouter } from '@/i18n/navigation';
 import SearchForm from '@/shared/components/search-page/search-form/ui/search-form';
 import SearchResults from '@/shared/components/search-page/search-results/search-results';
 import type { ComicsRequestResults } from '@/shared/models/interfaces';
@@ -21,24 +22,23 @@ import { comicsApi } from '@/store/api/comics.api';
 import { selectItem } from '@/store/slices/selected-item-slice';
 
 interface SearchPageProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const SearchPage = (props: SearchPageProps) => {
+const SearchPageClient = (props: SearchPageProps) => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const params = useParams();
   const t = useTranslations();
 
   const [query, setQuery] = useLocalStorageQuery('prevSearchInput');
 
   const currentPageNumber = Number(searchParams.get('pageNumber')) || 1;
 
-  const uid = params.uid;
+  const uid = searchParams.get('uid');
 
   const { data, isLoading, isFetching, isError } =
     useGetCardsByQueryAndPageQuery(
@@ -50,25 +50,24 @@ const SearchPage = (props: SearchPageProps) => {
     );
 
   const updatePageNumberInQuery = (page: number) => {
-    const query = new URLSearchParams(searchParams.toString());
-
-    query.set('pageNumber', String(page));
-
-    router.push(`/search?${query.toString()}`);
+    router.push({
+      pathname: '/search',
+      query: { pageNumber: String(page) },
+    });
   };
 
   useEffect(() => {
     if (uid) {
-      dispatch(selectItem({ uid: uid[1], page: currentPageNumber }));
+      dispatch(selectItem({ uid, page: currentPageNumber }));
     }
   }, [uid, currentPageNumber, dispatch]);
 
   useEffect(() => {
     if (!searchParams.get('pageNumber')) {
-      const query = new URLSearchParams(searchParams.toString());
-
-      query.set('pageNumber', '1');
-      router.replace(`/search?${query.toString()}`);
+      router.replace({
+        pathname: '/search',
+        query: { pageNumber: '1' },
+      });
     }
   }, [searchParams, router]);
 
@@ -146,4 +145,4 @@ const SearchPage = (props: SearchPageProps) => {
   );
 };
 
-export default SearchPage;
+export default SearchPageClient;

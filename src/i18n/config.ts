@@ -10,9 +10,13 @@ export const localePrefix: LocalePrefix<typeof locales> = 'always';
 
 export const pathnames = {
   '/': '/',
-  '/pathnames': {
-    en: '/pathnames',
-    ru: '/pathnames',
+  '/search': {
+    en: '/search',
+    ru: '/search',
+  },
+  '/about': {
+    en: '/about',
+    ru: '/about',
   },
 } satisfies Pathnames<typeof locales>;
 
