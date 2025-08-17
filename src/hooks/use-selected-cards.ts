@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/store/redux-hooks';
-import { getSelectedCards } from '@/store/selectors/selected-cards-selector';
+import { getSelectedCards } from '@/store/selectors/selected-cards.selector';
 import type { Card } from '@/store/slices/selected-cards-slice';
 import {
   addCard,

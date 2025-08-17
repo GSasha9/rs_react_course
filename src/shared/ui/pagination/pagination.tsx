@@ -1,6 +1,8 @@
-import { useSearchParams } from 'react-router-dom';
+'use client';
 
 import './pagination.scss';
+
+import { useRouter } from '@/i18n/navigation';
 
 export interface PaginationProps {
   pages: number;
@@ -8,12 +10,14 @@ export interface PaginationProps {
 }
 
 const Pagination = ({ pages, activeNumber }: PaginationProps) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
 
   const handleClick = (page: number) => {
-    setSearchParams({
-      ...Object.fromEntries(searchParams.entries()),
-      pageNumber: String(page),
+    router.push({
+      pathname: '/search',
+      query: {
+        pageNumber: String(page),
+      },
     });
   };
 

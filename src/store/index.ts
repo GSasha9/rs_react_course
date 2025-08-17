@@ -1,21 +1,37 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-import { comicsApi } from './api/comics-api';
-import SelectedCardsReducer from './slices/selected-cards-slice';
+import SelectedItemReducer from '../store/slices/selected-item-slice';
+import { comicsApi } from './api/comics.api';
+import SelectedCardsReducer, {
+  type SelectedCards,
+} from './slices/selected-cards-slice';
 
-export const appStore = configureStore({
-  reducer: {
-    [comicsApi.reducerPath]: comicsApi.reducer,
-    selectedCard: SelectedCardsReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(comicsApi.middleware),
-});
+export interface RootStateSchema {
+  [comicsApi.reducerPath]: ReturnType<typeof comicsApi.reducer>;
+  selectedCard: SelectedCards;
+}
 
-setupListeners(appStore.dispatch);
-export type AppType = typeof appStore;
+export const setupStore = () => {
+  const store = configureStore({
+    reducer: {
+      [comicsApi.reducerPath]: comicsApi.reducer,
+      selectedCard: SelectedCardsReducer,
+      selectedItem: SelectedItemReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(comicsApi.middleware),
+  });
 
-export type AppDispatch = typeof appStore.dispatch;
+  setupListeners(store.dispatch);
 
-export type RootState = ReturnType<typeof appStore.getState>;
+  return store;
+};
+
+//export const appStore = setupStore();
+
+export type AppStore = ReturnType<typeof setupStore>;
+
+export type RootState = ReturnType<AppStore['getState']>;
+
+export type AppDispatch = AppStore['dispatch'];

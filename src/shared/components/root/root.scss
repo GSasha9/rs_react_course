@@ -1,0 +1,22 @@
+@use '../../../styles/scss/variables' as *;
+
+.theme {
+  cursor: pointer;
+
+  position: absolute;
+  top: 20px;
+  right: 20%;
+
+  width: $spacing-xl !important;
+  height: $spacing-xl !important;
+
+  background-color: white !important;
+  background-image: url('/sun.svg');
+}
+
+.night {
+  background-image: url('/moon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+}

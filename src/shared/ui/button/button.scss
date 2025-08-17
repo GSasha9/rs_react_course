@@ -3,9 +3,9 @@
 .button {
   display: flex;
 
-  width: 5%;
+  width: 5.5%;
   min-width: fit-content;
-  height: 10%;
+  height: fit-content;
   padding: 10px;
   border: 1px solid $primary-button;
   border-radius: $border-radius-md;
@@ -13,6 +13,7 @@
   background-color: $primary-button;
 
   &:hover {
+    cursor: pointer;
     background-color: $primary-button-hover;
   }
 

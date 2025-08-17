@@ -1,0 +1,33 @@
+@use '@/styles/scss/variables.scss' as *;
+
+.card {
+  width: 450px;
+  padding: $spacing-sm;
+  border: 1px solid $primary-button;
+  border-radius: $border-radius-md;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .card-checkbox {
+    width: $spacing-lg;
+    height: $spacing-lg;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .card-title {
+    text-align: center;
+  }
+
+  .list-item__prop-name {
+    color: $primary-text-green;
+  }
+
+  .list-item__prop {
+    color: $text-secondary;
+  }
+}

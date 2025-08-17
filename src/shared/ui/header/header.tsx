@@ -1,10 +1,19 @@
-import { NavLink } from 'react-router-dom';
+'use client';
+
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import './header.scss';
 
-import getNavLink from '@/shared/models/utils/getNavLink';
+import { pathnames } from '@/i18n/config';
+import { Link } from '@/i18n/navigation';
+import LanguageSwitcher from '@/shared/utils/language-switcher';
 
-const navItems = [
+const navItems: {
+  to: keyof typeof pathnames;
+  label: string;
+  testId: string;
+}[] = [
   {
     to: '/search',
     label: 'Search page',
@@ -22,16 +31,24 @@ interface HeaderProps {
 }
 
 const Header = ({ className = '' }: HeaderProps) => {
+  const pathname = usePathname();
+  const t = useTranslations();
+
   return (
     <header className={`container header ${className}`}>
       <ul className="menu">
         {navItems.map(({ to, label, testId }) => (
           <li key={testId} className="menu-item">
-            <NavLink to={to} data-testid={testId} className={getNavLink}>
-              <span>{label}</span>
-            </NavLink>
+            <Link
+              href={to}
+              data-testid={testId}
+              className={pathname === to ? 'active' : ''}
+            >
+              <span>{t(label)}</span>
+            </Link>
           </li>
         ))}
+        <LanguageSwitcher />
       </ul>
     </header>
   );
