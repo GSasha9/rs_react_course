@@ -3,7 +3,6 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
-//import './language-switcher.scss';
 import { locales, LocaleType } from '@/i18n/config';
 
 const LANGUAGE_MAP = {

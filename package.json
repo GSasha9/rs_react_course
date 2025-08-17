@@ -16,7 +16,8 @@
     "stylelint:fix": "stylelint \"src/**/*.scss\" --fix",
     "prepare": "husky install",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "start": "next start"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [

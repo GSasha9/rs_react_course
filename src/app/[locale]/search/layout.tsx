@@ -1,4 +1,4 @@
-import SearchPage from './search-page';
+import SearchPage from './search-page.tsx';
 
 export default function SearchLayout({
   children,

@@ -26,7 +26,7 @@ interface SearchPageProps {
   children?: React.ReactNode;
 }
 
-const SearchPageClient = (props: SearchPageProps) => {
+const SearchPage = (props: SearchPageProps) => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
@@ -155,4 +155,4 @@ const SearchPageClient = (props: SearchPageProps) => {
   );
 };
 
-export default SearchPageClient;
+export default SearchPage;
