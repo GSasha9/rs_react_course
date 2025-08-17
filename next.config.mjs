@@ -5,7 +5,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  distDir: './dist',
 };
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
