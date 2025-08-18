@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import DetailedPageUid from './[uid]/page';
+
 import './search-page.scss';
 
 import ErrorPage from '@/app/[locale]/not-found';
@@ -22,11 +24,11 @@ import { useGetCardsByQueryAndPageQuery } from '@/store/api/comics.api';
 import { comicsApi } from '@/store/api/comics.api';
 import { selectItem } from '@/store/slices/selected-item-slice';
 
-interface SearchPageProps {
-  children?: React.ReactNode;
+interface SearchPageClientProps {
+  results?: ComicsRequestResults | null;
 }
 
-const SearchPage = (props: SearchPageProps) => {
+const SearchPageClient = (props: SearchPageClientProps) => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
@@ -46,14 +48,18 @@ const SearchPage = (props: SearchPageProps) => {
 
   const uid = searchParams.get('uid');
 
-  const { data, isLoading, isFetching, isError } =
-    useGetCardsByQueryAndPageQuery(
-      {
-        query: query ?? '',
-        pageNumber: currentPageNumber ?? 1,
-      },
-      { refetchOnReconnect: true }
-    );
+  const {
+    data = props.results,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetCardsByQueryAndPageQuery(
+    {
+      query: query ?? '',
+      pageNumber: currentPageNumber ?? 1,
+    },
+    { refetchOnReconnect: true }
+  );
 
   const updatePageNumberInQuery = (page: number) => {
     router.push({
@@ -66,7 +72,7 @@ const SearchPage = (props: SearchPageProps) => {
     if (uid && currentPageNumber) {
       dispatch(selectItem({ uid, page: currentPageNumber }));
     }
-  }, [uid, currentPageNumber, dispatch]);
+  }, [uid, currentPageNumber, dispatch, searchParams]);
 
   useEffect(() => {
     if (!searchParams.get('pageNumber')) {
@@ -144,7 +150,13 @@ const SearchPage = (props: SearchPageProps) => {
                 className="refetch-button"
               />
               <SearchResults results={results} page={currentPageNumber} />
-              <div className={`details`}>{props.children}</div>
+              <div className={`details`}>
+                {uid ? (
+                  <DetailedPageUid uid={uid} page={currentPageNumber} />
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
             <Pagination pages={pageNumber} activeNumber={currentPageNumber} />
           </>
@@ -155,4 +167,4 @@ const SearchPage = (props: SearchPageProps) => {
   );
 };
 
-export default SearchPage;
+export default SearchPageClient;
