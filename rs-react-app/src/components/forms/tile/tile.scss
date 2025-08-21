@@ -1,0 +1,10 @@
+.tile {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 300px;
+    max-width: 500px;
+    border: 2px solid green;
+    list-style: none;
+    padding: 15px;
+}

@@ -1,7 +1,7 @@
-import FormUncontrolled from './components/forms/form-uncontrolled/form-uncontrolled';
+import MainPage from './pages/main-page/main-page';
 
 function App() {
-  return <FormUncontrolled />;
+  return <MainPage />;
 }
 
 export default App;
