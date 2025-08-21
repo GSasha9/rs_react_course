@@ -3,8 +3,6 @@ export interface InputFieldProps {
   name: string;
   label: string;
   id: string;
-  value: string;
-  onChange: (value: string) => void;
   placeholder?: string;
   required: boolean;
   error?: string;
@@ -15,8 +13,6 @@ const InputField = ({
   name,
   label,
   id,
-  value,
-  onChange,
   placeholder,
   required,
   error,
@@ -28,8 +24,6 @@ const InputField = ({
         type={type}
         name={name}
         id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder ?? ''}
         required={required}
       />

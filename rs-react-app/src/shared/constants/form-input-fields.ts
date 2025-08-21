@@ -31,7 +31,7 @@ export const FORM_INPUT_FIELDS = [
     placeholder: 'Enter Password',
     required: true,
   },
-    {
+  {
     label: 'Repeat Password*',
     type: 'text',
     name: 'r_password',
