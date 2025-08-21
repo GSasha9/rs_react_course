@@ -1,7 +1,9 @@
 import { StrictMode } from 'react';
 import * as ReactDom from 'react-dom/client';
+
 import App from './App';
 
+import './main.scss';
 
 const container = document.getElementById('root');
 

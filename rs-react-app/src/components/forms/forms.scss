@@ -1,0 +1,18 @@
+fieldset {
+  max-width: 550px;
+    justify-self: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+
+  justify-self: center;
+
+  .acceptTerms-checkbox-wrapper {
+    display: flex;
+    gap: 10px;
+  }
+}

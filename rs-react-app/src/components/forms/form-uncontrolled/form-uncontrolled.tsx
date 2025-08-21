@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 
-import InputField from '../form/input-field/input-field';
+import InputField from '../../input-field/input-field';
+
+import '../forms.scss';
 
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
 
@@ -27,7 +29,7 @@ const FormUncontrolled = () => {
     <div className="App">
       <h1>Complete the form</h1>
       <fieldset>
-        <form onSubmit={(e) => onSubmit(e)} ref={formRef}>
+        <form className="form" onSubmit={(e) => onSubmit(e)} ref={formRef}>
           {FORM_INPUT_FIELDS.map((el) => {
             return (
               <InputField
@@ -42,28 +44,34 @@ const FormUncontrolled = () => {
             );
           })}
           <label htmlFor="gender">Gender*</label>
-          <input type="radio" name="gender" value="male" id="male" />
-          Male
-          <input
-            type="radio"
-            name="gender"
-            value="female"
-            id="female"
-            defaultChecked={true}
-          />
-          Female
-          <input type="radio" name="gender" value="other" id="other" />
-          Other
-          <label htmlFor="acceptTerms">
-            Accept Terms & Conditions agreement?*
-          </label>
-          <input
-            type="checkbox"
-            name="acceptTerms"
-            value="yes"
-            id="acceptTerms"
-          />
-          Yes
+          <div className="gender-inputs">
+            <input type="radio" name="gender" value="male" id="male" />
+            Male
+            <input
+              type="radio"
+              name="gender"
+              value="female"
+              id="female"
+              defaultChecked={true}
+            />
+            Female
+            <input type="radio" name="gender" value="other" id="other" />
+            Other
+          </div>
+          <div className="acceptTerms-checkbox-wrapper">
+            {' '}
+            <label htmlFor="acceptTerms">
+              Accept Terms & Conditions agreement?*
+            </label>
+            <span>Yes</span>
+            <input
+              type="checkbox"
+              name="acceptTerms"
+              value="yes"
+              id="acceptTerms"
+            />
+          </div>
+
           <button type="reset" value="reset">
             Reset
           </button>
