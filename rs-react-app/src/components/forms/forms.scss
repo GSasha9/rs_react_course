@@ -1,6 +1,7 @@
 fieldset {
   max-width: 550px;
-    justify-self: center;
+  justify-self: center;
+  background-color: white;
 }
 
 .form {
@@ -14,5 +15,19 @@ fieldset {
   .acceptTerms-checkbox-wrapper {
     display: flex;
     gap: 10px;
+  }
+
+  .file-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    .file-label {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
   }
 }

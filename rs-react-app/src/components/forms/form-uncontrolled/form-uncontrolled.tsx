@@ -1,13 +1,21 @@
 import { useRef } from 'react';
+import { useEffect } from 'react';
 
 import InputField from '../../input-field/input-field';
 
 import '../forms.scss';
 
+import FileField from '@/components/file-field/file-field';
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
 
 const FormUncontrolled = () => {
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const input = document.getElementById('name') as HTMLInputElement | null;
+
+    input?.focus();
+  }, []);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,6 +77,8 @@ const FormUncontrolled = () => {
             id="acceptTerms"
           />
         </div>
+
+        <FileField />
 
         <button type="reset" value="reset">
           Reset
