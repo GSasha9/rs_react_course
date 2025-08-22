@@ -3,5 +3,8 @@ export const INITIAL_FORM_DATA = {
   age: '',
   email: '',
   password: '',
-  r_password: '',
+  gender: '',
+  acceptTC: '',
+  file: '',
+  country: '',
 };

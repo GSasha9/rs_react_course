@@ -5,6 +5,7 @@ import InputField from '../../input-field/input-field';
 
 import '../forms.scss';
 
+import AutocompleteField from '@/components/autocomplete-field/autocomplete-field';
 import FileField from '@/components/file-field/file-field';
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
 
@@ -31,6 +32,7 @@ const FormUncontrolled = () => {
     console.log(formData.get('r_password'));
     console.log(formData.get('gender'));
     console.log(formData.get('acceptTerms'));
+    console.log(formData.get('country'));
   };
 
   return (
@@ -79,6 +81,14 @@ const FormUncontrolled = () => {
         </div>
 
         <FileField />
+
+        <AutocompleteField
+          htmlFor="country"
+          listID="countries"
+          id="country"
+          name="country"
+          options={['Belarus', 'Poland', 'Belgium']}
+        />
 
         <button type="reset" value="reset">
           Reset
