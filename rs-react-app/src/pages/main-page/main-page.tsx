@@ -4,12 +4,14 @@ import { useSelector } from 'react-redux';
 import './main-page.scss';
 
 import FormUncontrolled from '@/components/forms/form-uncontrolled/form-uncontrolled';
+import HookForm from '@/components/forms/hook-form/hook-form';
 import Modal from '@/components/modal/modal';
 import Tile from '@/components/tile/tile';
 import { selectFormData } from '@/store/selectors/form-data.selector';
 
 const MainPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [modalChild, setModalChild] = useState(<FormUncontrolled />);
 
   const data = useSelector(selectFormData);
 
@@ -33,7 +35,13 @@ const MainPage = () => {
           acceptTC={data.uncontrolledForm.acceptTC}
           country={data.uncontrolledForm.country}
         />
-        <button type="button" onClick={() => setIsOpen(true)}>
+        <button
+          type="button"
+          onClick={() => {
+            setIsOpen(true);
+            setModalChild(<FormUncontrolled />);
+          }}
+        >
           Uncontrolled form
         </button>
       </section>
@@ -47,10 +55,18 @@ const MainPage = () => {
           acceptTC={data.hookForm.acceptTC}
           country={data.hookForm.country}
         />
-        <button type="button">Hook form</button>
+        <button
+          type="button"
+          onClick={() => {
+            setIsOpen(true);
+            setModalChild(<HookForm />);
+          }}
+        >
+          Hook form
+        </button>
       </section>
       <Modal isOpen={isOpen} handleClose={handleClose}>
-        <FormUncontrolled />
+        {modalChild}
       </Modal>
     </main>
   );

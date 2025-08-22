@@ -1,13 +1,18 @@
+import type { UseFormRegister } from 'react-hook-form';
+
 import './input-field.scss';
+
+import type { FormValues } from '@/shared/interfaces/form-values';
 
 export interface InputFieldProps {
   type: string;
-  name: string;
+  name: keyof FormValues;
   label: string;
   id: string;
   placeholder?: string;
   required: boolean;
   error?: string;
+  register?: UseFormRegister<FormValues>;
 }
 
 const InputField = ({
@@ -18,16 +23,17 @@ const InputField = ({
   placeholder,
   required,
   error,
+  register,
 }: InputFieldProps) => {
   return (
     <div className="form-field">
       <label htmlFor={id}>{label}</label>
       <input
         type={type}
-        name={name}
         id={id}
         placeholder={placeholder ?? ''}
         required={required}
+        {...(register ? register(name) : {})}
       />
       {error && <span className="error">{error}</span>}
     </div>

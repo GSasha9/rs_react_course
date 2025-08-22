@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { TileProps } from '@/components/tile/tile';
 import { INITIAL_FORM_DATA } from '@/shared/constants/initial-form-data';
+import type { FormValues } from '@/shared/interfaces/form-values';
 
 export interface FormData {
-  uncontrolledForm: TileProps | null;
-  hookForm: TileProps | null;
+  uncontrolledForm: FormValues | null;
+  hookForm: FormValues | null;
 }
 
 const initialState: FormData = {
@@ -17,13 +17,13 @@ const FormDataSlice = createSlice({
   name: 'formData',
   initialState,
   reducers: {
-    addFormUncontrolledData(state, action: PayloadAction<TileProps>) {
-      const data: TileProps = action.payload;
+    addFormUncontrolledData(state, action: PayloadAction<FormValues>) {
+      const data: FormValues = action.payload;
 
       state.uncontrolledForm = data;
     },
-    addHookFormData(state, action: PayloadAction<TileProps>) {
-      const data: TileProps = action.payload;
+    addHookFormData(state, action: PayloadAction<FormValues>) {
+      const data: FormValues = action.payload;
 
       state.hookForm = data;
     },

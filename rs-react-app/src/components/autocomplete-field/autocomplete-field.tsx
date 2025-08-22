@@ -1,9 +1,14 @@
+import { type UseFormRegister } from 'react-hook-form';
+
+import { type FormValues } from '@/shared/interfaces/form-values';
+
 interface AutocompleteFieldProps {
   htmlFor: string;
   listID: string;
   id: string;
   name: string;
   options: string[];
+  register?: UseFormRegister<FormValues>;
 }
 
 const AutocompleteField = ({

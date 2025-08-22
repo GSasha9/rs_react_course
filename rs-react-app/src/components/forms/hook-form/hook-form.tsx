@@ -1,53 +1,28 @@
-import { useRef } from 'react';
-import { useEffect } from 'react';
-
-import InputField from '../../input-field/input-field';
-
-import '../forms.scss';
+import { useForm } from 'react-hook-form';
 
 import AutocompleteField from '@/components/autocomplete-field/autocomplete-field';
 import FileField from '@/components/file-field/file-field';
+import InputField from '@/components/input-field/input-field';
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
-import type { FormValues } from '@/shared/interfaces/form-values';
+import { type FormValues } from '@/shared/interfaces/form-values';
 import { useAppDispatch } from '@/store/redux-hooks';
-import { addFormUncontrolledData } from '@/store/slices/form-data-slice';
+import { addHookFormData } from '@/store/slices/form-data-slice';
 
-const FormUncontrolled = () => {
-  const formRef = useRef<HTMLFormElement>(null);
-
+const HookForm = () => {
+  const { register, handleSubmit } = useForm<FormValues>();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const input = document.getElementById('name') as HTMLInputElement | null;
-
-    input?.focus();
-  }, []);
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!formRef.current) return;
-
-    const formData = new FormData(formRef.current);
-    const data = {
-      name: String(formData.get('name') || ''),
-      age: String(formData.get('age') || ''),
-      email: String(formData.get('email') || ''),
-      password: String(formData.get('password') || ''),
-      r_password: String(formData.get('r_password') || ''),
-      gender: String(formData.get('gender') || ''),
-      acceptTC: String(formData.get('acceptTerms') || 'no'),
-      country: String(formData.get('country')),
-      file: String(formData.get('file')),
-    };
-
-    dispatch(addFormUncontrolledData(data));
-  };
 
   return (
     <fieldset>
-      <h2>Uncontrolled Form</h2>
-      <form className="form" onSubmit={(e) => onSubmit(e)} ref={formRef}>
+      <h2>Hook Form</h2>
+      <form
+        className="form"
+        onSubmit={handleSubmit((data) => {
+          console.log(data);
+
+          dispatch(addHookFormData(data));
+        })}
+      >
         {FORM_INPUT_FIELDS.map((el) => {
           return (
             <InputField
@@ -58,6 +33,7 @@ const FormUncontrolled = () => {
               id={el.id}
               placeholder={el.placeholder}
               required={el.required}
+              register={register}
             />
           );
         })}
@@ -90,7 +66,7 @@ const FormUncontrolled = () => {
           />
         </div>
 
-        <FileField />
+        <FileField register={register} />
 
         <AutocompleteField
           htmlFor="country"
@@ -98,6 +74,7 @@ const FormUncontrolled = () => {
           id="country"
           name="country"
           options={['Belarus', 'Poland', 'Belgium']}
+          register={register}
         />
 
         <button type="reset" value="reset">
@@ -111,4 +88,4 @@ const FormUncontrolled = () => {
   );
 };
 
-export default FormUncontrolled;
+export default HookForm;
