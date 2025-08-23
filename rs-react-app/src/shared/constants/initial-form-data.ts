@@ -7,6 +7,6 @@ export const INITIAL_FORM_DATA: FormValues = {
   password: '',
   gender: '',
   acceptTC: '',
-  file: '/form.svg',
+  file: '/upload.svg',
   country: '',
 };

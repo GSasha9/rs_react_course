@@ -8,7 +8,11 @@ import { type FormValues } from '@/shared/interfaces/form-values';
 import { useAppDispatch } from '@/store/redux-hooks';
 import { addHookFormData } from '@/store/slices/form-data-slice';
 
-const HookForm = () => {
+interface HookFormProps {
+  handleClose: () => void;
+}
+
+const HookForm = ({ handleClose }: HookFormProps) => {
   const { register, handleSubmit, setValue } = useForm<FormValues>();
   const dispatch = useAppDispatch();
 
@@ -21,6 +25,8 @@ const HookForm = () => {
           console.log(data);
 
           dispatch(addHookFormData(data));
+
+          handleClose();
         })}
       >
         {FORM_INPUT_FIELDS.map((el) => {

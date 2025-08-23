@@ -12,7 +12,11 @@ import type { FormValues } from '@/shared/interfaces/form-values';
 import { useAppDispatch } from '@/store/redux-hooks';
 import { addFormUncontrolledData } from '@/store/slices/form-data-slice';
 
-const FormUncontrolled = () => {
+interface FormUncontrolledProps {
+  handleClose: () => void;
+}
+
+const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const fileRef = useRef<string>('');
 
@@ -44,6 +48,7 @@ const FormUncontrolled = () => {
     };
 
     dispatch(addFormUncontrolledData(data));
+    handleClose();
   };
 
   return (

@@ -11,7 +11,9 @@ import { selectFormData } from '@/store/selectors/form-data.selector';
 
 const MainPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [modalChild, setModalChild] = useState(<FormUncontrolled />);
+  const [modalChild, setModalChild] = useState(
+    <FormUncontrolled handleClose={handleClose} />
+  );
 
   const data = useSelector(selectFormData);
 
@@ -19,9 +21,9 @@ const MainPage = () => {
     throw new Error('Something went wrong!');
   }
 
-  const handleClose = () => {
+  function handleClose() {
     setIsOpen(false);
-  };
+  }
 
   return (
     <main className="main">
@@ -40,7 +42,7 @@ const MainPage = () => {
           type="button"
           onClick={() => {
             setIsOpen(true);
-            setModalChild(<FormUncontrolled />);
+            setModalChild(<FormUncontrolled handleClose={handleClose} />);
           }}
         >
           Uncontrolled form
@@ -61,7 +63,7 @@ const MainPage = () => {
           type="button"
           onClick={() => {
             setIsOpen(true);
-            setModalChild(<HookForm />);
+            setModalChild(<HookForm handleClose={handleClose} />);
           }}
         >
           Hook form
