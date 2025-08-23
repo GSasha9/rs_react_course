@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/store/redux-hooks';
 import { addHookFormData } from '@/store/slices/form-data-slice';
 
 const HookForm = () => {
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { register, handleSubmit, setValue } = useForm<FormValues>();
   const dispatch = useAppDispatch();
 
   return (
@@ -66,7 +66,12 @@ const HookForm = () => {
           />
         </div>
 
-        <FileField register={register} />
+        <FileField
+          register={register}
+          onFileSelect={(base64) => {
+            setValue('file', base64);
+          }}
+        />
 
         <AutocompleteField
           htmlFor="country"

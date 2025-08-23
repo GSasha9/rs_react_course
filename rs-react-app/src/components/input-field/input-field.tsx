@@ -28,13 +28,25 @@ const InputField = ({
   return (
     <div className="form-field">
       <label htmlFor={id}>{label}</label>
-      <input
-        type={type}
-        id={id}
-        placeholder={placeholder ?? ''}
-        required={required}
-        {...(register ? register(name) : {})}
-      />
+
+      {register ? (
+        <input
+          type={type}
+          id={id}
+          placeholder={placeholder ?? ''}
+          required={required}
+          {...register(name)}
+        />
+      ) : (
+        <input
+          type={type}
+          id={id}
+          placeholder={placeholder ?? ''}
+          required={required}
+          name={name}
+        />
+      )}
+
       {error && <span className="error">{error}</span>}
     </div>
   );

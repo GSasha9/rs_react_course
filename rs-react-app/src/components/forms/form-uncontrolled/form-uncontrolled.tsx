@@ -14,6 +14,7 @@ import { addFormUncontrolledData } from '@/store/slices/form-data-slice';
 
 const FormUncontrolled = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const fileRef = useRef<string>('');
 
   const dispatch = useAppDispatch();
 
@@ -23,12 +24,13 @@ const FormUncontrolled = () => {
     input?.focus();
   }, []);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
+
     const data = {
       name: String(formData.get('name') || ''),
       age: String(formData.get('age') || ''),
@@ -38,7 +40,7 @@ const FormUncontrolled = () => {
       gender: String(formData.get('gender') || ''),
       acceptTC: String(formData.get('acceptTerms') || 'no'),
       country: String(formData.get('country')),
-      file: String(formData.get('file')),
+      file: fileRef.current,
     };
 
     dispatch(addFormUncontrolledData(data));
@@ -90,7 +92,11 @@ const FormUncontrolled = () => {
           />
         </div>
 
-        <FileField />
+        <FileField
+          onFileSelect={(base64) => {
+            fileRef.current = base64;
+          }}
+        />
 
         <AutocompleteField
           htmlFor="country"

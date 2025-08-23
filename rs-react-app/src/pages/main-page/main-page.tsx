@@ -34,6 +34,7 @@ const MainPage = () => {
           gender={data.uncontrolledForm.gender}
           acceptTC={data.uncontrolledForm.acceptTC}
           country={data.uncontrolledForm.country}
+          file={data.uncontrolledForm.file}
         />
         <button
           type="button"
@@ -54,6 +55,7 @@ const MainPage = () => {
           gender={data.hookForm.gender}
           acceptTC={data.hookForm.acceptTC}
           country={data.hookForm.country}
+          file={data.hookForm.file}
         />
         <button
           type="button"

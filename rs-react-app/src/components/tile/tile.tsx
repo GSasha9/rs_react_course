@@ -8,6 +8,7 @@ export interface TileProps {
   gender: string;
   acceptTC: string;
   country: string;
+  file: string;
 }
 
 const Tile = ({
@@ -18,6 +19,7 @@ const Tile = ({
   gender,
   acceptTC,
   country,
+  file,
 }: TileProps) => {
   return (
     <div className="tile">
@@ -30,7 +32,7 @@ const Tile = ({
         <li>Accept T&C: {acceptTC}</li>
         <li>Country: {country}</li>
       </ul>
-      <img alt="user-image"></img>
+      <img className="tile-image" src={file} alt="user-image"></img>
     </div>
   );
 };
