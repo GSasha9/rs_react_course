@@ -33,7 +33,7 @@ const InputField = ({
         <input
           type={type}
           id={id}
-          placeholder={placeholder ?? ''}
+          placeholder={placeholder}
           required={required}
           {...register(name)}
         />
@@ -41,7 +41,7 @@ const InputField = ({
         <input
           type={type}
           id={id}
-          placeholder={placeholder ?? ''}
+          placeholder={placeholder}
           required={required}
           name={name}
         />

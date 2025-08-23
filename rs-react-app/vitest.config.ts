@@ -20,13 +20,14 @@ export default defineConfig({
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
         'src/main.tsx',
+        'src/App.tsx',
         '**/models/interfaces/**',
         '**/model/interfaces/**',
         '**/interfaces.ts',
         '**/index.ts/**',
       ],
     },
-    setupFiles: 'src/tests/test-utils/vitest.setup.ts',
+    setupFiles: 'src/tests/vitest.setup.ts',
   },
   resolve: {
     alias: {
