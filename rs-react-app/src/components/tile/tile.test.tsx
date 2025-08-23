@@ -5,13 +5,13 @@ import { describe, expect, it } from 'vitest';
 import Tile from './tile';
 
 import { setupStore } from '@/store';
-import { MockTileData } from '@/tests/utils/mock-tile-data';
+import { MockFormData } from '@/tests/utils/mock-form-data';
 
 describe('Tile', () => {
   it('render tile', () => {
     render(
       <Provider store={setupStore()}>
-        <Tile {...MockTileData} />
+        <Tile {...MockFormData} />
       </Provider>
     );
 

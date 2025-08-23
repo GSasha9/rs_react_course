@@ -1,4 +1,4 @@
-export const MockTileData = {
+export const MockFormData = {
   name: 'John',
   age: '24',
   email: 'john2000.gmail.com',
