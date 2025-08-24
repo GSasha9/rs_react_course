@@ -9,7 +9,7 @@ export interface TileProps {
   password: string;
   gender: string;
   acceptTC: string;
-  country: string;
+  country?: string;
   file: string;
 }
 
