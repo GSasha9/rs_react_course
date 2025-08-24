@@ -2,11 +2,11 @@ import type { UseFormRegister } from 'react-hook-form';
 
 import './input-field.scss';
 
-import type { FormValues } from '@/shared/interfaces/form-values';
+import type { FormValues } from '@/shared/types/form-values';
 
 export interface InputFieldProps {
   type: string;
-  name: keyof FormValues;
+  name?: keyof FormValues;
   label: string;
   id: string;
   placeholder?: string;
@@ -32,7 +32,7 @@ const InputField = ({
           type={type}
           id={id}
           placeholder={placeholder}
-          {...register(name)}
+          {...register(id as keyof FormValues)}
         />
       ) : (
         <input type={type} id={id} placeholder={placeholder} name={name} />

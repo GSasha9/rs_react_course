@@ -8,8 +8,7 @@ export const formSchema = z.object({
   age: z
     .string()
     .refine((val) => /^\d+$/.test(val), 'Age must be a number')
-    .transform(Number)
-    .refine((val) => val >= 0, 'Age cannot be negative'),
+    .refine((val) => Number(val) >= 0, 'Age cannot be negative'),
   email: z.string().email('Invalid emil'),
   password: z
     .string()

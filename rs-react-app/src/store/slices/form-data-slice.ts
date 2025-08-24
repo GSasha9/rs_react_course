@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { INITIAL_FORM_DATA } from '@/shared/constants/initial-form-data';
-import type { FormValues } from '@/shared/interfaces/form-values';
+import type { FormValues } from '@/shared/types/form-values';
 
 export interface FormData {
   uncontrolledForm: FormValues | null;

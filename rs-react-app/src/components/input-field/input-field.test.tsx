@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 
 import InputField from './input-field';
 
-import type { FormValues } from '@/shared/interfaces/form-values';
+import type { FormValues } from '@/shared/types/form-values';
 import { setupStore } from '@/store';
 
 const MockInputFieldData = {

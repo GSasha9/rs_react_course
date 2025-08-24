@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { type UseFormRegister } from 'react-hook-form';
 
-import { type FormValues } from '@/shared/interfaces/form-values';
+import { type FormValues } from '@/shared/types/form-values';
 
 export interface FileFieldProps {
   register?: UseFormRegister<FormValues>;

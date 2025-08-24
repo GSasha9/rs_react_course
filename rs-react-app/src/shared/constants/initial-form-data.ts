@@ -1,12 +1,13 @@
-import type { FormValues } from '../interfaces/form-values';
+import type { FormValues } from '../types/form-values';
 
 export const INITIAL_FORM_DATA: FormValues = {
   name: '',
-  age: 0,
+  age: '0',
   email: '',
   password: '',
-  gender: '',
-  acceptTC: '',
+  r_password: '',
+  gender: 'male',
+  acceptTC: 'yes',
   file: '/upload.svg',
   country: '',
 };

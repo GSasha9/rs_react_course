@@ -4,7 +4,7 @@ import { type RootState } from '..';
 
 export const selectFormData = (state: RootState) => state.formData;
 
-export const getUncontrolledFormData = createSelector(
+export const getFormData = createSelector(
   [selectFormData],
   (formData) => formData
 );

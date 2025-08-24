@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import InputField from '../../input-field/input-field';
 
@@ -8,9 +9,10 @@ import '../forms.scss';
 import AutocompleteField from '@/components/autocomplete-field/autocomplete-field';
 import FileField from '@/components/file-field/file-field';
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
-import type { FormValues } from '@/shared/interfaces/form-values';
+import type { FormValues } from '@/shared/types/form-values';
 import { validatedFormSchema } from '@/shared/utils/form-schema';
 import { useAppDispatch } from '@/store/redux-hooks';
+import { getCountries } from '@/store/selectors/country.selector';
 import { addFormUncontrolledData } from '@/store/slices/form-data-slice';
 
 interface FormUncontrolledProps {
@@ -24,6 +26,8 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
   const dispatch = useAppDispatch();
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const countries = useSelector(getCountries);
 
   useEffect(() => {
     const input = document.getElementById('name') as HTMLInputElement | null;
@@ -111,16 +115,11 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
           {' '}
           <div className="acceptTerms-checkbox-wrapper">
             {' '}
-            <label htmlFor="acceptTerms">
+            <label htmlFor="acceptTC">
               Accept Terms & Conditions agreement?*
             </label>
             <span>Yes</span>
-            <input
-              type="checkbox"
-              name="acceptTerms"
-              value="yes"
-              id="acceptTerms"
-            />
+            <input type="checkbox" name="acceptTC" value="yes" id="acceptTC" />
           </div>
           {errors.acceptTC && <p className="error">{errors.acceptTC}</p>}
         </div>
@@ -142,7 +141,7 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
             listID="countries"
             id="country"
             name="country"
-            options={['Belarus', 'Poland', 'Belgium']}
+            options={countries[0].countries}
           />
           {errors.country && (
             <p className="error error-country">{errors.country}</p>

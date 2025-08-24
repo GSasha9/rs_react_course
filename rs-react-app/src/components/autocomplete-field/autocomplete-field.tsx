@@ -1,12 +1,12 @@
 import { type UseFormRegister } from 'react-hook-form';
 
-import { type FormValues } from '@/shared/interfaces/form-values';
+import { type FormValues } from '@/shared/types/form-values';
 
 interface AutocompleteFieldProps {
   htmlFor: string;
   listID: string;
   id: string;
-  name: string;
+  name: keyof FormValues | string;
   options: string[];
   register?: UseFormRegister<FormValues>;
 }
@@ -17,11 +17,16 @@ const AutocompleteField = ({
   id,
   name,
   options,
+  register,
 }: AutocompleteFieldProps) => {
   return (
     <div className="autocomplete-field">
       <label htmlFor={htmlFor}>Select Country</label>
-      <input list={listID} id={id} name={name} />
+      {register ? (
+        <input list={listID} id={id} {...register(name as keyof FormValues)} />
+      ) : (
+        <input list={listID} id={id} name={name} />
+      )}
       <datalist id={listID}>
         {options.map((c) => (
           <option key={c} value={c} />
