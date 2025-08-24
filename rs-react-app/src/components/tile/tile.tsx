@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import './tile.scss';
 
 export interface TileProps {
@@ -21,8 +23,20 @@ const Tile = ({
   country,
   file,
 }: TileProps) => {
+  const [highlight, setHighlight] = useState(false);
+
+  useEffect(() => {
+    if (!name) return;
+
+    setHighlight(true);
+
+    const timer = setTimeout(() => setHighlight(false), 5000);
+
+    return () => clearTimeout(timer);
+  }, [name]);
+
   return (
-    <div className="tile">
+    <div className={highlight ? 'tile highlight' : 'tile'}>
       <ul className="tile-list">
         <li>Your name: {name}</li>
         <li>Your age: {age}</li>

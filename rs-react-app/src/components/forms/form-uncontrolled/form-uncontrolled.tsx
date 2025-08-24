@@ -49,7 +49,7 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
       password: String(formData.get('password') || ''),
       r_password: String(formData.get('r_password') || ''),
       gender: String(formData.get('gender') || ''),
-      acceptTC: String(formData.get('acceptTerms') || 'no'),
+      acceptTC: String(formData.get('acceptTC') || 'no'),
       country: String(formData.get('country')),
       file: fileRef.current,
     };
@@ -60,8 +60,10 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
       const newErrors: Record<string, string> = {};
 
       result.error.issues.forEach((err) => {
-        if (err.path[0]) {
+        if (err.path.length > 0) {
           newErrors[String(err.path[0])] = err.message;
+        } else {
+          newErrors['r_password'] = err.message;
         }
       });
 

@@ -3,10 +3,6 @@ import { createPortal } from 'react-dom';
 
 import './modal.scss';
 
-const container = document.getElementById('root');
-
-if (!container) throw new Error('Root container not found');
-
 interface ModalProps {
   children: React.ReactElement;
   isOpen: boolean;
@@ -24,6 +20,10 @@ const Modal = ({ children, isOpen, handleClose }: ModalProps) => {
       document.body.removeEventListener('keydown', closeOnEscKey);
     };
   });
+
+  const container = document.getElementById('root');
+
+  if (!container) throw new Error('Root container not found');
 
   if (!isOpen) return null;
 

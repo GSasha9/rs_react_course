@@ -20,7 +20,7 @@ export const formSchema = z.object({
   r_password: z.string(),
   gender: z.enum(['male', 'female', 'other']),
   acceptTC: z.literal('yes', { message: 'You must accept terms' }),
-  country: z.string().min(1, 'Select a country'),
+  country: z.string().min(1, 'Select a country').optional(),
   file: z
     .string()
     .refine((val) => val.length > 0, 'File is required')
