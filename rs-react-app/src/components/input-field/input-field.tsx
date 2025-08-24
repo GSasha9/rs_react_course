@@ -10,7 +10,6 @@ export interface InputFieldProps {
   label: string;
   id: string;
   placeholder?: string;
-  required: boolean;
   error?: string;
   register?: UseFormRegister<FormValues>;
 }
@@ -21,7 +20,6 @@ const InputField = ({
   label,
   id,
   placeholder,
-  required,
   error,
   register,
 }: InputFieldProps) => {
@@ -34,17 +32,10 @@ const InputField = ({
           type={type}
           id={id}
           placeholder={placeholder}
-          required={required}
           {...register(name)}
         />
       ) : (
-        <input
-          type={type}
-          id={id}
-          placeholder={placeholder}
-          required={required}
-          name={name}
-        />
+        <input type={type} id={id} placeholder={placeholder} name={name} />
       )}
 
       {error && <span className="error">{error}</span>}

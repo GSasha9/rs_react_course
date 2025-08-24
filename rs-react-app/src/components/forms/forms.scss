@@ -6,10 +6,29 @@ fieldset {
   overflow-y: scroll;
 }
 
+.field-wrapper {
+  position: relative;
+
+  .error {
+    position: absolute;
+    font-size: 12px;
+    color: red;
+    top: 43px;
+  }
+
+  .error-image {
+    top: 26px;
+  }
+
+  .error-country {
+    top: 10px;
+  }
+}
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px;
   padding: 15px;
 
   justify-self: center;
