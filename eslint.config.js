@@ -9,12 +9,21 @@ import reactCompiler from 'eslint-plugin-react-compiler';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default tseslint.config(
-  { ignores: ['eslint.config.js', 'vite.config.js', 'dist', 'coverage'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'vite.config.js',
+      'dist',
+      'coverage',
+      '.next',
+    ],
+  },
   {
     extends: [
       js.configs.recommended,
       ...tseslint.configs.strict,
       eslintPluginPrettier,
+      // 'plugin:@next/next/recommended',
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {

@@ -3,7 +3,7 @@ import './selected-card-flyout.scss';
 import { useSelectedCards } from '@/hooks/use-selected-cards';
 import { useTheme } from '@/hooks/use-theme';
 import Button from '@/shared/ui/button/button';
-import { downloadCSV } from '@/shared/utils/download-csv';
+import downloadCSV from '@/shared/utils/download-csv';
 
 const SelectedCardFlyout = () => {
   const { cards, deleteAllCards } = useSelectedCards();
@@ -15,7 +15,7 @@ const SelectedCardFlyout = () => {
 
   const handleDownload = () => {
     try {
-      downloadCSV(cards, `${cards.length}_items.csv`);
+      downloadCSV(cards);
     } catch (error) {
       console.error('Failed to download CSV:', error);
     }
