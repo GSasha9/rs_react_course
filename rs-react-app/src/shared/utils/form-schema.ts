@@ -1,40 +1,41 @@
 import * as z from 'zod';
 
+import { FORM_ERRORS } from '../constants/form-errors';
+
 export const formSchema = z.object({
   name: z
     .string()
-    .min(1, 'Name is required')
-    .regex(/^[A-Z][a-zA-Z]/, 'Name must start with an uppercase letter'),
+    .min(1, FORM_ERRORS.name.required)
+    .regex(/^[A-Z][a-zA-Z]/, FORM_ERRORS.name.pattern),
   age: z
     .string()
-    .refine((val) => /^\d+$/.test(val), 'Age must be a number')
-    .refine((val) => Number(val) >= 0, 'Age cannot be negative'),
-  email: z.string().email('Invalid emil'),
+    .refine((val) => /^\d+$/.test(val), FORM_ERRORS.age.number)
+    .refine((val) => Number(val) >= 0, FORM_ERRORS.age.negative),
+  email: z.string().email(FORM_ERRORS.email.invalid),
   password: z
     .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'At least one uppercase letter required')
-    .regex(/[a-z]/, 'At least one lowercase letter required')
-    .regex(/[0-9]/, 'At least one number required')
-    .regex(/[^A-Za-z0-9]/, 'At least one special character required'),
+    .min(8, FORM_ERRORS.password.min)
+    .regex(/[A-Z]/, FORM_ERRORS.password.upper)
+    .regex(/[a-z]/, FORM_ERRORS.password.lower)
+    .regex(/[0-9]/, FORM_ERRORS.password.number)
+    .regex(/[^A-Za-z0-9]/, FORM_ERRORS.password.special),
   r_password: z.string(),
   gender: z.enum(['male', 'female', 'other']),
-  acceptTC: z.literal('yes', { message: 'You must accept terms' }),
-  country: z.string().min(1, 'Select a country').optional(),
+  acceptTC: z.literal('yes', { message: FORM_ERRORS.acceptTC.required }),
+  country: z.string().min(1, FORM_ERRORS.country.required).optional(),
   file: z
     .string()
-    .refine((val) => val.length > 0, 'File is required')
-    .refine((val) => {
-      const header = val.split(',')[0];
-
-      return /image\/(png|jpeg)/.test(header);
-    }, 'Only PNG or JPEG allowed'),
+    .refine((val) => val.length > 0, FORM_ERRORS.file.required)
+    .refine(
+      (val) => /image\/(png|jpeg)/.test(val.split(',')[0]),
+      FORM_ERRORS.file.type
+    ),
 });
 
 export const validatedFormSchema = formSchema.refine(
   (data) => data.password === data.r_password,
   {
-    message: 'Passwords must match',
+    message: FORM_ERRORS.r_password.mismatch,
     path: ['r_password'],
   }
 );

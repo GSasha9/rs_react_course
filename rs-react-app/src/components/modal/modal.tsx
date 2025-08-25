@@ -3,6 +3,8 @@ import { createPortal } from 'react-dom';
 
 import './modal.scss';
 
+import { ERROR_MESSAGES } from '@/shared/constants/error-messages';
+
 interface ModalProps {
   children: React.ReactElement;
   isOpen: boolean;
@@ -23,7 +25,7 @@ const Modal = ({ children, isOpen, handleClose }: ModalProps) => {
 
   const container = document.getElementById('root');
 
-  if (!container) throw new Error('Root container not found');
+  if (!container) throw new Error(ERROR_MESSAGES.rootContainerNotFound);
 
   if (!isOpen) return null;
 

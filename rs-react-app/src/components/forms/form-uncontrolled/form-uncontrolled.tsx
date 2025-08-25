@@ -84,7 +84,6 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
           return (
             <div className="field-wrapper" key={el.name}>
               <InputField
-                key={el.name}
                 label={el.label}
                 type={el.type}
                 name={el.name as keyof FormValues}
@@ -127,7 +126,6 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
         </div>
 
         <div className="field-wrapper">
-          {' '}
           <FileField
             onFileSelect={(base64) => {
               fileRef.current = base64;
@@ -137,7 +135,6 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
         </div>
 
         <div className="field-wrapper">
-          {' '}
           <AutocompleteField
             htmlFor="country"
             listID="countries"

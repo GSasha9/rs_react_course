@@ -7,6 +7,7 @@ import FormUncontrolled from '@/components/forms/form-uncontrolled/form-uncontro
 import HookForm from '@/components/forms/hook-form/hook-form';
 import Modal from '@/components/modal/modal';
 import Tile from '@/components/tile/tile';
+import { ERROR_MESSAGES } from '@/shared/constants/error-messages';
 import { selectFormData } from '@/store/selectors/form-data.selector';
 
 const MainPage = () => {
@@ -18,7 +19,7 @@ const MainPage = () => {
   const data = useSelector(selectFormData);
 
   if (!data || !data.uncontrolledForm || !data.hookForm) {
-    throw new Error('Something went wrong!');
+    throw new Error(ERROR_MESSAGES.smthWentWrong);
   }
 
   function handleClose() {

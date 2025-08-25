@@ -70,7 +70,7 @@ describe('Form', () => {
 
     await user.type(emailField, 'invalid-email');
     await user.click(submitButton);
-    expect(await screen.findByText('Invalid emil')).toBeInTheDocument();
+    expect(await screen.findByText('Invalid email')).toBeInTheDocument();
 
     await user.clear(emailField);
     await user.type(emailField, 'test@example.com');

@@ -28,23 +28,21 @@ const HookForm = ({ handleClose }: HookFormProps) => {
 
   const countries = useSelector(getCountries);
 
+  const onSubmit = (data: FormValues) => {
+    dispatch(addHookFormData(data));
+
+    handleClose();
+  };
+
   return (
     <fieldset>
       <h2>Hook Form</h2>
-      <form
-        className="form"
-        onSubmit={handleSubmit((data) => {
-          dispatch(addHookFormData(data));
-
-          handleClose();
-        })}
-      >
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
         {FORM_INPUT_FIELDS.map((el) => {
           return (
             <div className="field-wrapper" key={el.name}>
               {' '}
               <InputField
-                key={el.name}
                 label={el.label}
                 type={el.type}
                 name={el.name as keyof FormValues}
@@ -61,7 +59,6 @@ const HookForm = ({ handleClose }: HookFormProps) => {
           );
         })}
         <div className="field-wrapper">
-          {' '}
           <label htmlFor="gender">Gender*</label>
           <div className="gender-inputs">
             <input
@@ -86,13 +83,12 @@ const HookForm = ({ handleClose }: HookFormProps) => {
               {...register('gender')}
             />
             Other
-          </div>{' '}
+          </div>
           {errors.gender && <p className="error">{errors.gender.message}</p>}
         </div>
 
         <div className="field-wrapper">
           <div className="acceptTerms-checkbox-wrapper">
-            {' '}
             <label htmlFor="acceptTC">
               Accept Terms & Conditions agreement?*
             </label>
@@ -103,33 +99,31 @@ const HookForm = ({ handleClose }: HookFormProps) => {
               id="acceptTC"
               {...register('acceptTC')}
             />
-          </div>{' '}
+          </div>
           {errors.acceptTC && (
             <p className="error">{errors.acceptTC.message}</p>
           )}
         </div>
 
         <div className="field-wrapper">
-          {' '}
           <FileField
             register={register}
             onFileSelect={(base64) => {
               setValue('file', base64);
             }}
-          />{' '}
+          />
           {errors.file && (
             <p className="error error-image">{errors.file.message}</p>
           )}
         </div>
 
         <div className="field-wrapper">
-          {' '}
           <AutocompleteField
             htmlFor="country"
             listID="countries"
             id="country"
             name="country"
-            options={countries[0].countries}
+            options={countries[0].countries ?? []}
             register={register}
           />
           {errors.country && (
