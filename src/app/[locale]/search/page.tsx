@@ -11,7 +11,7 @@ const SearchPage = async ({
   let data: ComicsRequestResults | null = null;
 
   try {
-    const pageNumber = await searchParams.pageNumber;
+    const pageNumber = searchParams.pageNumber;
     const url = `/search?pageNumber=${pageNumber ?? 1}`;
     const response = await fetch(`${baseURL}${url}`, { cache: 'no-store' });
 
@@ -24,7 +24,7 @@ const SearchPage = async ({
     console.error(error);
   }
 
-  return <SearchPageClient results={data} />;
+  return <SearchPageClient result={data} />;
 };
 
 export default SearchPage;

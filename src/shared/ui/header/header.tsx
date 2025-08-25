@@ -7,7 +7,7 @@ import './header.scss';
 
 import { pathnames } from '@/i18n/config';
 import { Link } from '@/i18n/navigation';
-import LanguageSwitcher from '@/shared/utils/language-switcher';
+import LanguageSwitcher from '@/shared/components/language-switcher/language-switcher';
 
 const navItems: {
   to: keyof typeof pathnames;

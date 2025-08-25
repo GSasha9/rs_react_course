@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import DetailedPageUid from './[uid]/page';
@@ -25,10 +25,10 @@ import { comicsApi } from '@/store/api/comics.api';
 import { selectItem } from '@/store/slices/selected-item-slice';
 
 interface SearchPageClientProps {
-  results?: ComicsRequestResults | null;
+  result?: ComicsRequestResults | null;
 }
 
-const SearchPageClient = (props: SearchPageClientProps) => {
+const SearchPageClient = ({ result }: SearchPageClientProps) => {
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const SearchPageClient = (props: SearchPageClientProps) => {
   const uid = searchParams.get('uid');
 
   const {
-    data = props.results,
+    data = result,
     isLoading,
     isFetching,
     isError,
@@ -83,29 +83,23 @@ const SearchPageClient = (props: SearchPageClientProps) => {
     }
   }, [searchParams, router]);
 
-  const handleResults = useCallback(
-    (response: ComicsRequestResults) => {
-      const resultsArray = Object.entries(response).find(
-        ([key, value]) =>
-          key !== 'sort' && key !== 'page' && Array.isArray(value)
-      )?.[1] as Record<string, unknown>[];
+  const handleResults = (response: ComicsRequestResults) => {
+    const resultsArray = Object.entries(response).find(
+      ([key, value]) => key !== 'sort' && key !== 'page' && Array.isArray(value)
+    )?.[1] as Record<string, unknown>[];
 
-      if (!resultsArray) return;
+    if (!resultsArray) return;
 
-      setPageNumber(response.page.totalPages);
+    setPageNumber(response.page.totalPages);
 
-      if (JSON.stringify(resultsArray) !== JSON.stringify(results)) {
-        setResults(resultsArray);
-      }
-    },
-    [results]
-  );
+    setResults(resultsArray);
+  };
 
   useEffect(() => {
     if (data) {
       handleResults(data);
     }
-  }, [data, handleResults]);
+  }, [data]);
 
   if (currentPageNumber === null) {
     return <ErrorPage />;
