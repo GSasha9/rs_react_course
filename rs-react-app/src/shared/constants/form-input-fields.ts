@@ -1,0 +1,42 @@
+export const FORM_INPUT_FIELDS = [
+  {
+    label: 'Name*',
+    type: 'text',
+    name: 'name',
+    id: 'name',
+    placeholder: 'Enter Your Name',
+    required: true,
+  },
+  {
+    label: 'Age*',
+    type: 'text',
+    name: 'age',
+    id: 'age',
+    placeholder: 'Enter Your Age',
+    required: true,
+  },
+  {
+    label: 'Enter Email*',
+    type: 'text',
+    name: 'email',
+    id: 'email',
+    placeholder: 'Enter Email',
+    required: true,
+  },
+  {
+    label: 'Password*',
+    type: 'text',
+    name: 'password',
+    id: 'password',
+    placeholder: 'Enter Password',
+    required: true,
+  },
+  {
+    label: 'Repeat Password*',
+    type: 'text',
+    name: 'r_password',
+    id: 'r_password',
+    placeholder: 'Repeat Password',
+    required: true,
+  },
+];
