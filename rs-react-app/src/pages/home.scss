@@ -1,0 +1,9 @@
+.table_head {
+    display: flex;
+
+    .table_head-item {
+        min-width: 200px;
+        border: 1px solid grey;
+        background-color: rgb(150, 104, 194);
+    }
+}
