@@ -17,4 +17,15 @@
 .controls {
   display: flex;
   gap: 15px;
+  flex-direction: column;
+
+  .controls__item {
+    display: flex;
+    gap: 5px;
+  }
+
+  .controls_button{
+    width: fit-content;
+    max-width: 200px;
+  }
 }

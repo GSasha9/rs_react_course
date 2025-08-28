@@ -8,7 +8,7 @@ import type {
 interface RowProps {
   data: CountryEntry[];
   index: number;
-  property?: (keyof CountryDataPoint)[];
+  property?: string[] | null;
 }
 
 const Row = ({ data, index, property }: RowProps) => {
@@ -23,11 +23,15 @@ const Row = ({ data, index, property }: RowProps) => {
       <span className="row_item">{item.last.cement_co2}</span>
       <span className="row_item">{item.last.cement_co2_per_capita}</span>
       {property &&
-        property.map((el: keyof CountryDataPoint) => (
-          <span className="row_item" key={el}>
-            {item.last[el]}
-          </span>
-        ))}
+        property.map((el) => {
+          const key = el as keyof CountryDataPoint;
+
+          return (
+            <span className="row_item" key={key}>
+              {item.last[key]}
+            </span>
+          );
+        })}
     </div>
   );
 };
