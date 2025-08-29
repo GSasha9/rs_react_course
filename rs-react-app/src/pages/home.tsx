@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 
 import './home.scss';
 
@@ -7,47 +6,20 @@ import Modal from '@/components/modal/modal';
 import Row from '@/components/row/row';
 import { type CountryDataPoint } from '@/shared/types/country-entry';
 import { type CountryEntry } from '@/shared/types/country-entry';
-import type { JsonType } from '@/shared/types/json-type';
+import fetchData from '@/shared/utils/fetch-data';
+
+const resource = fetchData();
 
 const HomePage = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [properties, setProperties] = useState<string[] | null>([]);
-  const [data, setData] = useState<CountryEntry[]>([]);
   const [searchData, setSearchData] = useState<CountryEntry[] | null>(null);
   const [, setSearch] = useState('');
   const [year, setYear] = useState(2023);
   const [filter, setFilter] = useState('name');
   const [filterDirection, setFilterDirection] = useState('asc');
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  async function fetchData(year?: number) {
-    const data = await fetch('/owid-co2-data.json');
-
-    const dataJson = await data.json();
-
-    const DATA_ENTRIES: CountryEntry[] = Object.entries(dataJson)
-      .map(([country, obj]) => {
-        const newObj = obj as JsonType;
-        const d = newObj.data;
-        let last;
-
-        if (!year) {
-          last = d[d.length - 1];
-        } else {
-          last = d.filter((el) => el.year === year)[0];
-        }
-
-        if (!last) return null;
-
-        return { country, iso_code: newObj.iso_code, last };
-      })
-      .filter((entry): entry is CountryEntry => entry !== null);
-
-    setData(DATA_ENTRIES);
-  }
+  const data = resource.read();
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -114,7 +86,7 @@ const HomePage = () => {
     setSearch(newSearch);
   };
 
-  const rows = searchData ?? data;
+  const rows = searchData ?? [...data];
 
   return (
     <main className="main">
@@ -184,16 +156,20 @@ const HomePage = () => {
             })}
         </div>
 
-        {rows.map((_, index) => {
-          return (
-            <Row
-              data={searchData ? searchData : data}
-              index={index}
-              key={index}
-              property={properties}
-            />
-          );
-        })}
+        {rows ? (
+          rows.map((_, index) => {
+            return (
+              <Row
+                data={searchData ? searchData : data}
+                index={index}
+                key={index}
+                property={properties}
+              />
+            );
+          })
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
       <Modal
         isOpen={isOpenModal}
