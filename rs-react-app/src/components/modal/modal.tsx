@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 
 import './modal.scss';
@@ -12,7 +13,11 @@ interface ModalProps {
   handleProperties: (value: string) => void;
 }
 
-const Modal = ({ isOpen, handleClose, handleProperties }: ModalProps) => {
+const Modal = memo(function Modal({
+  isOpen,
+  handleClose,
+  handleProperties,
+}: ModalProps) {
   const checkedInput = useSelector(getColumns)[0].name;
 
   if (!isOpen) return;
@@ -80,6 +85,6 @@ const Modal = ({ isOpen, handleClose, handleProperties }: ModalProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default Modal;

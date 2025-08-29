@@ -1,4 +1,4 @@
-import React, { Profiler, useState } from 'react';
+import React, { Profiler, useCallback, useMemo, useState } from 'react';
 
 import './home.scss';
 
@@ -25,13 +25,9 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
 
   const data = resources.read();
 
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
+  const openModal = useCallback(() => setIsOpenModal(true), []);
 
-  const closeModal = () => {
-    setIsOpenModal(false);
-  };
+  const closeModal = useCallback(() => setIsOpenModal(false), []);
 
   function handleFilters(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.currentTarget.value;
@@ -64,33 +60,41 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
     setSearchData(filteredData);
   }
 
-  const handleProperties = (value: string) => {
-    if (!properties) {
-      setProperties([value]);
-    } else if (properties.includes(value)) {
-      setProperties(properties.filter((el) => el !== value));
-    } else {
-      setProperties([...properties, value]);
-    }
-  };
+  const handleProperties = useCallback(
+    (value: string) => {
+      if (!properties) {
+        setProperties([value]);
+      } else if (properties.includes(value)) {
+        setProperties(properties.filter((el) => el !== value));
+      } else {
+        setProperties([...properties, value]);
+      }
+    },
+    [properties]
+  );
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearch = e.currentTarget.value.toLocaleLowerCase();
+  const handleSearch = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      {
+        const newSearch = e.currentTarget.value.toLocaleLowerCase();
 
-    if (newSearch === '') {
-      setSearchData(null);
-    } else {
-      const newArrOfData = data.filter((el) =>
-        el.country.toLocaleLowerCase().startsWith(newSearch)
-      );
+        if (newSearch === '') {
+          setSearchData(null);
+        } else {
+          const newArrOfData = data.filter((el) =>
+            el.country.toLocaleLowerCase().startsWith(newSearch)
+          );
 
-      setSearchData(newArrOfData);
-    }
+          setSearchData(newArrOfData);
+        }
 
-    setSearch(newSearch);
-  };
+        setSearch(newSearch);
+      }
+    },
+    [data]
+  );
 
-  const rows = searchData ?? [...data];
+  const rows = useMemo(() => searchData ?? [...data], [searchData, data]);
 
   return (
     <main className="main">

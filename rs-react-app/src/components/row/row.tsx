@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import './row.scss';
 
 import type {
@@ -11,7 +13,7 @@ interface RowProps {
   property?: string[] | null;
 }
 
-const Row = ({ data, index, property }: RowProps) => {
+const Row = memo(function Row({ data, index, property }: RowProps) {
   const item = data[index];
 
   return (
@@ -34,6 +36,6 @@ const Row = ({ data, index, property }: RowProps) => {
         })}
     </div>
   );
-};
+});
 
 export default Row;
