@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Profiler, useState } from 'react';
 
 import './home.scss';
 
@@ -6,11 +6,15 @@ import Modal from '@/components/modal/modal';
 import Row from '@/components/row/row';
 import { type CountryDataPoint } from '@/shared/types/country-entry';
 import { type CountryEntry } from '@/shared/types/country-entry';
-import fetchData from '@/shared/utils/fetch-data';
 
-const resource = fetchData();
+interface HomePageProps {
+  resources: {
+    read: () => CountryEntry[];
+  };
+  handleYear: (year: number) => void;
+}
 
-const HomePage = () => {
+const HomePage = ({ resources, handleYear }: HomePageProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [properties, setProperties] = useState<string[] | null>([]);
   const [searchData, setSearchData] = useState<CountryEntry[] | null>(null);
@@ -19,7 +23,7 @@ const HomePage = () => {
   const [filter, setFilter] = useState('name');
   const [filterDirection, setFilterDirection] = useState('asc');
 
-  const data = resource.read();
+  const data = resources.read();
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -130,34 +134,59 @@ const HomePage = () => {
             onChange={(e) => setYear(Number(e.currentTarget.value))}
           ></input>
           <span>year</span>
-          <button onClick={() => fetchData(year)}>show</button>
+          <button
+            onClick={() => {
+              handleYear(year);
+            }}
+          >
+            show
+          </button>
         </div>
         <button className="controls_button" onClick={openModal}>
           Add columns
         </button>
       </div>
-      <div className="table">
-        <div className="table_head">
-          <span className="table_head-item">Country</span>
-          <span className="table_head-item">ISO_code</span>
-          <span className="table_head-item">Year</span>
-          <span className="table_head-item">Population</span>
-          <span className="table_head-item">Cement_co2</span>
-          <span className="table_head-item">Cement_co2_per_capita</span>
-          {properties &&
-            properties.map((el) => {
-              const key = el as keyof CountryDataPoint;
+      <Profiler
+        id="profiler_table"
+        onRender={(
+          id,
+          phase,
+          actualDuration,
+          startTime,
+          commitTime,
+          interactions
+        ) => {
+          console.log({
+            id,
+            phase,
+            actualDuration,
+            startTime,
+            commitTime,
+            interactions,
+          });
+        }}
+      >
+        <div className="table">
+          <div className="table_head">
+            <span className="table_head-item">Country</span>
+            <span className="table_head-item">ISO_code</span>
+            <span className="table_head-item">Year</span>
+            <span className="table_head-item">Population</span>
+            <span className="table_head-item">Cement_co2</span>
+            <span className="table_head-item">Cement_co2_per_capita</span>
+            {properties &&
+              properties.map((el) => {
+                const key = el as keyof CountryDataPoint;
 
-              return (
-                <span className="table_head-item" key={key}>
-                  {key}
-                </span>
-              );
-            })}
-        </div>
+                return (
+                  <span className="table_head-item" key={key}>
+                    {key}
+                  </span>
+                );
+              })}
+          </div>
 
-        {rows ? (
-          rows.map((_, index) => {
+          {rows.map((_, index) => {
             return (
               <Row
                 data={searchData ? searchData : data}
@@ -166,11 +195,10 @@ const HomePage = () => {
                 property={properties}
               />
             );
-          })
-        ) : (
-          <div>Loading...</div>
-        )}
-      </div>
+          })}
+        </div>
+      </Profiler>
+
       <Modal
         isOpen={isOpenModal}
         handleClose={closeModal}
