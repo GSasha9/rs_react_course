@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 
 import './home.scss';
@@ -15,28 +15,39 @@ const HomePage = () => {
   const [data, setData] = useState<CountryEntry[]>([]);
   const [searchData, setSearchData] = useState<CountryEntry[] | null>(null);
   const [, setSearch] = useState('');
+  const [year, setYear] = useState(2023);
+  const [filter, setFilter] = useState('name');
+  const [filterDirection, setFilterDirection] = useState('asc');
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetch('/owid-co2-data.json');
-
-      const dataJson = await data.json();
-
-      const DATA_ENTRIES: CountryEntry[] = Object.entries(dataJson).map(
-        ([country, obj]) => {
-          const newObj = obj as JsonType;
-          const d = newObj.data;
-          const last = d[d.length - 1];
-
-          return { country, iso_code: newObj.iso_code, last };
-        }
-      );
-
-      setData(DATA_ENTRIES);
-    };
-
     fetchData();
   }, []);
+
+  async function fetchData(year?: number) {
+    const data = await fetch('/owid-co2-data.json');
+
+    const dataJson = await data.json();
+
+    const DATA_ENTRIES: CountryEntry[] = Object.entries(dataJson)
+      .map(([country, obj]) => {
+        const newObj = obj as JsonType;
+        const d = newObj.data;
+        let last;
+
+        if (!year) {
+          last = d[d.length - 1];
+        } else {
+          last = d.filter((el) => el.year === year)[0];
+        }
+
+        if (!last) return null;
+
+        return { country, iso_code: newObj.iso_code, last };
+      })
+      .filter((entry): entry is CountryEntry => entry !== null);
+
+    setData(DATA_ENTRIES);
+  }
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -45,6 +56,37 @@ const HomePage = () => {
   const closeModal = () => {
     setIsOpenModal(false);
   };
+
+  function handleFilters(e: React.ChangeEvent<HTMLSelectElement>) {
+    const value = e.currentTarget.value;
+
+    if (value === 'name' || value === 'population') {
+      setFilter(value);
+    } else if (value === 'asc' || value === 'desc') {
+      setFilterDirection(value);
+    }
+
+    const sortField =
+      value === 'name' || value === 'population' ? value : filter;
+    const sortDirection =
+      value === 'asc' || value === 'desc' ? value : filterDirection;
+
+    const actualData = searchData ?? data;
+
+    const filteredData = [...actualData].sort((a, b) => {
+      let cmp = 0;
+
+      if (sortField === 'name') {
+        cmp = a.country.localeCompare(b.country);
+      } else if (sortField === 'population') {
+        cmp = (a.last.population ?? 0) - (b.last.population ?? 0);
+      }
+
+      return sortDirection === 'asc' ? cmp : -cmp;
+    });
+
+    setSearchData(filteredData);
+  }
 
   const handleProperties = (value: string) => {
     if (!properties) {
@@ -86,11 +128,23 @@ const HomePage = () => {
         </div>
         <div className="controls__sort controls__item">
           <label htmlFor="sort">Sort by:</label>
-          <select name="sort" id="sort">
+          <select
+            name="sort"
+            id="sort"
+            onChange={(e) => {
+              handleFilters(e);
+            }}
+          >
             <option value="name">name</option>
             <option value="population">population</option>
           </select>
-          <select name="sort-direction" id="sort">
+          <select
+            name="sort-direction"
+            id="sort-direction"
+            onChange={(e) => {
+              handleFilters(e);
+            }}
+          >
             <option value="asc">asc</option>
             <option value="desc">desc</option>
           </select>
@@ -101,9 +155,10 @@ const HomePage = () => {
             id="year"
             name="year"
             placeholder="enter year(numbers only)"
+            onChange={(e) => setYear(Number(e.currentTarget.value))}
           ></input>
           <span>year</span>
-          <button>show</button>
+          <button onClick={() => fetchData(year)}>show</button>
         </div>
         <button className="controls_button" onClick={openModal}>
           Add columns
