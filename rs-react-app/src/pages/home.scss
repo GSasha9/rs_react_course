@@ -1,0 +1,31 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.table_head {
+  display: flex;
+
+  .table_head-item {
+    min-width: 200px;
+    border: 1px solid grey;
+    background-color: rgb(150, 104, 194);
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+
+  .controls__item {
+    display: flex;
+    gap: 5px;
+  }
+
+  .controls_button{
+    width: fit-content;
+    max-width: 200px;
+  }
+}
