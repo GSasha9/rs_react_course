@@ -1,0 +1,26 @@
+.tile.highlight {
+  background-color: lightblue;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 500px;
+  border: 2px solid green;
+  padding: 15px;
+  .tile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    list-style: none;
+  }
+
+  .tile-image {
+    width: 150px;
+    background-color: white;
+    border: 1px solid black;
+    align-self: center;
+  }
+}

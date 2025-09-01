@@ -1,0 +1,54 @@
+fieldset {
+  max-width: 550px;
+  justify-self: center;
+  background-color: white;
+  max-height: 70%;
+  overflow-y: scroll;
+}
+
+.field-wrapper {
+  position: relative;
+
+  .error {
+    position: absolute;
+    font-size: 12px;
+    color: red;
+    top: 43px;
+  }
+
+  .error-image {
+    top: 26px;
+  }
+
+  .error-country {
+    top: 10px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 15px;
+
+  justify-self: center;
+
+  .acceptTerms-checkbox-wrapper {
+    display: flex;
+    gap: 10px;
+  }
+
+  .file-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    .file-label {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  }
+}
