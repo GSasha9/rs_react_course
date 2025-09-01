@@ -14,7 +14,6 @@ if (!container) throw new Error('Root container not found');
 ReactDom.createRoot(container).render(
   <StrictMode>
     <Provider store={store}>
-      {' '}
       <App />
     </Provider>
   </StrictMode>

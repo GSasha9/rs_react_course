@@ -1,7 +1,11 @@
 import { forwardRef } from 'react';
 import { type UseFormRegister } from 'react-hook-form';
 
+import { ALLOWED_TYPES } from '@/shared/constants/allowed-types';
 import { type FormValues } from '@/shared/types/form-values';
+
+const mb = 1024 * 1024;
+const maxFileSize = 5 * mb;
 
 export interface FileFieldProps {
   register?: UseFormRegister<FormValues>;
@@ -17,11 +21,9 @@ const FileField = forwardRef<HTMLInputElement, FileFieldProps>(
 
       if (!file) return;
 
-      const allowedTypes = ['image/png', 'image/jpeg'];
+      if (!ALLOWED_TYPES.includes(file.type)) return;
 
-      if (!allowedTypes.includes(file.type)) return;
-
-      if (file.size > 5 * 1024 * 1024) return;
+      if (file.size > maxFileSize) return;
 
       const reader = new FileReader();
 

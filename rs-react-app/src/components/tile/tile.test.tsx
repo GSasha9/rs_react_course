@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import Tile from './tile';
 
 import { setupStore } from '@/store';
-import { MockFormData } from '@/tests/utils/mock-form-data';
+import { MockFormData } from '@/tests/constants/mock-form-data';
 
 describe('Tile', () => {
   it('render tile', () => {

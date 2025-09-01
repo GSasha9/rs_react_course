@@ -1,10 +1,10 @@
 import type { UseFormRegister } from 'react-hook-form';
 
-import './input-field.scss';
+import './input.scss';
 
 import type { FormValues } from '@/shared/types/form-values';
 
-export interface InputFieldProps {
+export interface InputProps {
   type: string;
   name?: keyof FormValues;
   label: string;
@@ -14,7 +14,7 @@ export interface InputFieldProps {
   register?: UseFormRegister<FormValues>;
 }
 
-const InputField = ({
+const Input = ({
   type,
   name,
   label,
@@ -22,7 +22,7 @@ const InputField = ({
   placeholder,
   error,
   register,
-}: InputFieldProps) => {
+}: InputProps) => {
   return (
     <div className="form-field">
       <label htmlFor={id}>{label}</label>
@@ -43,4 +43,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default Input;

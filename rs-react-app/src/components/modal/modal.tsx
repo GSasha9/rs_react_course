@@ -12,6 +12,8 @@ interface ModalProps {
 }
 
 const Modal = ({ children, isOpen, handleClose }: ModalProps) => {
+  const container = document.getElementById('root');
+
   useEffect(() => {
     const closeOnEscKey = (e: KeyboardEvent) =>
       e.key === 'Escape' ? handleClose() : null;
@@ -21,9 +23,7 @@ const Modal = ({ children, isOpen, handleClose }: ModalProps) => {
     return () => {
       document.body.removeEventListener('keydown', closeOnEscKey);
     };
-  });
-
-  const container = document.getElementById('root');
+  }, [handleClose]);
 
   if (!container) throw new Error(ERROR_MESSAGES.rootContainerNotFound);
 
@@ -39,7 +39,6 @@ const Modal = ({ children, isOpen, handleClose }: ModalProps) => {
       }}
     >
       <div className="modal-content">
-        {' '}
         <button className="close" onClick={handleClose}>
           Close
         </button>

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import AutocompleteField from '@/components/autocomplete-field/autocomplete-field';
 import FileField from '@/components/file-field/file-field';
-import InputField from '@/components/input-field/input-field';
+import InputField from '@/components/input/input';
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
 import { type FormValues } from '@/shared/types/form-values';
 import { validatedFormSchema } from '@/shared/utils/form-schema';
@@ -41,7 +41,6 @@ const HookForm = ({ handleClose }: HookFormProps) => {
         {FORM_INPUT_FIELDS.map((el) => {
           return (
             <div className="field-wrapper" key={el.name}>
-              {' '}
               <InputField
                 label={el.label}
                 type={el.type}
@@ -49,7 +48,7 @@ const HookForm = ({ handleClose }: HookFormProps) => {
                 id={el.id}
                 placeholder={el.placeholder}
                 register={register}
-              />{' '}
+              />
               {errors[el.name as keyof FormValues] && (
                 <p className="error">
                   {errors[el.name as keyof FormValues]?.message as string}

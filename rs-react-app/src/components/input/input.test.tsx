@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Provider } from 'react-redux';
 import { describe, expect, it } from 'vitest';
 
-import InputField from './input-field';
+import InputField from './input';
 
 import type { FormValues } from '@/shared/types/form-values';
 import { setupStore } from '@/store';

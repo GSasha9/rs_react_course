@@ -16,10 +16,10 @@ const MainPage = () => {
     <FormUncontrolled handleClose={handleClose} />
   );
 
-  const data = useSelector(selectFormData);
+  const { uncontrolledForm, hookForm } = useSelector(selectFormData);
 
-  if (!data || !data.uncontrolledForm || !data.hookForm) {
-    throw new Error(ERROR_MESSAGES.smthWentWrong);
+  if (!uncontrolledForm || !hookForm) {
+    throw new Error(ERROR_MESSAGES.unknown);
   }
 
   function handleClose() {
@@ -30,14 +30,14 @@ const MainPage = () => {
     <main className="main">
       <section className="section">
         <Tile
-          name={data.uncontrolledForm.name}
-          age={data.uncontrolledForm.age}
-          email={data.uncontrolledForm.email}
-          password={data.uncontrolledForm.password}
-          gender={data.uncontrolledForm.gender}
-          acceptTC={data.uncontrolledForm.acceptTC}
-          country={data.uncontrolledForm.country}
-          file={data.uncontrolledForm.file}
+          name={uncontrolledForm.name}
+          age={uncontrolledForm.age}
+          email={uncontrolledForm.email}
+          password={uncontrolledForm.password}
+          gender={uncontrolledForm.gender}
+          acceptTC={uncontrolledForm.acceptTC}
+          country={uncontrolledForm.country}
+          file={uncontrolledForm.file}
         />
         <button
           type="button"
@@ -51,14 +51,14 @@ const MainPage = () => {
       </section>
       <section className="section">
         <Tile
-          name={data.hookForm.name}
-          age={data.hookForm.age}
-          email={data.hookForm.email}
-          password={data.hookForm.password}
-          gender={data.hookForm.gender}
-          acceptTC={data.hookForm.acceptTC}
-          country={data.hookForm.country}
-          file={data.hookForm.file}
+          name={hookForm.name}
+          age={hookForm.age}
+          email={hookForm.email}
+          password={hookForm.password}
+          gender={hookForm.gender}
+          acceptTC={hookForm.acceptTC}
+          country={hookForm.country}
+          file={hookForm.file}
         />
         <button
           type="button"

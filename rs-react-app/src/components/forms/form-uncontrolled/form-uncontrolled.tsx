@@ -2,13 +2,14 @@ import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import InputField from '../../input-field/input-field';
+import InputField from '../../input/input';
 
 import '../forms.scss';
 
 import AutocompleteField from '@/components/autocomplete-field/autocomplete-field';
 import FileField from '@/components/file-field/file-field';
 import { FORM_INPUT_FIELDS } from '@/shared/constants/form-input-fields';
+import { INITIAL_FORM_DATA } from '@/shared/constants/initial-form-data';
 import type { FormValues } from '@/shared/types/form-values';
 import { validatedFormSchema } from '@/shared/utils/form-schema';
 import { useAppDispatch } from '@/store/redux-hooks';
@@ -43,13 +44,15 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
     const formData = new FormData(formRef.current);
 
     const data = {
-      name: String(formData.get('name') || ''),
-      age: String(formData.get('age') || ''),
-      email: String(formData.get('email') || ''),
-      password: String(formData.get('password') || ''),
-      r_password: String(formData.get('r_password') || ''),
-      gender: String(formData.get('gender') || ''),
-      acceptTC: String(formData.get('acceptTC') || 'no'),
+      name: String(formData.get('name') || INITIAL_FORM_DATA.name),
+      age: String(formData.get('age') || INITIAL_FORM_DATA.age),
+      email: String(formData.get('email') || INITIAL_FORM_DATA.email),
+      password: String(formData.get('password') || INITIAL_FORM_DATA.password),
+      r_password: String(
+        formData.get('r_password') || INITIAL_FORM_DATA.r_password
+      ),
+      gender: String(formData.get('gender') || INITIAL_FORM_DATA.gender),
+      acceptTC: String(formData.get('acceptTC') || INITIAL_FORM_DATA.acceptTC),
       country: String(formData.get('country')),
       file: fileRef.current,
     };
@@ -113,9 +116,7 @@ const FormUncontrolled = ({ handleClose }: FormUncontrolledProps) => {
           {errors.gender && <p className="error">{errors.gender}</p>}
         </div>
         <div className="field-wrapper">
-          {' '}
           <div className="acceptTerms-checkbox-wrapper">
-            {' '}
             <label htmlFor="acceptTC">
               Accept Terms & Conditions agreement?*
             </label>
