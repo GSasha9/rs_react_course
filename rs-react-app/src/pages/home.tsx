@@ -1,10 +1,9 @@
-import React, { Profiler, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import './home.scss';
 
 import Modal from '@/components/modal/modal';
-import Row from '@/components/row/row';
-import { type CountryDataPoint } from '@/shared/types/country-entry';
+import Table from '@/components/table/table';
 import { type CountryEntry } from '@/shared/types/country-entry';
 
 interface HomePageProps {
@@ -14,11 +13,14 @@ interface HomePageProps {
   handleYear: (year: number) => void;
 }
 
-const HomePage = ({ resources, handleYear }: HomePageProps) => {
+const HomePage = memo(function HomePage({
+  resources,
+  handleYear,
+}: HomePageProps) {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [properties, setProperties] = useState<string[] | null>([]);
+  const [columns, setColumns] = useState<string[] | null>([]);
   const [searchData, setSearchData] = useState<CountryEntry[] | null>(null);
-  const [, setSearch] = useState('');
+  const [, setSearchRequest] = useState('');
   const [year, setYear] = useState(2023);
   const [filter, setFilter] = useState('name');
   const [filterDirection, setFilterDirection] = useState('asc');
@@ -29,54 +31,48 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
 
   const closeModal = useCallback(() => setIsOpenModal(false), []);
 
-  function handleFilters(e: React.ChangeEvent<HTMLSelectElement>) {
-    const value = e.currentTarget.value;
-
+  function handleFilters(value: string) {
     if (value === 'name' || value === 'population') {
       setFilter(value);
     } else if (value === 'asc' || value === 'desc') {
       setFilterDirection(value);
     }
 
-    const sortField =
-      value === 'name' || value === 'population' ? value : filter;
-    const sortDirection =
-      value === 'asc' || value === 'desc' ? value : filterDirection;
+    applyFilters();
+  }
 
-    const actualData = searchData ?? data;
-
-    const filteredData = [...actualData].sort((a, b) => {
+  const applyFilters = useCallback(() => {
+    const dataForFilter = searchData ?? data;
+    const filteredData = [...dataForFilter].sort((a, b) => {
       let cmp = 0;
 
-      if (sortField === 'name') {
+      if (filter === 'name') {
         cmp = a.country.localeCompare(b.country);
-      } else if (sortField === 'population') {
-        cmp = (a.last.population ?? 0) - (b.last.population ?? 0);
+      } else if (filter === 'population') {
+        cmp =
+          (a.requestedYear.population ?? 0) - (b.requestedYear.population ?? 0);
       }
 
-      return sortDirection === 'asc' ? cmp : -cmp;
+      return filterDirection === 'asc' ? cmp : -cmp;
     });
 
     setSearchData(filteredData);
-  }
+  }, [filter, filterDirection, searchData, data]);
 
-  const handleProperties = useCallback(
-    (value: string) => {
-      if (!properties) {
-        setProperties([value]);
-      } else if (properties.includes(value)) {
-        setProperties(properties.filter((el) => el !== value));
-      } else {
-        setProperties([...properties, value]);
-      }
-    },
-    [properties]
-  );
+  const handleColumns = useCallback((value: string) => {
+    setColumns((prev) => {
+      if (!prev) return [value];
+
+      if (prev.includes(value)) return prev.filter((el) => el !== value);
+
+      return [...prev, value];
+    });
+  }, []);
 
   const handleSearch = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (value: string) => {
       {
-        const newSearch = e.currentTarget.value.toLocaleLowerCase();
+        const newSearch = value.toLocaleLowerCase();
 
         if (newSearch === '') {
           setSearchData(null);
@@ -88,7 +84,7 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
           setSearchData(newArrOfData);
         }
 
-        setSearch(newSearch);
+        setSearchRequest(newSearch);
       }
     },
     [data]
@@ -103,7 +99,11 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
           <input
             type="text"
             placeholder="search country..."
-            onChange={handleSearch}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.currentTarget.value;
+
+              handleSearch(value);
+            }}
           ></input>
         </div>
         <div className="controls__sort controls__item">
@@ -111,8 +111,10 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
           <select
             name="sort"
             id="sort"
-            onChange={(e) => {
-              handleFilters(e);
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const value = e.target.value;
+
+              handleFilters(value);
             }}
           >
             <option value="name">name</option>
@@ -121,8 +123,10 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
           <select
             name="sort-direction"
             id="sort-direction"
-            onChange={(e) => {
-              handleFilters(e);
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const value = e.currentTarget.value;
+
+              handleFilters(value);
             }}
           >
             <option value="asc">asc</option>
@@ -150,66 +154,16 @@ const HomePage = ({ resources, handleYear }: HomePageProps) => {
           Add columns
         </button>
       </div>
-      <Profiler
-        id="profiler_table"
-        onRender={(
-          id,
-          phase,
-          actualDuration,
-          startTime,
-          commitTime,
-          interactions
-        ) => {
-          console.log({
-            id,
-            phase,
-            actualDuration,
-            startTime,
-            commitTime,
-            interactions,
-          });
-        }}
-      >
-        <div className="table">
-          <div className="table_head">
-            <span className="table_head-item">Country</span>
-            <span className="table_head-item">ISO_code</span>
-            <span className="table_head-item">Year</span>
-            <span className="table_head-item">Population</span>
-            <span className="table_head-item">Cement_co2</span>
-            <span className="table_head-item">Cement_co2_per_capita</span>
-            {properties &&
-              properties.map((el) => {
-                const key = el as keyof CountryDataPoint;
 
-                return (
-                  <span className="table_head-item" key={key}>
-                    {key}
-                  </span>
-                );
-              })}
-          </div>
-
-          {rows.map((_, index) => {
-            return (
-              <Row
-                data={searchData ? searchData : data}
-                index={index}
-                key={index}
-                property={properties}
-              />
-            );
-          })}
-        </div>
-      </Profiler>
+      <Table columns={columns ? columns : []} rows={rows} />
 
       <Modal
         isOpen={isOpenModal}
         handleClose={closeModal}
-        handleProperties={handleProperties}
+        handleProperties={handleColumns}
       ></Modal>
     </main>
   );
-};
+});
 
 export default HomePage;

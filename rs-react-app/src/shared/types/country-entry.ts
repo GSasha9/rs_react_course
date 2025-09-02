@@ -8,5 +8,5 @@ export type CountryDataPoint = {
 export type CountryEntry = {
   country: string;
   iso_code: string;
-  last: CountryDataPoint;
+  requestedYear: CountryDataPoint;
 };

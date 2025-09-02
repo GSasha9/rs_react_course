@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 
 import Spinner from './components/spinner/spinner';
 import HomePage from './pages/home';
@@ -8,10 +8,15 @@ export default function App() {
   const [year, setYear] = useState(2023);
   const [resource, setResource] = useState(() => fetchData(year));
 
-  const handleYearChange = (newYear: number) => {
-    setYear(newYear);
-    setResource(fetchData(newYear));
-  };
+  const handleYearChange = useCallback((requestedYear: number) => {
+    setYear((prev) => {
+      if (prev === requestedYear) return prev;
+
+      setResource(fetchData(requestedYear));
+
+      return requestedYear;
+    });
+  }, []);
 
   return (
     <>

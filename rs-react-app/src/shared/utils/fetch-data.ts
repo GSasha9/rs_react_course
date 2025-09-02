@@ -11,19 +11,21 @@ const fetchData = (year?: number) => {
       (dataJson: Record<string, JsonType>) => {
         const DATA_ENTRIES: CountryEntry[] = Object.entries(dataJson)
           .map(([country, obj]) => {
-            const newObj = obj as JsonType;
-            const d = newObj.data;
-            let last;
+            const jsonData = obj as JsonType;
+            const jsonCountryData = jsonData.data;
+            let requestedYear;
 
             if (!year) {
-              last = d[d.length - 1];
+              requestedYear = jsonCountryData[jsonCountryData.length - 1];
             } else {
-              last = d.filter((el) => el.year === year)[0];
+              requestedYear = jsonCountryData.filter(
+                (el) => el.year === year
+              )[0];
             }
 
-            if (!last) return null;
+            if (!requestedYear) return null;
 
-            return { country, iso_code: newObj.iso_code, last };
+            return { country, iso_code: jsonData.iso_code, requestedYear };
           })
           .filter((entry): entry is CountryEntry => entry !== null);
 
