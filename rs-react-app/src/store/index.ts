@@ -2,9 +2,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 import ColumnsReducer from './slices/columns-slice';
+
+import { countriesApi } from '@/api/countries-api';
 export const setupStore = () => {
   const store = configureStore({
-    reducer: { columns: ColumnsReducer },
+    reducer: {
+      columns: ColumnsReducer,
+      [countriesApi.reducerPath]: countriesApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(countriesApi.middleware),
   });
 
   setupListeners(store.dispatch);

@@ -1,33 +1,25 @@
-import { memo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './modal.scss';
 
-import { store } from '@/store';
 import { getColumns } from '@/store/selectors/columns.selector';
 import { handleColumns } from '@/store/slices/columns-slice';
 
 interface ModalProps {
-  isOpen: boolean;
   handleClose: () => void;
   handleProperties: (value: string) => void;
 }
 
-const Modal = memo(function Modal({
-  isOpen,
-  handleClose,
-  handleProperties,
-}: ModalProps) {
+const Modal = ({ handleClose, handleProperties }: ModalProps) => {
   const checkedInput = useSelector(getColumns)[0].name;
-
-  if (!isOpen) return;
+  const dispatch = useDispatch();
 
   const closeModal = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.currentTarget === e.target) handleClose();
   };
 
   const handleCheckbox = (e: React.MouseEvent<HTMLInputElement>) => {
-    store.dispatch(handleColumns(e.currentTarget.value));
+    dispatch(handleColumns(e.currentTarget.value));
     handleProperties(e.currentTarget.value);
   };
 
@@ -85,6 +77,6 @@ const Modal = memo(function Modal({
       </div>
     </div>
   );
-});
+};
 
 export default Modal;

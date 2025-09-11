@@ -2,62 +2,24 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import './home.scss';
 
+import { useGetCountriesByYearQuery } from '@/api/countries-api';
 import Modal from '@/components/modal/modal';
+import Spinner from '@/components/spinner/spinner';
 import Table from '@/components/table/table';
 import { type CountryEntry } from '@/shared/types/country-entry';
 
-interface HomePageProps {
-  resources: {
-    read: () => CountryEntry[];
-  };
-  handleYear: (year: number) => void;
-}
-
-const HomePage = memo(function HomePage({
-  resources,
-  handleYear,
-}: HomePageProps) {
+const HomePage = memo(function HomePage() {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [columns, setColumns] = useState<string[] | null>([]);
-  const [searchData, setSearchData] = useState<CountryEntry[] | null>(null);
-  const [, setSearchRequest] = useState('');
+  const [columns, setColumns] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [year, setYear] = useState(2023);
-  const [filter, setFilter] = useState('name');
-  const [filterDirection, setFilterDirection] = useState('asc');
+  const [filter, setFilter] = useState<'name' | 'population'>('name');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
-  const data = resources.read();
+  const { data, isLoading, isError } = useGetCountriesByYearQuery(year);
 
   const openModal = useCallback(() => setIsOpenModal(true), []);
-
   const closeModal = useCallback(() => setIsOpenModal(false), []);
-
-  function handleFilters(value: string) {
-    if (value === 'name' || value === 'population') {
-      setFilter(value);
-    } else if (value === 'asc' || value === 'desc') {
-      setFilterDirection(value);
-    }
-
-    applyFilters();
-  }
-
-  const applyFilters = useCallback(() => {
-    const dataForFilter = searchData ?? data;
-    const filteredData = [...dataForFilter].sort((a, b) => {
-      let cmp = 0;
-
-      if (filter === 'name') {
-        cmp = a.country.localeCompare(b.country);
-      } else if (filter === 'population') {
-        cmp =
-          (a.requestedYear.population ?? 0) - (b.requestedYear.population ?? 0);
-      }
-
-      return filterDirection === 'asc' ? cmp : -cmp;
-    });
-
-    setSearchData(filteredData);
-  }, [filter, filterDirection, searchData, data]);
 
   const handleColumns = useCallback((value: string) => {
     setColumns((prev) => {
@@ -69,28 +31,39 @@ const HomePage = memo(function HomePage({
     });
   }, []);
 
-  const handleSearch = useCallback(
-    (value: string) => {
-      {
-        const newSearch = value.toLocaleLowerCase();
+  const handleFilters = (value: string) => {
+    if (value === 'name' || value === 'population') setFilter(value);
+    else if (value === 'asc' || value === 'desc') setSortDirection(value);
+  };
 
-        if (newSearch === '') {
-          setSearchData(null);
-        } else {
-          const newArrOfData = data.filter((el) =>
-            el.country.toLocaleLowerCase().startsWith(newSearch)
-          );
+  const filteredData = useMemo(() => {
+    if (!data) return [];
 
-          setSearchData(newArrOfData);
-        }
+    let result: CountryEntry[] = data;
 
-        setSearchRequest(newSearch);
-      }
-    },
-    [data]
-  );
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
 
-  const rows = useMemo(() => searchData ?? [...data], [searchData, data]);
+      result = result.filter((el) => el.country.toLowerCase().startsWith(term));
+    }
+
+    result = [...result].sort((a, b) => {
+      let cmp = 0;
+
+      if (filter === 'name') cmp = a.country.localeCompare(b.country);
+      else if (filter === 'population')
+        cmp =
+          (a.requestedYear.population ?? 0) - (b.requestedYear.population ?? 0);
+
+      return sortDirection === 'asc' ? cmp : -cmp;
+    });
+
+    return result;
+  }, [data, searchTerm, filter, sortDirection]);
+
+  if (isLoading) return <Spinner />;
+
+  if (isError) return <div>Error loading data</div>;
 
   return (
     <main className="main">
@@ -99,69 +72,55 @@ const HomePage = memo(function HomePage({
           <input
             type="text"
             placeholder="search country..."
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const value = e.currentTarget.value;
-
-              handleSearch(value);
-            }}
-          ></input>
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.currentTarget.value)}
+          />
         </div>
+
         <div className="controls__sort controls__item">
           <label htmlFor="sort">Sort by:</label>
           <select
             name="sort"
             id="sort"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              const value = e.target.value;
-
-              handleFilters(value);
-            }}
+            onChange={(e) => handleFilters(e.target.value)}
           >
             <option value="name">name</option>
             <option value="population">population</option>
           </select>
+
           <select
             name="sort-direction"
             id="sort-direction"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              const value = e.currentTarget.value;
-
-              handleFilters(value);
-            }}
+            onChange={(e) => handleFilters(e.target.value)}
           >
             <option value="asc">asc</option>
             <option value="desc">desc</option>
           </select>
         </div>
+
         <div className="controls__year controls__item">
           <label htmlFor="year">Info for</label>
           <input
             id="year"
+            type="number"
             name="year"
             placeholder="enter year(numbers only)"
+            value={year}
             onChange={(e) => setYear(Number(e.currentTarget.value))}
-          ></input>
+          />
           <span>year</span>
-          <button
-            onClick={() => {
-              handleYear(year);
-            }}
-          >
-            show
-          </button>
         </div>
+
         <button className="controls_button" onClick={openModal}>
           Add columns
         </button>
       </div>
 
-      <Table columns={columns ? columns : []} rows={rows} />
+      <Table columns={columns} rows={filteredData} />
 
-      <Modal
-        isOpen={isOpenModal}
-        handleClose={closeModal}
-        handleProperties={handleColumns}
-      ></Modal>
+      {isOpenModal && (
+        <Modal handleClose={closeModal} handleProperties={handleColumns} />
+      )}
     </main>
   );
 });
